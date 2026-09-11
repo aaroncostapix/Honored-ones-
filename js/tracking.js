@@ -5,9 +5,9 @@
 
 class BusTrackingSimulation {
     constructor() {
-        this.route = AppStorage.getRouteById('patan-itr');
-        this.currentStopIndex = 4; // Default: Chanasma (Index 4) -> Next: Lanva (Index 5)
-        this.progressBetweenStops = 0.55; // 55% between Chanasma and Lanva
+        this.route = AppStorage.getRouteById('panaji-donapaula');
+        this.currentStopIndex = 1; // Default: Patto Plaza (Index 1) -> Next: Portais (Index 2)
+        this.progressBetweenStops = 0.40; // 40% between Patto Plaza and Portais
         this.isPlaying = true;
         this.speedMultiplier = 1; // 1x, 2x, 5x
         this.simInterval = null;
@@ -15,21 +15,16 @@ class BusTrackingSimulation {
         this.busSpeedKmH = 45;
         this.radarAngle = 0;
 
-        // Telemetry GPS Coordinates (Simulated along Patan -> ITR Highway)
+        // Telemetry GPS Coordinates (Simulated along Panaji -> Dona Paula highway)
         this.coordinates = [
-            { lat: 23.8502, lng: 72.1265 }, // Bagavada Darwaja
-            { lat: 23.8410, lng: 72.1520 }, // Sidhpur Cross Road
-            { lat: 23.8340, lng: 72.1640 }, // Padhmnath Chokdi
-            { lat: 23.8180, lng: 72.1890 }, // Harij Cross Road
-            { lat: 23.7890, lng: 72.2210 }, // Chanasma
-            { lat: 23.7540, lng: 72.2680 }, // Lanva
-            { lat: 23.7210, lng: 72.3120 }, // Dhinoj
-            { lat: 23.6890, lng: 72.3480 }, // DMart
-            { lat: 23.6780, lng: 72.3610 }, // Golden Square
-            { lat: 23.6650, lng: 72.3740 }, // Kashi Vishwanath Temple
-            { lat: 23.6520, lng: 72.3890 }, // Kapila Hanuman Temple
-            { lat: 23.6380, lng: 72.4080 }, // Radhanpur Cross Road
-            { lat: 23.5890, lng: 72.4450 }  // ITR Campus
+            { lat: 15.4989, lng: 73.8370 }, // Panaji Bus Stand
+            { lat: 15.4975, lng: 73.8340 }, // Patto Plaza
+            { lat: 15.4920, lng: 73.8310 }, // Portais
+            { lat: 15.4780, lng: 73.8320 }, // St. Cruz Church
+            { lat: 15.4605, lng: 73.8350 }, // Goa Medical College (GMC)
+            { lat: 15.4650, lng: 73.8210 }, // AIR Tower
+            { lat: 15.4590, lng: 73.8110 }, // Goa University
+            { lat: 15.4540, lng: 73.8040 }  // Dona Paula Circle
         ];
 
         // Elements
@@ -54,7 +49,7 @@ class BusTrackingSimulation {
     init() {
         // Load URL Param if any
         const urlParams = new URLSearchParams(window.location.search);
-        const routeId = urlParams.get('route') || 'patan-itr';
+        const routeId = urlParams.get('route') || 'panaji-donapaula';
         this.route = AppStorage.getRouteById(routeId);
 
         // Populate Route Select
@@ -150,7 +145,7 @@ class BusTrackingSimulation {
                     // Audio & Speech Alert
                     if (window.AppAudio) {
                         AppAudio.playArrivalChime();
-                        AppAudio.speakAnnouncement(`Bus arrived at ${currentStop.name}. Next stop is ${this.route.stops[this.currentStopIndex + 1]?.name || 'ITR Campus'}.`);
+                        AppAudio.speakAnnouncement(`Bus arrived at ${currentStop.name}. Next stop is ${this.route.stops[this.currentStopIndex + 1]?.name || 'Dona Paula Circle'}.`);
                     }
 
                     showToast('Bus Arrival', `Bus ${this.route.busNumber} arrived at ${currentStop.name}`, 'success');
@@ -159,7 +154,7 @@ class BusTrackingSimulation {
                     this.isPlaying = false;
                     if (window.AppAudio) {
                         AppAudio.playArrivalChime();
-                        AppAudio.speakAnnouncement(`Bus reached destination at ITR Campus.`);
+                        AppAudio.speakAnnouncement(`Bus reached destination at Dona Paula Circle.`);
                     }
                     showToast('Destination Reached', `Bus ${this.route.busNumber} reached ${this.route.destination}`, 'success');
                 }
@@ -248,7 +243,7 @@ class BusTrackingSimulation {
     updateDisplays() {
         const totalPercent = this.calculateTotalPercentage();
         const currentStop = this.route.stops[this.currentStopIndex] || this.route.stops[0];
-        const nextStop = this.route.stops[this.currentStopIndex + 1] || { name: 'Destination Reached (ITR)', time: this.route.arrivalTime };
+        const nextStop = this.route.stops[this.currentStopIndex + 1] || { name: 'Destination Reached (Dona Paula)', time: this.route.arrivalTime };
 
         if (this.currentStopEl) this.currentStopEl.textContent = currentStop.name;
         if (this.nextStopEl) this.nextStopEl.textContent = nextStop.name;
@@ -291,6 +286,30 @@ class BusTrackingSimulation {
         }
         if (this.progressAsciiBar) {
             this.progressAsciiBar.textContent = this.generateAsciiBar(totalPercent);
+        }
+
+        // SAFESTOP Live Telemetry Evaluation
+        if (typeof SafestopEngine !== 'undefined' && typeof SafestopData !== 'undefined') {
+            const targetStop = this.route.stops[this.currentStopIndex + 1] || currentStop;
+            const busProfile = SafestopData.getBusProfile(this.route.id, this.route.busNumber);
+            const stopProfile = SafestopData.getStopProfile(this.route.id, targetStop.id, targetStop.name);
+            const compositeId = SafestopData.getCompositeStopId(this.route.id, targetStop.id);
+            const activeBarriers = SafestopData.getActiveBarriersForStop(compositeId);
+
+            const evalResult = SafestopEngine.calculateConfidence({
+                busProfile,
+                stopProfile,
+                activeBarriers
+            });
+
+            const telemetryBadge = document.getElementById('safestopTelemetryBadge');
+            if (telemetryBadge) {
+                telemetryBadge.innerHTML = `
+                    <span class="confidence-badge-pill ${evalResult.levelMeta.class}" style="font-size:0.75rem; padding: 0.25rem 0.75rem;">
+                        Boarding Confidence: ${evalResult.score}/100 (${evalResult.level})
+                    </span>
+                `;
+            }
         }
 
         // Save state for synchronization with dashboard

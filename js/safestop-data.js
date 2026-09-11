@@ -12,216 +12,88 @@ const SafestopData = {
 
     // Seed Bus Accessibility Profiles mapped by Route / Bus Number
     SEED_BUS_PROFILES: {
-        "patan-itr": {
-            busNumber: "GJ-02-AZ-4512",
-            routeName: "Patan - ITR Campus",
-            lowFloor: true,
-            wheelchairSpace: true,
-            rampAvailable: true,
-            accessibleBoarding: true,
-            wheelchairCapacity: 2,
-            audioVisualAnnouncements: true,
-            lastInspected: "2026-09-01T08:00:00.000Z"
-        },
-        "mehsana-itr": {
-            busNumber: "GJ-02-AZ-4513",
-            routeName: "Mehsana - ITR Campus",
-            lowFloor: true,
-            wheelchairSpace: true,
-            rampAvailable: true,
-            accessibleBoarding: false,
-            wheelchairCapacity: 1,
-            audioVisualAnnouncements: true,
-            lastInspected: "2026-08-25T10:00:00.000Z"
-        },
-        "chanasma-itr": {
-            busNumber: "GJ-02-AZ-4514",
-            routeName: "Chanasma - ITR Campus",
-            lowFloor: false,
-            wheelchairSpace: true,
-            rampAvailable: true,
-            accessibleBoarding: false,
-            wheelchairCapacity: 1,
-            audioVisualAnnouncements: false,
-            lastInspected: "2026-07-15T09:30:00.000Z"
-        },
-        "sidhpur-itr": {
-            busNumber: "GJ-02-AZ-4515",
-            routeName: "Sidhpur - ITR Campus",
-            lowFloor: true,
-            wheelchairSpace: true,
-            rampAvailable: true,
-            accessibleBoarding: true,
-            wheelchairCapacity: 2,
-            audioVisualAnnouncements: true,
-            lastInspected: "2026-09-05T11:00:00.000Z"
-        },
-        "unjha-itr": {
-            busNumber: "GJ-02-AZ-4516",
-            routeName: "Unjha - ITR Campus",
-            lowFloor: false,
-            wheelchairSpace: false,
-            rampAvailable: false,
-            accessibleBoarding: false,
-            wheelchairCapacity: 0,
-            audioVisualAnnouncements: false,
-            lastInspected: "2026-06-01T14:00:00.000Z" // Stale >90 days
-        },
-        "harij-itr": {
-            busNumber: "GJ-02-AZ-4517",
-            routeName: "Harij - ITR Campus",
-            lowFloor: true,
-            wheelchairSpace: true,
-            rampAvailable: false,
-            accessibleBoarding: true,
-            wheelchairCapacity: 1,
-            audioVisualAnnouncements: true,
-            lastInspected: "2026-08-10T12:00:00.000Z"
-        },
-        "radhanpur-itr": {
-            busNumber: "GJ-02-AZ-4518",
-            routeName: "Radhanpur - ITR Campus",
-            lowFloor: false,
-            wheelchairSpace: true,
-            rampAvailable: true,
-            accessibleBoarding: false,
-            wheelchairCapacity: 1,
-            audioVisualAnnouncements: false,
-            lastInspected: "2026-08-28T09:00:00.000Z"
-        },
-        "visnagar-itr": {
-            busNumber: "GJ-02-AZ-4519",
-            routeName: "Visnagar - ITR Campus",
-            lowFloor: true,
-            wheelchairSpace: true,
-            rampAvailable: true,
-            accessibleBoarding: true,
-            wheelchairCapacity: 2,
-            audioVisualAnnouncements: true,
-            lastInspected: "2026-09-08T15:00:00.000Z"
-        }
+        "panaji-donapaula": { busNumber: "KTCL-EV-Demo-06", lowFloor: true, wheelchairSpace: true, rampAvailable: true, accessibleBoarding: true, lastVerified: new Date().toISOString() },
+        "panaji-mapusa": { busNumber: "KTCL-Demo-01", lowFloor: false, wheelchairSpace: true, rampAvailable: true, accessibleBoarding: false, lastVerified: new Date().toISOString() },
+        "panaji-ponda": { busNumber: "KTCL-Demo-02", lowFloor: false, wheelchairSpace: false, rampAvailable: false, accessibleBoarding: false, lastVerified: new Date().toISOString() },
+        "panaji-margao": { busNumber: "KTCL-Demo-03", lowFloor: true, wheelchairSpace: true, rampAvailable: true, accessibleBoarding: true, lastVerified: new Date().toISOString() },
+        "panaji-vasco": { busNumber: "KTCL-Demo-04", lowFloor: false, wheelchairSpace: true, rampAvailable: true, accessibleBoarding: true, lastVerified: new Date().toISOString() },
+        "mopa-panaji": { busNumber: "KTCL-EV-Demo-05", lowFloor: true, wheelchairSpace: true, rampAvailable: true, accessibleBoarding: true, lastVerified: new Date().toISOString() }
     },
 
-    // Seed Stop Accessibility Profiles for Patan-ITR and key stops across network
-    SEED_STOP_PROFILES: {
-        "patan-itr-stop-1": {
-            compositeStopId: "patan-itr-stop-1",
-            routeId: "patan-itr",
-            stopId: 1,
-            stopName: "Patan Bus Stand",
-            stepFreeApproach: true,
-            rampAvailable: true,
-            clearBoardingArea: true,
-            tactilePath: true,
-            lastVerified: "2026-09-08T10:00:00.000Z"
-        },
-        "patan-itr-stop-2": {
-            compositeStopId: "patan-itr-stop-2",
-            routeId: "patan-itr",
-            stopId: 2,
-            stopName: "GIDC Char Rasta",
-            stepFreeApproach: true,
-            rampAvailable: false,
-            clearBoardingArea: true,
-            tactilePath: false,
-            lastVerified: "2026-09-02T14:30:00.000Z"
-        },
-        "patan-itr-stop-3": {
-            compositeStopId: "patan-itr-stop-3",
-            routeId: "patan-itr",
-            stopId: 3,
-            stopName: "Bagavada Darwaja",
-            stepFreeApproach: true,
-            rampAvailable: true,
-            clearBoardingArea: true,
-            tactilePath: true,
-            lastVerified: "2026-09-05T09:15:00.000Z"
-        },
-        "patan-itr-stop-4": {
-            compositeStopId: "patan-itr-stop-4",
-            routeId: "patan-itr",
-            stopId: 4,
-            stopName: "TB Hospital Circle",
-            stepFreeApproach: false,
-            rampAvailable: false,
-            clearBoardingArea: false,
-            tactilePath: false,
-            lastVerified: "2026-08-12T11:00:00.000Z"
-        },
-        "patan-itr-stop-5": {
-            compositeStopId: "patan-itr-stop-5",
-            routeId: "patan-itr",
-            stopId: 5,
-            stopName: "University Road Cross",
-            stepFreeApproach: true,
-            rampAvailable: true,
-            clearBoardingArea: true,
-            tactilePath: true,
-            lastVerified: "2026-09-01T16:00:00.000Z"
-        },
-        "patan-itr-stop-6": {
-            compositeStopId: "patan-itr-stop-6",
-            routeId: "patan-itr",
-            stopId: 6,
-            stopName: "Rani ki Vav Circle",
-            stepFreeApproach: true,
-            rampAvailable: true,
-            clearBoardingArea: true,
-            tactilePath: true,
-            lastVerified: "2026-09-07T10:30:00.000Z"
-        },
-        "patan-itr-stop-13": {
-            compositeStopId: "patan-itr-stop-13",
-            routeId: "patan-itr",
-            stopId: 13,
-            stopName: "ITR Campus Main Gate",
-            stepFreeApproach: true,
-            rampAvailable: true,
-            clearBoardingArea: true,
-            tactilePath: true,
-            lastVerified: "2026-09-10T12:00:00.000Z"
-        }
-    },
+    // Seed Stop Accessibility Profiles for Goa KTCL routes
+    SEED_STOP_PROFILES: (() => {
+        const routes = {
+            "panaji-donapaula": ["Panaji Bus Stand", "Patto Plaza", "Portais", "St. Cruz Church", "Goa Medical College (GMC)", "AIR Tower", "Goa University", "Dona Paula Circle"],
+            "panaji-mapusa": ["Panaji Bus Stand", "Mandovi Bridge", "Porvorim (Mall de Goa)", "Guirim Junction", "Mapusa KTC Bus Stand"],
+            "panaji-ponda": ["Panaji Bus Stand", "Ribandar", "Old Goa", "Banastarim", "Ponda KTC Bus Stand"],
+            "panaji-margao": ["Panaji Bus Stand", "GMC Bambolim", "Agassaim", "Cortalim Junction", "Verna Industrial Estate", "Margao KTC Bus Stand"],
+            "panaji-vasco": ["Panaji Bus Stand", "GMC Bambolim", "Agassaim", "Cortalim Junction", "Chicalim", "Vasco KTC Bus Stand"],
+            "mopa-panaji": ["Mopa Airport Terminal", "Dhargal Highway Hub", "Mapusa Bypass", "Porvorim Junction", "Panaji Bus Stand"]
+        };
+        const profiles = {};
+        Object.entries(routes).forEach(([routeId, stops]) => {
+            stops.forEach((stopName, index) => {
+                const stopId = index + 1;
+                const compositeStopId = `${routeId}-stop-${stopId}`;
+                profiles[compositeStopId] = {
+                    compositeStopId,
+                    routeId,
+                    stopId,
+                    stopName,
+                    stepFreeApproach: stopId !== 4,
+                    clearBoardingArea: stopId !== 3,
+                    rampAvailable: stopId === 1 || stopId === stops.length || stopId % 2 === 0,
+                    tactilePath: stopId === 1 || stopId === stops.length || stopId === 2,
+                    lastVerified: new Date().toISOString()
+                };
+            });
+        });
+        return profiles;
+    })(),
 
     // Default Barrier Reports
     SEED_BARRIERS: [
         {
             id: "bar-101",
-            compositeStopId: "patan-itr-stop-2",
-            routeId: "patan-itr",
-            stopId: 2,
-            stopName: "GIDC Char Rasta",
-            type: "obstructed_path",
+            compositeStopId: "panaji-donapaula-stop-5",
+            routeId: "panaji-donapaula",
+            stopId: 5,
+            stopName: "Goa Medical College (GMC)",
             severity: "moderate",
-            description: "Temporary roadwork debris blocking sidewalk tactile path near bus shelter.",
-            timestamp: "2026-09-11T09:15:00.000Z",
-            reportedBy: "Prototype community report",
+            description: "Tactile paving tiles damaged near GMC main entrance.",
+            timestamp: new Date().toISOString(),
             status: "active"
         },
         {
             id: "bar-102",
-            compositeStopId: "patan-itr-stop-4",
-            routeId: "patan-itr",
-            stopId: 4,
-            stopName: "TB Hospital Circle",
-            type: "unsafe_boarding",
+            compositeStopId: "panaji-donapaula-stop-2",
+            routeId: "panaji-donapaula",
+            stopId: 2,
+            stopName: "Patto Plaza",
+            severity: "minor",
+            description: "Temporary construction hoarding narrowing sidewalk ramp.",
+            timestamp: new Date().toISOString(),
+            status: "active"
+        },
+        {
+            id: "bar-103",
+            compositeStopId: "panaji-margao-stop-2",
+            routeId: "panaji-margao",
+            stopId: 2,
+            stopName: "GMC Bambolim",
             severity: "critical",
-            description: "High curb drop-off without curb ramp; severe puddle accumulation after rain.",
-            timestamp: "2026-09-10T16:45:00.000Z",
-            reportedBy: "Prototype community report",
+            description: "Wheelchair ramp broken at GMC highway bay; high curb block.",
+            timestamp: new Date().toISOString(),
             status: "active"
         }
     ],
 
-    // Initialize Seed Data into localStorage if absent
+    // Initialize Seed Data into localStorage
     init() {
-        const storedAccess = AppStorage.getSafestopAccessibility();
-        if (!storedAccess.buses || Object.keys(storedAccess.buses).length === 0) {
-            AppStorage.saveSafestopAccessibility({
-                buses: this.SEED_BUS_PROFILES,
-                stops: this.SEED_STOP_PROFILES
-            });
-        }
+        AppStorage.saveSafestopAccessibility({
+            buses: this.SEED_BUS_PROFILES,
+            stops: this.SEED_STOP_PROFILES
+        });
 
         const storedBarriers = AppStorage.getSafestopBarriers();
         if (!storedBarriers || storedBarriers.length === 0) {
@@ -236,7 +108,7 @@ const SafestopData = {
             return data.buses[routeId];
         }
         return this.SEED_BUS_PROFILES[routeId] || {
-            busNumber: busNumber || "GJ-XX-XXXX",
+            busNumber: busNumber || "KTCL-EV-Demo-06",
             routeName: routeId,
             lowFloor: null,
             wheelchairSpace: null,

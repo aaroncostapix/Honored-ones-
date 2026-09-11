@@ -25,6 +25,14 @@
     --info: #0284c7;
     --info-bg: #f0f9ff;
 
+    /* SAFESTOP Boarding Confidence Tokens */
+    --confidence-high: #10b981;
+    --confidence-high-bg: #ecfdf5;
+    --confidence-moderate: #f59e0b;
+    --confidence-moderate-bg: #fffbeb;
+    --confidence-low: #ef4444;
+    --confidence-low-bg: #fef2f2;
+
     /* Theme Neutral Scales (Light Mode Default) */
     --bg-base: #f8fafc;
     --bg-surface: #ffffff;

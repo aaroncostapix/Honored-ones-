@@ -1,0 +1,547 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SAFESTOP — Accessible Transit Assistant | GOA MOBILITY</title>
+    <meta name="description" content="SAFESTOP accessibility-focused transport portal providing real-time Boarding Confidence scores, vehicle accessibility features, and community barrier reports.">
+
+    <!-- CSS Stylesheets -->
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/dashboard.css">
+    <link rel="stylesheet" href="css/responsive.css">
+    <link rel="stylesheet" href="css/safestop.css">
+</head>
+<body>
+    <div class="app-container">
+        <!-- Sidebar Navigation -->
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <a href="index.html" class="brand-badge">
+                    <div class="brand-icon">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M8 6v6"></path><path d="M15 6v6"></path><path d="M2 12h19.6"></path><path d="M18 18h3s.5-1.7.8-2.8c.1-.4.2-.8.2-1.2 0-.4-.1-.8-.2-1.2l-.8-2.8H18"></path><path d="M4 18H2"></path><path d="m4 6 2-2h12l2 2"></path><circle cx="7" cy="18" r="2"></circle><circle cx="17" cy="18" r="2"></circle></svg>
+                    </div>
+                    <div class="brand-text">
+                        <span class="brand-title">GOA MOBILITY</span>
+                        <span class="brand-subtitle">GOA MOBILITY — SAFESTOP Accessible Transit Assistant</span>
+                    </div>
+                </a>
+            </div>
+
+            <nav class="sidebar-nav">
+                <div class="nav-section-title">Main Navigation</div>
+                <a href="index.html" class="nav-link">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="7" height="9" x="3" y="3" rx="1"></rect><rect width="7" height="5" x="14" y="3" rx="1"></rect><rect width="7" height="9" x="14" y="12" rx="1"></rect><rect width="7" height="5" x="3" y="16" rx="1"></rect></svg>
+                    <span>Dashboard</span>
+                </a>
+                <a href="safestop.html" class="nav-link active">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>
+                    <span>SAFESTOP</span>
+                    <span class="nav-badge" style="background: var(--accent); color: white;">ACCESS</span>
+                </a>
+                <a href="routes.html" class="nav-link">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="6" cy="19" r="3"></circle><path d="M9 19h8.5a3.5 3.5 0 0 0 0-7h-11a3.5 3.5 0 0 1 0-7H15"></path><circle cx="18" cy="5" r="3"></circle></svg>
+                    <span>Bus Routes</span>
+                </a>
+                <a href="timetable.html" class="nav-link">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
+                    <span>Timetable</span>
+                </a>
+                <a href="tracking.html" class="nav-link">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="3 11 22 2 13 21 11 13 3 11"></polygon></svg>
+                    <span>Live Tracking</span>
+                    <span class="nav-badge live-pulse">LIVE</span>
+                </a>
+                <a href="bus-pass.html" class="nav-link">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="18" height="13" x="3" y="6" rx="2"></rect><path d="M3 10h18"></path><circle cx="8" cy="14" r="1"></circle></svg>
+                    <span>Digital Pass</span>
+                </a>
+
+                <div class="nav-section-title" style="margin-top: 1.5rem;">Services & Drivers</div>
+                <a href="drivers.html" class="nav-link">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M22 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>
+                    <span>Driver Directory</span>
+                </a>
+                <a href="announcements.html" class="nav-link">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path><path d="M13.73 21a2 2 0 0 1-3.46 0"></path></svg>
+                    <span>Notices & Alerts</span>
+                </a>
+
+                <div class="nav-section-title" style="margin-top: 1.5rem;">User Account</div>
+                <a href="profile.html" class="nav-link">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><circle cx="12" cy="10" r="3"></circle><path d="M7 20.662V19a2 2 0 0 1 2-2h6a2 2 0 0 1 2 2v1.662"></path></svg>
+                    <span>Student Profile</span>
+                </a>
+                <a href="settings.html" class="nav-link">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.38a2 2 0 0 0-.73-2.73l-.15-.1a2 2 0 0 1-1-1.72v-.51a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z"></path><circle cx="12" cy="12" r="3"></circle></svg>
+                    <span>Settings</span>
+                </a>
+            </nav>
+        </aside>
+
+        <!-- Main Content Area -->
+        <div class="main-wrapper">
+            <!-- Top Header -->
+            <header class="top-header">
+                <div class="header-left">
+                    <button id="sidebarToggleBtn" class="icon-btn mobile-only" aria-label="Toggle Navigation">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="4" x2="20" y1="12" y2="12"></line><line x1="4" x2="20" y1="6" y2="6"></line><line x1="4" x2="20" y1="18" y2="18"></line></svg>
+                    </button>
+                    <div class="live-clock" id="liveClockDisplay">00:00:00 AM</div>
+                </div>
+
+                <div class="header-right">
+                    <button class="search-trigger-btn" id="openSearchModalBtn">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><path d="m21 21-4.3-4.3"></path></svg>
+                        <span>Search routes, stops...</span>
+                        <kbd>Ctrl+K</kbd>
+                    </button>
+
+                    <button class="sos-trigger-btn" id="sosEmergencyBtn" title="Emergency Assistance">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 9v4"></path><path d="M12 17h.01"></path><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z"></path></svg>
+                        <span>SOS</span>
+                    </button>
+
+                    <button class="icon-btn theme-toggle-btn" id="themeToggleBtn" aria-label="Toggle Theme">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="sun-icon"><circle cx="12" cy="12" r="4"></circle><path d="M12 2v2"></path><path d="M12 20v2"></path><path d="m4.93 4.93 1.41 1.41"></path><path d="m17.66 17.66 1.41 1.41"></path><path d="M2 12h2"></path><path d="M20 12h2"></path><path d="m6.34 17.66-1.41 1.41"></path><path d="m19.07 4.93-1.41 1.41"></path></svg>
+                    </button>
+
+                    <div class="user-profile-summary" id="headerProfileSummary">
+                        <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=100&auto=format&fit=crop&q=80" alt="Student Profile" class="avatar-img" id="headerAvatar">
+                        <div class="user-details">
+                            <span class="user-name" id="headerUserName">Preyal Modi</span>
+                            <span class="user-role" id="headerUserRole">CE Student</span>
+                        </div>
+                    </div>
+                </div>
+            </header>
+
+            <!-- Main Content Container -->
+            <main class="main-content">
+                <div class="content-header">
+                    <div>
+                        <h1 class="page-title">SAFESTOP Accessibility Portal</h1>
+                        <p class="page-description">Real-time transparent Boarding Confidence scoring, vehicle accessibility features, and community barrier reports.</p>
+                    </div>
+                    <button class="btn btn-primary" id="openReportBarrierModalBtn">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14"></path><path d="M5 12h14"></path></svg>
+                        <span>Report Barrier</span>
+                    </button>
+                </div>
+
+                <!-- Route & Stop Selection Bar -->
+                <div class="card" style="margin-bottom: 1.5rem; padding: 1.25rem;">
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+                        <div>
+                            <label for="safestopRouteSelect" style="display: block; font-weight: 600; margin-bottom: 0.5rem; font-size: 0.9rem;">Select Transit Route:</label>
+                            <select id="safestopRouteSelect" class="form-control" style="width: 100%; padding: 0.6rem 0.8rem; border-radius: 8px; border: 1px solid var(--border-color); background: var(--bg-surface); color: var(--text-main); font-weight: 600;">
+                                <option value="panaji-donapaula" selected>Route 447: Panaji → Dona Paula (Smart City EV)</option>
+                                <option value="panaji-mapusa">Route 655: Panaji → Mapusa</option>
+                                <option value="panaji-ponda">Route 356: Panaji → Ponda (via Old Goa)</option>
+                                <option value="panaji-margao">Route 356M: Panaji → Margao</option>
+                                <option value="panaji-vasco">Route 374: Panaji → Vasco (via Cortalim)</option>
+                                <option value="mopa-panaji">KTCL-EV: Mopa Airport → Panaji Express</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label for="safestopStopSelect" style="display: block; font-weight: 600; margin-bottom: 0.5rem; font-size: 0.9rem;">Select Boarding Stop:</label>
+                            <select id="safestopStopSelect" class="form-control" style="width: 100%; padding: 0.6rem 0.8rem; border-radius: 8px; border: 1px solid var(--border-color); background: var(--bg-surface); color: var(--text-main); font-weight: 600;">
+                                <!-- Dynamically Populated -->
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Hero Grid: Confidence Meter + Features -->
+                <div class="safestop-hero-grid">
+                    <!-- Boarding Confidence Meter Card -->
+                    <div class="confidence-meter-card" id="confidenceMeterCard">
+                        <span style="font-size: 0.85rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; color: var(--text-muted);">Boarding Confidence Evaluation</span>
+
+                        <div class="confidence-gauge-wrapper">
+                            <svg class="confidence-gauge-svg" viewBox="0 0 160 160">
+                                <circle class="confidence-gauge-bg" cx="80" cy="80" r="70"></circle>
+                                <circle class="confidence-gauge-fill" id="confidenceGaugeFill" cx="80" cy="80" r="70"></circle>
+                            </svg>
+                            <div class="confidence-score-display">
+                                <span class="confidence-score-value" id="confidenceScoreVal">85</span>
+                                <span class="confidence-score-max">/ 100</span>
+                            </div>
+                        </div>
+
+                        <div class="confidence-badge-pill confidence-pill-high" id="confidenceLevelPill">
+                            <span id="confidenceLevelText">HIGH CONFIDENCE</span>
+                        </div>
+
+                        <p style="font-size: 0.85rem; color: var(--text-muted); margin-top: 0.75rem; line-height: 1.4;" id="confidenceSummaryText"></p>
+
+                        <div id="confidenceAlerts" role="alert" aria-live="polite" style="display: none; margin-top: 0.75rem; padding: 0.75rem; border-radius: 8px; background: var(--bg-muted); color: var(--text-main); font-size: 0.85rem; line-height: 1.4;"></div>
+
+                        <!-- Score Factor Breakdown List -->
+                        <div class="score-factor-list">
+                            <div class="score-factor-item">
+                                <span class="score-factor-label">Bus Features Sub-Score</span>
+                                <span class="score-factor-value" id="busSubScoreVal"></span>
+                            </div>
+                            <div class="score-factor-item">
+                                <span class="score-factor-label">Stop Features Sub-Score</span>
+                                <span class="score-factor-value" id="stopSubScoreVal"></span>
+                            </div>
+                            <div class="score-factor-item">
+                                <span class="score-factor-label">Verification Freshness</span>
+                                <span class="score-factor-value" id="freshnessSubScoreVal"></span>
+                            </div>
+                            <div class="score-factor-item" style="color: var(--confidence-low);">
+                                <span class="score-factor-label">Active Barriers Penalty</span>
+                                <span class="score-factor-value" id="barrierPenaltyVal">0 pts</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Accessibility Checklists Card -->
+                    <div class="feature-card-grid" style="grid-template-columns: 1fr;">
+                        <!-- Vehicle Profile Card -->
+                        <div class="accessibility-profile-card">
+                            <div class="profile-card-header">
+                                <span class="profile-card-title">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 6v6"></path><path d="M15 6v6"></path><path d="M2 12h19.6"></path><path d="M18 18h3s.5-1.7.8-2.8c.1-.4.2-.8.2-1.2 0-.4-.1-.8-.2-1.2l-.8-2.8H18"></path><circle cx="7" cy="18" r="2"></circle><circle cx="17" cy="18" r="2"></circle></svg>
+                                    Vehicle Profile (<span id="busPlateDisplay">KTCL-EV-Demo-06</span>)
+                                </span>
+                            </div>
+                            <div class="feature-checklist" id="busFeatureList">
+                                <!-- Dynamically Rendered -->
+                            </div>
+                        </div>
+
+                        <!-- Stop Profile Card -->
+                        <div class="accessibility-profile-card">
+                            <div class="profile-card-header">
+                                <span class="profile-card-title">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"></path><circle cx="12" cy="10" r="3"></circle></svg>
+                                    Stop Infrastructure (<span id="stopNameDisplay">Panaji Bus Stand</span>)
+                                </span>
+                                <span style="font-size: 0.75rem; color: var(--text-muted);" id="stopVerifiedDate">Verified: 2026-09-08</span>
+                            </div>
+                            <div class="feature-checklist" id="stopFeatureList">
+                                <!-- Dynamically Rendered -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Active Barriers Section -->
+                <div class="barriers-section">
+                    <div class="barriers-header">
+                        <div>
+                            <h2 style="font-size: 1.25rem; font-weight: 700; margin: 0;">Active Barrier Reports</h2>
+                            <p style="font-size: 0.85rem; color: var(--text-muted); margin-top: 0.25rem;">Community reports affecting boarding safety at this stop.</p>
+                        </div>
+                    </div>
+                    <div class="barrier-feed-list" id="barrierFeedList">
+                        <!-- Dynamically Rendered -->
+                    </div>
+                </div>
+            </main>
+        </div>
+    </div>
+
+    <!-- Report Barrier Modal -->
+    <div class="modal-backdrop" id="barrierReportModal" style="display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.5); z-index: 9999; align-items: center; justify-content: center;">
+        <div class="modal-card" style="background: var(--bg-surface); padding: 2rem; border-radius: 16px; width: 100%; max-width: 500px; box-shadow: var(--shadow-lg);">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;">
+                <h3 style="margin: 0; font-size: 1.25rem;">Report Accessibility Barrier</h3>
+                <button id="closeBarrierModalBtn" style="background: none; border: none; font-size: 1.5rem; cursor: pointer; color: var(--text-muted);">&times;</button>
+            </div>
+            <form id="barrierReportForm">
+                <div style="margin-bottom: 1rem;">
+                    <label style="display: block; font-weight: 600; margin-bottom: 0.35rem; font-size: 0.875rem;">Barrier Type:</label>
+                    <select id="barrierTypeSelect" class="form-control" style="width: 100%; padding: 0.6rem; border-radius: 8px; border: 1px solid var(--border-color); background: var(--bg-base); color: var(--text-main);" required>
+                        <option value="blocked_ramp">Blocked Boarding Ramp</option>
+                        <option value="obstructed_path">Obstructed Approach Path</option>
+                        <option value="unsafe_boarding">Unsafe Boarding Area / Slope</option>
+                        <option value="broken_surface">Broken Paving / High Curb</option>
+                        <option value="lift_unavailable">Vehicle Lift Malfunction</option>
+                        <option value="other">Other Accessibility Issue</option>
+                    </select>
+                </div>
+                <div style="margin-bottom: 1rem;">
+                    <label style="display: block; font-weight: 600; margin-bottom: 0.35rem; font-size: 0.875rem;">Severity Level:</label>
+                    <select id="barrierSeveritySelect" class="form-control" style="width: 100%; padding: 0.6rem; border-radius: 8px; border: 1px solid var(--border-color); background: var(--bg-base); color: var(--text-main);" required>
+                        <option value="critical">Critical (Forces LOW Confidence) - Completely prevents boarding</option>
+                        <option value="moderate" selected>Moderate (-15 pts) - Requires significant assistance</option>
+                        <option value="minor">Minor (-5 pts) - Slight inconvenience</option>
+                    </select>
+                </div>
+                <div style="margin-bottom: 1.5rem;">
+                    <label style="display: block; font-weight: 600; margin-bottom: 0.35rem; font-size: 0.875rem;">Description:</label>
+                    <textarea id="barrierDescription" class="form-control" rows="3" style="width: 100%; padding: 0.6rem; border-radius: 8px; border: 1px solid var(--border-color); background: var(--bg-base); color: var(--text-main);" placeholder="Describe the obstruction or hazard..." required></textarea>
+                </div>
+                <div style="display: flex; justify-content: flex-end; gap: 0.75rem;">
+                    <button type="button" class="btn btn-secondary" id="cancelBarrierReportBtn">Cancel</button>
+                    <button type="submit" class="btn btn-primary">Submit Report</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="js/storage.js"></script>
+    <script src="js/safestop-data.js"></script>
+    <script src="js/safestop.js"></script>
+    <script src="js/audio.js"></script>
+    <script src="js/app.js"></script>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const routeSelect = document.getElementById('safestopRouteSelect');
+            const stopSelect = document.getElementById('safestopStopSelect');
+            const routes = AppStorage.getRoutes();
+
+            // Populate Routes Dropdown
+            routes.forEach(r => {
+                const opt = document.createElement('option');
+                opt.value = r.id;
+                opt.textContent = `${r.name} (${r.code})`;
+                routeSelect.appendChild(opt);
+            });
+
+            // Populate Stops based on selected route
+            function updateStopsDropdown() {
+                const routeId = routeSelect.value;
+                const route = routes.find(r => r.id === routeId);
+                stopSelect.innerHTML = '';
+                if (route && route.stops) {
+                    route.stops.forEach(s => {
+                        const opt = document.createElement('option');
+                        opt.value = s.id;
+                        opt.textContent = `Stop #${s.id}: ${s.name} (${s.time})`;
+                        stopSelect.appendChild(opt);
+                    });
+                }
+                updateSafestopDisplay();
+            }
+
+            routeSelect.addEventListener('change', updateStopsDropdown);
+            stopSelect.addEventListener('change', updateSafestopDisplay);
+
+            updateStopsDropdown();
+
+            // Update main SAFESTOP Display
+            function updateSafestopDisplay() {
+                const routeId = routeSelect.value;
+                const stopId = parseInt(stopSelect.value, 10);
+                const route = routes.find(r => r.id === routeId);
+                if (!route) return;
+
+                const stop = route.stops.find(s => s.id === stopId);
+                if (!stop) return;
+
+                const busProfile = SafestopData.getBusProfile(routeId, route.busNumber);
+                const stopProfile = SafestopData.getStopProfile(routeId, stopId, stop.name);
+                const compositeId = SafestopData.getCompositeStopId(routeId, stopId);
+                const activeBarriers = SafestopData.getActiveBarriersForStop(compositeId);
+
+                // Compute Score
+                const evalResult = SafestopEngine.calculateConfidence({
+                    busProfile,
+                    stopProfile,
+                    activeBarriers
+                });
+
+                const renderFeatureStatus = (value, availableText, unavailableText) => {
+                    if (value === true) {
+                        return { className: 'status-active', style: '', text: `✓ ${availableText}` };
+                    }
+                    if (value === false) {
+                        return { className: 'status-missing', style: '', text: `✗ ${unavailableText}` };
+                    }
+                    return {
+                        className: 'status-unknown',
+                        style: 'style="background: var(--bg-muted); color: var(--text-muted);"',
+                        text: '? Unknown / Unverified'
+                    };
+                };
+
+                // Render Gauge Score
+                document.getElementById('confidenceScoreVal').textContent = evalResult.score;
+                const fillCircle = document.getElementById('confidenceGaugeFill');
+                const circumference = 440;
+                const offset = circumference - (evalResult.score / 100) * circumference;
+                fillCircle.style.strokeDashoffset = offset;
+                fillCircle.style.stroke = evalResult.levelMeta.color;
+
+                // Render Level Pill
+                const pill = document.getElementById('confidenceLevelPill');
+                pill.className = `confidence-badge-pill ${evalResult.levelMeta.class}`;
+                document.getElementById('confidenceLevelText').textContent = `${evalResult.level} CONFIDENCE`;
+
+                const summaryLimitations = [];
+                const addFeatureLimitations = (profile, features, profileName) => {
+                    if (!profile) {
+                        summaryLimitations.push(`${profileName} accessibility information is unavailable`);
+                        return;
+                    }
+                    features.forEach(({ field, missing, unknown }) => {
+                        if (profile[field] === false) summaryLimitations.push(missing);
+                        else if (profile[field] !== true) summaryLimitations.push(unknown);
+                    });
+                };
+                if (evalResult.breakdown.barrierPenalty > 0) {
+                    summaryLimitations.push('active barrier penalties apply');
+                }
+                addFeatureLimitations(busProfile, [
+                    { field: 'lowFloor', missing: 'the bus requires step-entry boarding assistance', unknown: 'step-free bus access is unverified' },
+                    { field: 'wheelchairSpace', missing: 'wheelchair-bay availability is missing', unknown: 'wheelchair-bay availability is unverified' },
+                    { field: 'rampAvailable', missing: 'a boarding ramp is missing', unknown: 'boarding-ramp availability is unverified' },
+                    { field: 'accessibleBoarding', missing: 'accessible boarding support is missing', unknown: 'accessible boarding support is unverified' }
+                ], 'Bus');
+                addFeatureLimitations(stopProfile, [
+                    { field: 'stepFreeApproach', missing: 'the stop approach is not step-free', unknown: 'the stop’s step-free approach is unverified' },
+                    { field: 'rampAvailable', missing: 'the stop ramp is missing', unknown: 'the stop ramp is unverified' },
+                    { field: 'clearBoardingArea', missing: 'the clear boarding area is missing', unknown: 'the clear boarding area is unverified' },
+                    { field: 'tactilePath', missing: 'tactile guidance is missing', unknown: 'tactile guidance is unverified' }
+                ], 'Stop');
+                if (evalResult.isStale) summaryLimitations.push('verification is stale');
+                else if (evalResult.breakdown.freshnessScore === 0) summaryLimitations.push('verification freshness is unverified');
+
+                const confidenceSummary = document.getElementById('confidenceSummaryText');
+                if (evalResult.criticalBarrierOverride) {
+                    confidenceSummary.textContent = 'LOW confidence: A critical active barrier forces LOW boarding confidence for this stop.';
+                } else if (evalResult.level === 'LOW') {
+                    confidenceSummary.textContent = `LOW confidence because ${summaryLimitations.join('; ')}.`;
+                } else if (evalResult.level === 'MODERATE') {
+                    confidenceSummary.textContent = `MODERATE confidence: ${summaryLimitations.join('; ')} limits independent boarding confidence.`;
+                } else {
+                    confidenceSummary.textContent = 'HIGH confidence for independent boarding based on verified bus accessibility, accessible stop features, and recent verification.';
+                }
+
+                // Sub-scores
+                document.getElementById('busSubScoreVal').textContent = `${evalResult.breakdown.busScore} / 35 pts`;
+                document.getElementById('stopSubScoreVal').textContent = `${evalResult.breakdown.stopScore} / 35 pts`;
+                document.getElementById('freshnessSubScoreVal').textContent = `${evalResult.breakdown.freshnessScore} / 30 pts`;
+                document.getElementById('barrierPenaltyVal').textContent = `-${evalResult.breakdown.barrierPenalty} pts`;
+
+                // Explain any evidence limitations, score caps, and critical overrides.
+                const alertMessages = [];
+                if (evalResult.criticalBarrierOverride) {
+                    alertMessages.push('Critical active barrier forces LOW boarding confidence.');
+                }
+                if (Array.isArray(evalResult.warnings)) alertMessages.push(...evalResult.warnings);
+                const limitations = evalResult.limitations || evalResult.breakdown.limitations;
+                if (Array.isArray(limitations)) alertMessages.push(...limitations);
+                const caps = evalResult.caps || evalResult.breakdown.caps;
+                if (Array.isArray(caps)) {
+                    caps.forEach(cap => {
+                        alertMessages.push(`${cap.reason}: confidence is capped at ${cap.maxScore}.`);
+                    });
+                }
+                const uniqueAlerts = [...new Set(alertMessages)];
+                const confidenceAlerts = document.getElementById('confidenceAlerts');
+                confidenceAlerts.style.display = uniqueAlerts.length ? 'block' : 'none';
+                confidenceAlerts.textContent = uniqueAlerts.length ? `⚠️ ${uniqueAlerts.join(' • ')}` : '';
+
+                // Header Profile Cards
+                document.getElementById('busPlateDisplay').textContent = busProfile.busNumber;
+                document.getElementById('stopNameDisplay').textContent = stopProfile.stopName;
+                document.getElementById('stopVerifiedDate').textContent = stopProfile.lastVerified ? `Verified: ${stopProfile.lastVerified.split('T')[0]}` : 'Unverified';
+
+                // Render Bus Features
+                const busList = document.getElementById('busFeatureList');
+                const featureItem = (label, status) => `
+                    <div class="feature-item">
+                        <span>${label}</span>
+                        <span class="feature-item-status ${status.className}" ${status.style}>${status.text}</span>
+                    </div>
+                `;
+                busList.innerHTML = `
+                    ${featureItem('Low-Floor Step-Free Entry', renderFeatureStatus(busProfile.lowFloor, 'Step-Free', 'Step Required'))}
+                    ${featureItem('Wheelchair Bay Space', renderFeatureStatus(busProfile.wheelchairSpace, 'Available', 'Not Available'))}
+                    ${featureItem('Boarding Ramp', renderFeatureStatus(busProfile.rampAvailable, 'Present', 'Absent'))}
+                    ${featureItem('Audio/Visual Announcements', renderFeatureStatus(busProfile.accessibleBoarding, 'Available', 'Not Available'))}
+                `;
+
+                // Render Stop Features
+                const stopList = document.getElementById('stopFeatureList');
+                stopList.innerHTML = `
+                    ${featureItem('Step-Free Approach Path', renderFeatureStatus(stopProfile.stepFreeApproach, 'Step-Free', 'Step Required'))}
+                    ${featureItem('Platform Ramp', renderFeatureStatus(stopProfile.rampAvailable, 'Installed', 'Missing'))}
+                    ${featureItem('Clear 1.5m Boarding Zone', renderFeatureStatus(stopProfile.clearBoardingArea, 'Available', 'Not Available'))}
+                    ${featureItem('Tactile Ground Indicators', renderFeatureStatus(stopProfile.tactilePath, 'Installed', 'Missing'))}
+                `;
+
+                // Render Barrier Feed
+                const barrierFeed = document.getElementById('barrierFeedList');
+                if (activeBarriers.length === 0) {
+                    barrierFeed.innerHTML = `
+                        <div style="text-align: center; padding: 1.5rem; color: var(--text-muted); font-size: 0.9rem;">
+                            ✓ No active physical barriers reported at this stop.
+                        </div>
+                    `;
+                } else {
+                    barrierFeed.innerHTML = activeBarriers.map(b => `
+                        <div class="barrier-card severity-${b.severity}">
+                            <div class="barrier-icon">⚠️</div>
+                            <div class="barrier-content">
+                                <div style="display: flex; justify-content: space-between; align-items: center;">
+                                    <strong style="font-size: 0.95rem;">${b.type.replace('_', ' ').toUpperCase()}</strong>
+                                    <span class="barrier-severity-badge badge-${b.severity}">${b.severity}</span>
+                                </div>
+                                <p style="margin: 0.35rem 0 0 0; font-size: 0.875rem;">${b.description}</p>
+                                <div class="barrier-meta">
+                                    <span>Reported by: ${b.reportedBy}</span>
+                                    <span>•</span>
+                                    <span>${new Date(b.timestamp).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})}</span>
+                                </div>
+                            </div>
+                        </div>
+                    `).join('');
+                }
+            }
+
+            // Modal Form Management
+            const modal = document.getElementById('barrierReportModal');
+            document.getElementById('openReportBarrierModalBtn').addEventListener('click', () => {
+                modal.style.display = 'flex';
+            });
+            document.getElementById('closeBarrierModalBtn').addEventListener('click', () => {
+                modal.style.display = 'none';
+            });
+            document.getElementById('cancelBarrierReportBtn').addEventListener('click', () => {
+                modal.style.display = 'none';
+            });
+
+            document.getElementById('barrierReportForm').addEventListener('submit', (e) => {
+                e.preventDefault();
+                const routeId = routeSelect.value;
+                const stopId = parseInt(stopSelect.value, 10);
+                const route = routes.find(r => r.id === routeId);
+                const stop = route.stops.find(s => s.id === stopId);
+                const compositeId = SafestopData.getCompositeStopId(routeId, stopId);
+
+                const newBarrier = {
+                    id: `bar-${Date.now()}`,
+                    compositeStopId: compositeId,
+                    routeId: routeId,
+                    stopId: stopId,
+                    stopName: stop.name,
+                    type: document.getElementById('barrierTypeSelect').value,
+                    severity: document.getElementById('barrierSeveritySelect').value,
+                    description: document.getElementById('barrierDescription').value,
+                    timestamp: new Date().toISOString(),
+                    reportedBy: 'Student #' + Math.floor(1000 + Math.random() * 9000),
+                    status: 'active'
+                };
+
+                AppStorage.addSafestopBarrier(newBarrier);
+                modal.style.display = 'none';
+                document.getElementById('barrierDescription').value = '';
+
+                if (typeof showToast === 'function') {
+                    showToast('Accessibility barrier report submitted successfully!', 'success');
+                }
+                updateSafestopDisplay();
+            });
+        });
+    </script>
+</body>
+</html>

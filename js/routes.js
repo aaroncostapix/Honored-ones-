@@ -33,7 +33,12 @@ function initRoutesPage() {
                 <div class="card-body" style="padding: 1.6rem;">
                     <div style="display: flex; align-items: flex-start; justify-content: space-between; margin-bottom: 1.2rem;">
                         <div>
-                            <span class="badge badge-primary" style="margin-bottom: 0.4rem;">${route.code}</span>
+                            <div style="display: flex; gap: 0.4rem; align-items: center; margin-bottom: 0.4rem;">
+                                <span class="badge badge-primary">${route.code}</span>
+                                ${typeof SafestopData !== 'undefined' && SafestopData.getBusProfile(route.id, route.busNumber).lowFloor
+                                    ? '<span class="badge badge-success" style="font-size: 0.7rem; background: var(--confidence-high-bg); color: var(--confidence-high); border: 1px solid var(--confidence-high);">♿ Low Floor</span>'
+                                    : '<span class="badge" style="font-size: 0.7rem; background: var(--bg-muted); color: var(--text-muted);">Step Entry</span>'}
+                            </div>
                             <h2 style="font-size: 1.35rem; font-weight: 800; color: var(--text-main); letter-spacing: -0.02em;">${route.name}</h2>
                         </div>
                         <span class="badge badge-success">

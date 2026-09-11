@@ -18,7 +18,7 @@ function initTimetablePage() {
 
     // Parse URL params for pre-selection
     const urlParams = new URLSearchParams(window.location.search);
-    const preselectedRouteId = urlParams.get('route') || 'patan-itr';
+    const preselectedRouteId = urlParams.get('route') || 'panaji-donapaula';
     const preselectedStop = urlParams.get('stop') || '';
 
     // Populate route selector
@@ -40,7 +40,7 @@ function initTimetablePage() {
     }
 
     function renderTimetable() {
-        const activeRouteId = routeSelect ? routeSelect.value : 'patan-itr';
+        const activeRouteId = routeSelect ? routeSelect.value : 'panaji-donapaula';
         const route = AppStorage.getRouteById(activeRouteId);
         const searchQuery = (searchStopInput ? searchStopInput.value : '').toLowerCase().trim();
         const activeTimeFilter = timeFilter ? timeFilter.value : 'all';
@@ -107,9 +107,9 @@ function initTimetablePage() {
             return;
         }
 
-        // Determine "Upcoming / Next" stop simulation (defaults to stop #5 Chanasma or based on current simulated progress)
+        // Determine "Upcoming / Next" stop simulation (defaults to stop #5 Patto Plaza or based on current simulated progress)
         const activeSim = AppStorage.getSimulationState() || { currentStopIndex: 4 };
-        const highlightStopIndex = activeSim.currentStopIndex || 4; // default Chanasma / Lanva
+        const highlightStopIndex = activeSim.currentStopIndex || 4; // default Patto Plaza / Portais
 
         tableBody.innerHTML = filteredStops.map((stop, idx) => {
             const originalIndex = route.stops.findIndex(s => s.id === stop.id);
@@ -127,6 +127,16 @@ function initTimetablePage() {
                 statusBadge = `<span class="badge badge-success" style="font-size: 0.72rem;">Passed</span>`;
             } else if (isDestination) {
                 statusBadge = `<span class="badge badge-primary" style="font-size: 0.72rem;">Destination</span>`;
+            }
+
+            let confidencePill = `<span class="badge" style="font-size: 0.72rem; background: var(--bg-muted); color: var(--text-muted);">Unverified</span>`;
+            if (typeof SafestopData !== 'undefined' && typeof SafestopEngine !== 'undefined') {
+                const busProfile = SafestopData.getBusProfile(route.id, route.busNumber);
+                const stopProfile = SafestopData.getStopProfile(route.id, stop.id, stop.name);
+                const compositeId = SafestopData.getCompositeStopId(route.id, stop.id);
+                const activeBarriers = SafestopData.getActiveBarriersForStop(compositeId);
+                const evalRes = SafestopEngine.calculateConfidence({ busProfile, stopProfile, activeBarriers });
+                confidencePill = `<span class="confidence-badge-pill ${evalRes.levelMeta.class}" style="font-size:0.7rem; padding: 0.2rem 0.5rem;">${evalRes.score}/100 (${evalRes.level})</span>`;
             }
 
             return `
@@ -150,6 +160,9 @@ function initTimetablePage() {
                     </td>
                     <td data-label="Distance" style="font-family: var(--font-mono); font-size: 0.84rem; color: var(--text-muted);">
                         ${stop.distanceKm} km
+                    </td>
+                    <td data-label="SAFESTOP Confidence">
+                        ${confidencePill}
                     </td>
                     <td data-label="Status">
                         ${statusBadge}

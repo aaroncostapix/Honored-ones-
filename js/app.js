@@ -95,7 +95,7 @@ function initSosEmergencySystem() {
                             </div>
                             <div>
                                 <h3 style="color: #ef4444; font-size: 1.2rem; font-weight: 800;">Emergency Safety SOS</h3>
-                                <div style="font-size: 0.78rem; color: var(--text-muted);">24x7 ITR Transit Security Command Center</div>
+                                <div style="font-size: 0.78rem; color: var(--text-muted);">24x7 Goa Mobility Transit Command Center</div>
                             </div>
                         </div>
                         <button class="btn-sm btn-secondary" onclick="document.getElementById('sosEmergencyModal').classList.remove('active')">✕</button>
@@ -124,7 +124,7 @@ function initSosEmergencySystem() {
                         </div>
 
                         <div style="padding: 0.75rem; border-radius: var(--radius-md); background: var(--bg-muted); font-size: 0.82rem; color: var(--text-muted);">
-                            <strong>Student:</strong> Preyal Modi | <strong>Route:</strong> Patan → ITR (GJ-02-AZ-4512)
+                            <strong>Student:</strong> Preyal Modi | <strong>Route:</strong> Panaji → Dona Paula (KTCL-EV-Demo-06)
                         </div>
                     </div>
                 </div>
@@ -168,7 +168,7 @@ function initSeatHeatmapModal() {
                     <div style="padding: 1.5rem;">
                         <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem; flex-wrap: wrap; gap: 0.5rem;">
                             <div>
-                                <strong style="font-size: 1.1rem; color: var(--text-main);">Bus #GJ-02-AZ-4512 (Patan Route)</strong>
+                                <strong style="font-size: 1.1rem; color: var(--text-main);">Bus #KTCL-EV-Demo-06 (Panaji - Dona Paula)</strong>
                                 <div style="font-size: 0.8rem; color: var(--text-muted);">Capacity: 54 Seats | <strong>48 Occupied</strong> | <span style="color:#10b981; font-weight:700;">6 Available</span></div>
                             </div>
                             <div style="display: flex; gap: 0.75rem; font-size: 0.75rem;">
