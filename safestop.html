@@ -152,6 +152,13 @@
                     </div>
                 </div>
 
+                <!-- Accessible Alternate Stop Recommendation Card -->
+                <div id="safestopAlternateCard" class="card" style="display: none; margin-bottom: 1.5rem; border-left: 4px solid var(--accent); padding: 1.25rem;">
+                    <div id="safestopAlternateContent">
+                        <!-- Dynamically Rendered -->
+                    </div>
+                </div>
+
                 <!-- Hero Grid: Confidence Meter + Features -->
                 <div class="safestop-hero-grid">
                     <!-- Boarding Confidence Meter Card -->
@@ -451,6 +458,108 @@
                 const confidenceAlerts = document.getElementById('confidenceAlerts');
                 confidenceAlerts.style.display = uniqueAlerts.length ? 'block' : 'none';
                 confidenceAlerts.textContent = uniqueAlerts.length ? `⚠️ ${uniqueAlerts.join(' • ')}` : '';
+
+                // Accessible Alternate Stop Recommendation Logic
+                const alternateCard = document.getElementById('safestopAlternateCard');
+                const alternateContent = document.getElementById('safestopAlternateContent');
+
+                if (evalResult.level === 'HIGH') {
+                    if (alternateCard) alternateCard.style.display = 'none';
+                } else {
+                    const candidateStops = route.stops.filter(s => s.id !== stopId);
+                    const evaluatedCandidates = candidateStops.map(candStop => {
+                        const candBusProfile = SafestopData.getBusProfile(routeId, route.busNumber);
+                        const candStopProfile = SafestopData.getStopProfile(routeId, candStop.id, candStop.name);
+                        const candCompositeId = SafestopData.getCompositeStopId(routeId, candStop.id);
+                        const candActiveBarriers = SafestopData.getActiveBarriersForStop(candCompositeId);
+
+                        const candEval = SafestopEngine.calculateConfidence({
+                            busProfile: candBusProfile,
+                            stopProfile: candStopProfile,
+                            activeBarriers: candActiveBarriers
+                        });
+
+                        const currentDist = stop.distanceKm !== undefined ? stop.distanceKm : 0;
+                        const candDist = candStop.distanceKm !== undefined ? candStop.distanceKm : 0;
+                        const distDelta = Math.abs(candDist - currentDist);
+
+                        return {
+                            stop: candStop,
+                            eval: candEval,
+                            distDelta: distDelta,
+                            hasCritical: candEval.criticalBarrierOverride
+                        };
+                    });
+
+                    const levelRank = { 'HIGH': 3, 'MODERATE': 2, 'LOW': 1 };
+                    evaluatedCandidates.sort((a, b) => {
+                        if (a.hasCritical !== b.hasCritical) return a.hasCritical ? 1 : -1;
+                        if (levelRank[b.eval.level] !== levelRank[a.eval.level]) {
+                            return levelRank[b.eval.level] - levelRank[a.eval.level];
+                        }
+                        if (b.eval.score !== a.eval.score) return b.eval.score - a.eval.score;
+                        return a.distDelta - b.distDelta;
+                    });
+
+                    const best = evaluatedCandidates.length > 0 ? evaluatedCandidates[0] : null;
+
+                    if (alternateCard && alternateContent) {
+                        if (best && best.eval.score > 0) {
+                            alternateCard.style.display = 'block';
+                            const distText = best.stop.distanceKm !== undefined ? `${best.distDelta.toFixed(1)} km away` : 'On same route';
+                            alternateContent.innerHTML = `
+                                <div style="display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 1rem;">
+                                    <div style="flex: 1; min-width: 250px;">
+                                        <div style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.35rem;">
+                                            <span style="font-size: 1rem;">💡</span>
+                                            <strong style="font-size: 0.95rem; text-transform: uppercase; letter-spacing: 0.05em; color: var(--accent);">Recommended Accessible Alternate</strong>
+                                        </div>
+                                        <div style="font-size: 1.1rem; font-weight: 700; color: var(--text-main);">
+                                            ${best.stop.name} <span style="font-size: 0.85rem; font-weight: 500; color: var(--text-muted);">(${distText})</span>
+                                        </div>
+                                        <p style="font-size: 0.825rem; color: var(--text-muted); margin: 0.25rem 0 0 0;">
+                                            Recommended based on available prototype accessibility data.
+                                        </p>
+                                    </div>
+                                    <div style="display: flex; align-items: center; gap: 1rem;">
+                                        <span class="confidence-badge-pill ${best.eval.levelMeta.class}" style="font-size: 0.8rem; padding: 0.35rem 0.85rem;">
+                                            ${best.eval.score}/100 (${best.eval.level})
+                                        </span>
+                                        <button type="button" id="switchToAlternateStopBtn" data-stop-id="${best.stop.id}" class="btn btn-sm btn-primary" style="font-weight: 700; padding: 0.45rem 0.9rem;">
+                                            Switch to this Stop &rarr;
+                                        </button>
+                                    </div>
+                                </div>
+                            `;
+
+                            const switchBtn = document.getElementById('switchToAlternateStopBtn');
+                            if (switchBtn) {
+                                switchBtn.addEventListener('click', () => {
+                                    const newStopId = switchBtn.getAttribute('data-stop-id');
+                                    stopSelect.value = newStopId;
+
+                                    const url = new URL(window.location);
+                                    url.searchParams.set('route', routeSelect.value);
+                                    url.searchParams.set('stop', newStopId);
+                                    window.history.replaceState({}, '', url);
+
+                                    if (typeof showToast === 'function') {
+                                        showToast(`Switched to recommended accessible stop: ${best.stop.name}`, 'info');
+                                    }
+                                    updateSafestopDisplay();
+                                });
+                            }
+                        } else {
+                            alternateCard.style.display = 'block';
+                            alternateContent.innerHTML = `
+                                <div style="display: flex; align-items: center; gap: 0.5rem; color: var(--text-muted); font-size: 0.9rem;">
+                                    <span>⚠️</span>
+                                    <span>No verified accessible alternative found on this route.</span>
+                                </div>
+                            `;
+                        }
+                    }
+                }
 
                 // Header Profile Cards
                 document.getElementById('busPlateDisplay').textContent = busProfile.busNumber;
