@@ -499,14 +499,37 @@
                                     <span class="barrier-severity-badge badge-${b.severity}">${b.severity}</span>
                                 </div>
                                 <p style="margin: 0.35rem 0 0 0; font-size: 0.875rem;">${b.description}</p>
-                                <div class="barrier-meta">
-                                    <span>Reported by: ${b.reportedBy}</span>
-                                    <span>•</span>
-                                    <span>${new Date(b.timestamp).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})}</span>
+                                <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 0.5rem;">
+                                    <div class="barrier-meta">
+                                        <span>Reported by: ${b.reportedBy}</span>
+                                        <span>•</span>
+                                        <span>${new Date(b.timestamp).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})}</span>
+                                    </div>
+                                    <button type="button" class="btn btn-sm btn-secondary resolve-barrier-btn" data-barrier-id="${b.id}" style="font-size: 0.75rem; padding: 0.2rem 0.6rem;">
+                                        ✓ Mark Resolved
+                                    </button>
                                 </div>
                             </div>
                         </div>
                     `).join('');
+                }
+
+                // Event delegation for Mark Resolved buttons
+                if (barrierFeed && !barrierFeed.dataset.boundResolve) {
+                    barrierFeed.dataset.boundResolve = 'true';
+                    barrierFeed.addEventListener('click', (e) => {
+                        const btn = e.target.closest('.resolve-barrier-btn');
+                        if (btn) {
+                            const barrierId = btn.getAttribute('data-barrier-id');
+                            if (barrierId && typeof AppStorage !== 'undefined' && AppStorage.resolveSafestopBarrier) {
+                                AppStorage.resolveSafestopBarrier(barrierId);
+                                if (typeof showToast === 'function') {
+                                    showToast('Accessibility barrier marked as resolved!', 'success');
+                                }
+                                updateSafestopDisplay();
+                            }
+                        }
+                    });
                 }
             }
 
@@ -527,7 +550,8 @@
                 const routeId = routeSelect.value;
                 const stopId = parseInt(stopSelect.value, 10);
                 const route = routes.find(r => r.id === routeId);
-                const stop = route.stops.find(s => s.id === stopId);
+                const stop = route && route.stops ? route.stops.find(s => s.id === stopId) : null;
+                const stopName = stop ? stop.name : (`Stop #${stopId}`);
                 const compositeId = SafestopData.getCompositeStopId(routeId, stopId);
 
                 const newBarrier = {
@@ -535,7 +559,7 @@
                     compositeStopId: compositeId,
                     routeId: routeId,
                     stopId: stopId,
-                    stopName: stop.name,
+                    stopName: stopName,
                     type: document.getElementById('barrierTypeSelect').value,
                     severity: document.getElementById('barrierSeveritySelect').value,
                     description: document.getElementById('barrierDescription').value,
