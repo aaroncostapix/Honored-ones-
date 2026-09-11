@@ -1,0 +1,586 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Digital Bus Pass - Smart College Transport Management</title>
+    <meta name="description" content="Digital verified student college bus pass with QR authentication and printable download.">
+    
+    <!-- CSS Stylesheets -->
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/dashboard.css">
+    <link rel="stylesheet" href="css/responsive.css">
+
+    <style>
+        /* Digital Bus Pass Specific Card Styles */
+        .pass-container {
+            max-width: 580px;
+            margin: 0 auto;
+        }
+
+        .bus-pass-card {
+            background: linear-gradient(135deg, #1e3a8a 0%, #1e40af 50%, #0f766e 100%);
+            border-radius: var(--radius-xl);
+            padding: 2.2rem;
+            color: #ffffff;
+            box-shadow: 0 16px 36px -8px rgba(30, 58, 138, 0.45);
+            position: relative;
+            overflow: hidden;
+            border: 2px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .pass-hologram-strip {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 6px;
+            background: linear-gradient(90deg, #f59e0b, #ec4899, #8b5cf6, #3b82f6, #10b981, #f59e0b);
+            background-size: 200% 100%;
+            animation: holoShift 4s linear infinite;
+        }
+
+        @keyframes holoShift {
+            0% { background-position: 0% 0%; }
+            100% { background-position: 200% 0%; }
+        }
+
+        .pass-watermark {
+            position: absolute;
+            right: -20px;
+            bottom: -30px;
+            opacity: 0.08;
+            pointer-events: none;
+            color: #ffffff;
+        }
+
+        .pass-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+            padding-bottom: 1.25rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .pass-institute-logo {
+            display: flex;
+            align-items: center;
+            gap: 0.85rem;
+        }
+
+        .pass-badge-icon {
+            width: 44px;
+            height: 44px;
+            border-radius: var(--radius-md);
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(10px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+        }
+
+        .pass-body {
+            display: grid;
+            grid-template-columns: 130px 1fr;
+            gap: 1.75rem;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .student-photo-wrapper {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .student-photo-frame {
+            width: 120px;
+            height: 140px;
+            border-radius: var(--radius-md);
+            background: linear-gradient(135deg, #e2e8f0, #cbd5e1);
+            border: 3px solid #ffffff;
+            box-shadow: 0 6px 14px rgba(0, 0, 0, 0.25);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            color: #1e3a8a;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .qr-canvas-box {
+            width: 86px;
+            height: 86px;
+            background: #ffffff;
+            border-radius: var(--radius-sm);
+            padding: 4px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+        }
+
+        .pass-details-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 0.9rem;
+        }
+
+        .pass-detail-item {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .pass-detail-label {
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            letter-spacing: 0.06em;
+            color: rgba(255, 255, 255, 0.7);
+            margin-bottom: 0.15rem;
+        }
+
+        .pass-detail-value {
+            font-size: 0.95rem;
+            font-weight: 700;
+            color: #ffffff;
+        }
+
+        .pass-footer {
+            border-top: 1px solid rgba(255, 255, 255, 0.2);
+            padding-top: 1.1rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            font-size: 0.78rem;
+            color: rgba(255, 255, 255, 0.85);
+        }
+
+        @media print {
+            .pass-container {
+                max-width: 100%;
+                margin: 0;
+            }
+            .bus-pass-card {
+                box-shadow: none;
+                border: 2px solid #000;
+                color: #000 !important;
+                background: #ffffff !important;
+            }
+            .pass-header, .pass-footer {
+                border-color: #000 !important;
+            }
+            .pass-detail-label {
+                color: #555 !important;
+            }
+            .pass-detail-value {
+                color: #000 !important;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="app-container">
+        <!-- Sidebar Navigation -->
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <a href="index.html" class="brand-badge">
+                    <div class="brand-icon">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M8 6v6"></path><path d="M15 6v6"></path><path d="M2 12h19.6"></path><path d="M18 18h3s.5-1.7.8-2.8c.1-.4.2-.8.2-1.2 0-.4-.1-.8-.2-1.2l-.8-2.8H18"></path><path d="M4 18H2"></path><path d="m4 6 2-2h12l2 2"></path><circle cx="7" cy="18" r="2"></circle><circle cx="17" cy="18" r="2"></circle></svg>
+                    </div>
+                    <div class="brand-text">
+                        <span class="brand-title">ITR Transport</span>
+                        <span class="brand-subtitle">Smart Mobility</span>
+                    </div>
+                </a>
+            </div>
+
+            <nav class="sidebar-nav">
+                <div class="nav-section-title">Main Navigation</div>
+                <a href="index.html" class="nav-link">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="7" height="9" x="3" y="3" rx="1"></rect><rect width="7" height="5" x="14" y="3" rx="1"></rect><rect width="7" height="9" x="14" y="12" rx="1"></rect><rect width="7" height="5" x="3" y="16" rx="1"></rect></svg>
+                    <span>Dashboard</span>
+                </a>
+                <a href="routes.html" class="nav-link">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="6" cy="19" r="3"></circle><path d="M9 19h8.5a3.5 3.5 0 0 0 0-7h-11a3.5 3.5 0 0 1 0-7H15"></path><circle cx="18" cy="5" r="3"></circle></svg>
+                    <span>Bus Routes</span>
+                    <span class="nav-badge">8</span>
+                </a>
+                <a href="timetable.html" class="nav-link">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
+                    <span>Timetable</span>
+                </a>
+                <a href="tracking.html" class="nav-link">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="3 11 22 2 13 21 11 13 3 11"></polygon></svg>
+                    <span>Live Tracking</span>
+                    <span class="nav-badge live-pulse">LIVE</span>
+                </a>
+                <a href="bus-pass.html" class="nav-link active">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="20" height="14" x="2" y="5" rx="2"></rect><line x1="2" x2="22" y1="10" y2="10"></line></svg>
+                    <span>Bus Pass</span>
+                </a>
+
+                <div class="nav-section-title">Campus & Services</div>
+                <a href="drivers.html" class="nav-link">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M22 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>
+                    <span>Drivers</span>
+                </a>
+                <a href="announcements.html" class="nav-link">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9"></path><path d="M10.3 21a1.94 1.94 0 0 0 3.4 0"></path></svg>
+                    <span>Announcements</span>
+                    <span class="nav-badge">5</span>
+                </a>
+                <a href="profile.html" class="nav-link">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="5"></circle><path d="M20 21a8 8 0 1 0-16 0"></path></svg>
+                    <span>Profile</span>
+                </a>
+                <a href="settings.html" class="nav-link">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z"></path><circle cx="12" cy="12" r="3"></circle></svg>
+                    <span>Settings</span>
+                </a>
+            </nav>
+        </aside>
+
+        <!-- Main Content -->
+        <div class="main-wrapper">
+            <!-- Header -->
+            <header class="top-header">
+                <div class="header-left">
+                    <button class="menu-toggle-btn" aria-label="Toggle Navigation Menu">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="4" x2="20" y1="12" y2="12"></line><line x1="4" x2="20" y1="6" y2="6"></line><line x1="4" x2="20" y1="18" y2="18"></line></svg>
+                    </button>
+                    <div class="global-search-bar trigger-search-modal">
+                        <div class="search-input-wrapper">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="search-icon"><circle cx="11" cy="11" r="8"></circle><path d="m21 21-4.3-4.3"></path></svg>
+                            <span class="search-input" style="color: var(--text-subtle);">Search student pass...</span>
+                            <span class="search-shortcut">/</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="header-right">
+                    <!-- SOS Safety Button -->
+                    <button class="sos-header-btn trigger-sos-modal" aria-label="Emergency SOS">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path><line x1="12" y1="9" x2="12" y2="13"></line><line x1="12" y1="17" x2="12.01" y2="17"></line></svg>
+                        <span>SOS</span>
+                    </button>
+
+                    <!-- Audio Synth Mute Toggle -->
+                    <button id="headerAudioToggleBtn" class="header-action-btn" aria-label="Toggle Sound & Voice">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon><path d="M15.54 8.46a5 5 0 0 1 0 7.07"></path></svg>
+                    </button>
+
+                    <div class="live-clock-pill">
+                        <span class="pulse-dot"></span>
+                        <span id="liveClockDisplay">07:40:00 AM</span>
+                    </div>
+
+                    <button class="header-action-btn theme-toggle-btn" aria-label="Toggle Theme">
+                        <span class="theme-icon">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"></path></svg>
+                        </span>
+                    </button>
+
+                    <a href="profile.html" class="header-profile-btn">
+                        <div class="avatar-circle header-student-avatar">PM</div>
+                        <div class="profile-meta">
+                            <div class="profile-name header-student-name">Preyal Modi</div>
+                            <div class="profile-role header-student-role">Computer Engineering</div>
+                        </div>
+                    </a>
+                </div>
+            </header>
+
+            <!-- Bus Pass Main Page Body -->
+            <main class="page-content">
+                <div class="page-header no-print">
+                    <div class="page-title-group">
+                        <h1>
+                            <span>Digital Student Bus Pass</span>
+                        </h1>
+                        <p class="page-subtitle">Official authorized college transportation pass with QR verification security and instant image export.</p>
+                    </div>
+
+                    <div class="page-actions">
+                        <button id="printPassBtn" class="btn btn-primary" onclick="if(window.AppAudio) AppAudio.playClick(); window.print();">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 6 2 18 2 18 9"></polyline><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path><rect width="12" height="8" x="6" y="14"></rect></svg>
+                            <span>Print Pass (PDF)</span>
+                        </button>
+                        <button id="downloadPngBtn" class="btn btn-accent">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
+                            <span>Save PNG</span>
+                        </button>
+                        <a href="profile.html" class="btn btn-secondary">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 3a2.85 2.83 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5Z"></path></svg>
+                            <span>Edit Pass Data</span>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Digital Bus Pass Card Container -->
+                <div class="pass-container" id="printablePassElement">
+                    <div class="bus-pass-card">
+                        <!-- Holographic Ribbon -->
+                        <div class="pass-hologram-strip"></div>
+
+                        <!-- Watermark Background Icon -->
+                        <div class="pass-watermark">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="260" height="260" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M8 6v6"></path><path d="M15 6v6"></path><path d="M2 12h19.6"></path><path d="M18 18h3s.5-1.7.8-2.8c.1-.4.2-.8.2-1.2 0-.4-.1-.8-.2-1.2l-.8-2.8H18"></path><path d="M4 18H2"></path><path d="m4 6 2-2h12l2 2"></path></svg>
+                        </div>
+
+                        <!-- Pass Header -->
+                        <div class="pass-header">
+                            <div class="pass-institute-logo">
+                                <div class="pass-badge-icon">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M22 10v6M2 10l10-5 10 5-10 5z"></path><path d="M6 12v5c3 3 9 3 12 0v-5"></path></svg>
+                                </div>
+                                <div>
+                                    <div style="font-weight: 800; font-size: 1.15rem; letter-spacing: -0.01em;">INSTITUTE OF TECHNOLOGY & RESEARCH</div>
+                                    <div style="font-size: 0.74rem; font-weight: 600; color: #6ee7b7; letter-spacing: 0.08em; text-transform: uppercase;">Official Student Transport Pass</div>
+                                </div>
+                            </div>
+                            <span class="badge badge-success" style="background: rgba(16, 185, 129, 0.3); border: 1px solid #34d399; color: #a7f3d0;">
+                                <span style="width:6px; height:6px; border-radius:50%; background:#34d399;"></span>
+                                <span id="passCardStatus">Active</span>
+                            </span>
+                        </div>
+
+                        <!-- Pass Body -->
+                        <div class="pass-body">
+                            <!-- Student Photo & Dynamic QR Canvas -->
+                            <div class="student-photo-wrapper">
+                                <div class="student-photo-frame">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="54" height="54" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+                                    <span style="font-size: 0.65rem; font-weight: 800; margin-top: 4px;">STUDENT</span>
+                                </div>
+                                <!-- Dynamic Canvas QR -->
+                                <div class="qr-canvas-box">
+                                    <canvas id="studentQrCanvas" width="78" height="78"></canvas>
+                                </div>
+                            </div>
+
+                            <!-- Student Info Grid -->
+                            <div class="pass-details-grid">
+                                <div class="pass-detail-item" style="grid-column: 1 / -1;">
+                                    <span class="pass-detail-label">Student Name</span>
+                                    <span class="pass-detail-value" id="passStudentName" style="font-size: 1.25rem;">Preyal Modi</span>
+                                </div>
+                                <div class="pass-detail-item">
+                                    <span class="pass-detail-label">Student ID</span>
+                                    <span class="pass-detail-value" id="passStudentId">ITR-2024-CS-089</span>
+                                </div>
+                                <div class="pass-detail-item">
+                                    <span class="pass-detail-label">Course / Branch</span>
+                                    <span class="pass-detail-value" id="passStudentCourse">Computer Engineering</span>
+                                </div>
+                                <div class="pass-detail-item">
+                                    <span class="pass-detail-label">Assigned Route</span>
+                                    <span class="pass-detail-value" id="passRouteName" style="color: #fef08a;">Patan → ITR</span>
+                                </div>
+                                <div class="pass-detail-item">
+                                    <span class="pass-detail-label">Boarding Stop</span>
+                                    <span class="pass-detail-value" id="passBoardingStop">Bagavada Darwaja</span>
+                                </div>
+                                <div class="pass-detail-item">
+                                    <span class="pass-detail-label">Bus Number</span>
+                                    <span class="pass-detail-value" id="passBusNumber" style="font-family: var(--font-mono);">GJ-XX-XXXX</span>
+                                </div>
+                                <div class="pass-detail-item">
+                                    <span class="pass-detail-label">Pass Validity</span>
+                                    <span class="pass-detail-value" id="passValidity">July 2026 – June 2027</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Pass Footer -->
+                        <div class="pass-footer">
+                            <span>Pass ID: <strong id="passNumber">PASS-2026-8841</strong></span>
+                            <span>Authorized Transport Department</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Instructions & Pass Renewal Simulation -->
+                <div class="card no-print" style="max-width: 580px; margin: 2rem auto 0;">
+                    <div class="card-body" style="font-size: 0.88rem; color: var(--text-muted); display:flex; flex-direction:column; gap:1rem;">
+                        <div>
+                            <h4 style="color: var(--text-main); font-size: 0.95rem; margin-bottom: 0.5rem; display: flex; align-items: center; gap: 0.4rem;">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="12"></line><line x1="12" y1="16" x2="12.01" y2="16"></line></svg>
+                                Bus Pass Guidelines & Actions
+                            </h4>
+                            <ul style="padding-left: 1.25rem; line-height: 1.6;">
+                                <li>Show this verified digital pass or printed copy when boarding the bus.</li>
+                                <li>The QR code contains instant student identification for route conductors.</li>
+                            </ul>
+                        </div>
+
+                        <div style="display:flex; justify-content:space-between; align-items:center; border-top:1px solid var(--border-light); padding-top:0.85rem;">
+                            <span>Annual Pass Status: <strong style="color:var(--success);">Active & Paid</strong></span>
+                            <button onclick="if(window.AppAudio) AppAudio.playArrivalChime(); showToast('Renewal Requested', 'Pass renewal request submitted for 2027-28 term!', 'success');" class="btn btn-secondary btn-sm">
+                                Request Renewal
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </main>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="js/storage.js"></script>
+    <script src="js/audio.js"></script>
+    <script src="js/app.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const profile = AppStorage.getStudentProfile();
+            
+            document.getElementById('passStudentName').textContent = profile.name || 'Preyal Modi';
+            document.getElementById('passStudentId').textContent = profile.id || 'ITR-2024-CS-089';
+            document.getElementById('passStudentCourse').textContent = profile.course || 'Computer Engineering';
+            document.getElementById('passBoardingStop').textContent = profile.boardingStop || 'Bagavada Darwaja';
+            document.getElementById('passBusNumber').textContent = profile.busNumber || 'GJ-XX-XXXX';
+            document.getElementById('passValidity').textContent = profile.passValidity || 'July 2026 – June 2027';
+            document.getElementById('passNumber').textContent = profile.passNumber || 'PASS-2026-8841';
+            document.getElementById('passCardStatus').textContent = profile.passStatus || 'Active';
+
+            const route = AppStorage.getRouteById(profile.assignedRoute);
+            if (route) {
+                document.getElementById('passRouteName').textContent = route.name;
+            }
+
+            // Draw Dynamic Canvas QR Code
+            const qrCanvas = document.getElementById('studentQrCanvas');
+            if (qrCanvas) {
+                const ctx = qrCanvas.getContext('2d');
+                ctx.fillStyle = '#ffffff';
+                ctx.fillRect(0, 0, 78, 78);
+                ctx.fillStyle = '#0f172a';
+
+                // Corner Finder Patterns
+                const drawFinder = (x, y) => {
+                    ctx.fillRect(x, y, 22, 22);
+                    ctx.fillStyle = '#ffffff';
+                    ctx.fillRect(x + 4, y + 4, 14, 14);
+                    ctx.fillStyle = '#0f172a';
+                    ctx.fillRect(x + 7, y + 7, 8, 8);
+                };
+
+                drawFinder(4, 4);
+                drawFinder(52, 4);
+                drawFinder(4, 52);
+
+                // Deterministic pseudo-random matrix blocks based on student ID hash
+                const idString = (profile.id || 'ITR-2024-CS-089') + (profile.name || 'PM');
+                let seed = 0;
+                for (let i = 0; i < idString.length; i++) seed += idString.charCodeAt(i);
+
+                for (let r = 0; r < 12; r++) {
+                    for (let c = 0; c < 12; c++) {
+                        const px = 4 + c * 6;
+                        const py = 4 + r * 6;
+                        // Avoid finders
+                        if ((r < 4 && c < 4) || (r < 4 && c > 7) || (r > 7 && c < 4)) continue;
+                        if ((seed * (r + 1) + c * 7) % 3 === 0) {
+                            ctx.fillRect(px, py, 5, 5);
+                        }
+                    }
+                }
+            }
+
+            // Download PNG feature
+            const downloadBtn = document.getElementById('downloadPngBtn');
+            if (downloadBtn) {
+                downloadBtn.addEventListener('click', () => {
+                    if (window.AppAudio) AppAudio.playArrivalChime();
+                    showToast('Generating Pass Image', 'Preparing high-resolution digital pass PNG...', 'info');
+
+                    // Create offline canvas for rendering clean card
+                    const exportCanvas = document.createElement('canvas');
+                    exportCanvas.width = 600;
+                    exportCanvas.height = 360;
+                    const eCtx = exportCanvas.getContext('2d');
+
+                    // Background Gradient
+                    const grad = eCtx.createLinearGradient(0, 0, 600, 360);
+                    grad.addColorStop(0, '#1e3a8a');
+                    grad.addColorStop(0.5, '#1e40af');
+                    grad.addColorStop(1, '#0f766e');
+                    eCtx.fillStyle = grad;
+                    eCtx.roundRect(0, 0, 600, 360, 20);
+                    eCtx.fill();
+
+                    // Header
+                    eCtx.fillStyle = '#ffffff';
+                    eCtx.font = 'bold 20px "Outfit", sans-serif';
+                    eCtx.fillText('INSTITUTE OF TECHNOLOGY & RESEARCH', 30, 45);
+                    eCtx.fillStyle = '#6ee7b7';
+                    eCtx.font = 'bold 12px "Plus Jakarta Sans", sans-serif';
+                    eCtx.fillText('OFFICIAL STUDENT TRANSPORT PASS • VERIFIED ACTIVE', 30, 65);
+
+                    // Divider
+                    eCtx.strokeStyle = 'rgba(255,255,255,0.2)';
+                    eCtx.lineWidth = 1;
+                    eCtx.beginPath();
+                    eCtx.moveTo(30, 80);
+                    eCtx.lineTo(570, 80);
+                    eCtx.stroke();
+
+                    // Details
+                    eCtx.fillStyle = '#ffffff';
+                    eCtx.font = 'bold 24px "Outfit", sans-serif';
+                    eCtx.fillText(profile.name || 'Preyal Modi', 30, 120);
+
+                    eCtx.fillStyle = 'rgba(255,255,255,0.7)';
+                    eCtx.font = '12px "Plus Jakarta Sans", sans-serif';
+                    eCtx.fillText('STUDENT ID', 30, 150);
+                    eCtx.fillStyle = '#ffffff';
+                    eCtx.font = 'bold 14px "JetBrains Mono", monospace';
+                    eCtx.fillText(profile.id || 'ITR-2024-CS-089', 30, 170);
+
+                    eCtx.fillStyle = 'rgba(255,255,255,0.7)';
+                    eCtx.font = '12px "Plus Jakarta Sans", sans-serif';
+                    eCtx.fillText('ROUTE', 240, 150);
+                    eCtx.fillStyle = '#fef08a';
+                    eCtx.font = 'bold 16px "Outfit", sans-serif';
+                    eCtx.fillText('Patan → ITR', 240, 170);
+
+                    eCtx.fillStyle = 'rgba(255,255,255,0.7)';
+                    eCtx.font = '12px "Plus Jakarta Sans", sans-serif';
+                    eCtx.fillText('BOARDING STAND', 30, 210);
+                    eCtx.fillStyle = '#ffffff';
+                    eCtx.font = 'bold 14px "Plus Jakarta Sans", sans-serif';
+                    eCtx.fillText(profile.boardingStop || 'Bagavada Darwaja', 30, 230);
+
+                    eCtx.fillStyle = 'rgba(255,255,255,0.7)';
+                    eCtx.font = '12px "Plus Jakarta Sans", sans-serif';
+                    eCtx.fillText('BUS NUMBER', 240, 210);
+                    eCtx.fillStyle = '#ffffff';
+                    eCtx.font = 'bold 14px "JetBrains Mono", monospace';
+                    eCtx.fillText(profile.busNumber || 'GJ-XX-XXXX', 240, 230);
+
+                    // Draw QR code onto export canvas
+                    if (qrCanvas) {
+                        eCtx.drawImage(qrCanvas, 460, 110, 110, 110);
+                    }
+
+                    // Footer
+                    eCtx.fillStyle = 'rgba(255,255,255,0.8)';
+                    eCtx.font = '11px "Plus Jakarta Sans", sans-serif';
+                    eCtx.fillText('Pass ID: ' + (profile.passNumber || 'PASS-2026-8841'), 30, 330);
+                    eCtx.fillText('Authorized Transport Department', 380, 330);
+
+                    // Trigger Download
+                    const link = document.createElement('a');
+                    link.download = `ITR_Bus_Pass_${profile.name.replace(/\s+/g, '_')}.png`;
+                    link.href = exportCanvas.toDataURL('image/png');
+                    link.click();
+                    showToast('Downloaded', 'Bus pass saved as PNG image to your device!', 'success');
+                });
+            }
+        });
+    </script>
+</body>
+</html>

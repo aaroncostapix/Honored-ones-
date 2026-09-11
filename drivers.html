@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Drivers Directory - Smart College Transport Management</title>
+    <meta name="description" content="College transport authorized drivers directory, safety ratings, assigned route numbers, and fleet contacts.">
+    
+    <!-- CSS Stylesheets -->
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/dashboard.css">
+    <link rel="stylesheet" href="css/responsive.css">
+</head>
+<body>
+    <div class="app-container">
+        <!-- Sidebar Navigation -->
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <a href="index.html" class="brand-badge">
+                    <div class="brand-icon">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M8 6v6"></path><path d="M15 6v6"></path><path d="M2 12h19.6"></path><path d="M18 18h3s.5-1.7.8-2.8c.1-.4.2-.8.2-1.2 0-.4-.1-.8-.2-1.2l-.8-2.8H18"></path><path d="M4 18H2"></path><path d="m4 6 2-2h12l2 2"></path><circle cx="7" cy="18" r="2"></circle><circle cx="17" cy="18" r="2"></circle></svg>
+                    </div>
+                    <div class="brand-text">
+                        <span class="brand-title">ITR Transport</span>
+                        <span class="brand-subtitle">Smart Mobility</span>
+                    </div>
+                </a>
+            </div>
+
+            <nav class="sidebar-nav">
+                <div class="nav-section-title">Main Navigation</div>
+                <a href="index.html" class="nav-link">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="7" height="9" x="3" y="3" rx="1"></rect><rect width="7" height="5" x="14" y="3" rx="1"></rect><rect width="7" height="9" x="14" y="12" rx="1"></rect><rect width="7" height="5" x="3" y="16" rx="1"></rect></svg>
+                    <span>Dashboard</span>
+                </a>
+                <a href="routes.html" class="nav-link">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="6" cy="19" r="3"></circle><path d="M9 19h8.5a3.5 3.5 0 0 0 0-7h-11a3.5 3.5 0 0 1 0-7H15"></path><circle cx="18" cy="5" r="3"></circle></svg>
+                    <span>Bus Routes</span>
+                    <span class="nav-badge">8</span>
+                </a>
+                <a href="timetable.html" class="nav-link">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
+                    <span>Timetable</span>
+                </a>
+                <a href="tracking.html" class="nav-link">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="3 11 22 2 13 21 11 13 3 11"></polygon></svg>
+                    <span>Live Tracking</span>
+                    <span class="nav-badge live-pulse">LIVE</span>
+                </a>
+                <a href="bus-pass.html" class="nav-link">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="20" height="14" x="2" y="5" rx="2"></rect><line x1="2" x2="22" y1="10" y2="10"></line></svg>
+                    <span>Bus Pass</span>
+                </a>
+
+                <div class="nav-section-title">Campus & Services</div>
+                <a href="drivers.html" class="nav-link active">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M22 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>
+                    <span>Drivers</span>
+                </a>
+                <a href="announcements.html" class="nav-link">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9"></path><path d="M10.3 21a1.94 1.94 0 0 0 3.4 0"></path></svg>
+                    <span>Announcements</span>
+                    <span class="nav-badge">5</span>
+                </a>
+                <a href="profile.html" class="nav-link">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="5"></circle><path d="M20 21a8 8 0 1 0-16 0"></path></svg>
+                    <span>Profile</span>
+                </a>
+                <a href="settings.html" class="nav-link">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z"></path><circle cx="12" cy="12" r="3"></circle></svg>
+                    <span>Settings</span>
+                </a>
+            </nav>
+        </aside>
+
+        <!-- Main Content -->
+        <div class="main-wrapper">
+            <!-- Header -->
+            <header class="top-header">
+                <div class="header-left">
+                    <button class="menu-toggle-btn" aria-label="Toggle Navigation Menu">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="4" x2="20" y1="12" y2="12"></line><line x1="4" x2="20" y1="6" y2="6"></line><line x1="4" x2="20" y1="18" y2="18"></line></svg>
+                    </button>
+                    <div class="global-search-bar trigger-search-modal">
+                        <div class="search-input-wrapper">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="search-icon"><circle cx="11" cy="11" r="8"></circle><path d="m21 21-4.3-4.3"></path></svg>
+                            <span class="search-input" style="color: var(--text-subtle);">Search drivers...</span>
+                            <span class="search-shortcut">/</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="header-right">
+                    <!-- SOS Safety Button -->
+                    <button class="sos-header-btn trigger-sos-modal" aria-label="Emergency SOS">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path><line x1="12" y1="9" x2="12" y2="13"></line><line x1="12" y1="17" x2="12.01" y2="17"></line></svg>
+                        <span>SOS</span>
+                    </button>
+
+                    <!-- Audio Synth Mute Toggle -->
+                    <button id="headerAudioToggleBtn" class="header-action-btn" aria-label="Toggle Sound & Voice">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon><path d="M15.54 8.46a5 5 0 0 1 0 7.07"></path></svg>
+                    </button>
+
+                    <div class="live-clock-pill">
+                        <span class="pulse-dot"></span>
+                        <span id="liveClockDisplay">07:40:00 AM</span>
+                    </div>
+                    <button class="header-action-btn theme-toggle-btn" aria-label="Toggle Theme">
+                        <span class="theme-icon">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"></path></svg>
+                        </span>
+                    </button>
+                    <a href="profile.html" class="header-profile-btn">
+                        <div class="avatar-circle header-student-avatar">PM</div>
+                        <div class="profile-meta">
+                            <div class="profile-name header-student-name">Preyal Modi</div>
+                            <div class="profile-role header-student-role">Computer Engineering</div>
+                        </div>
+                    </a>
+                </div>
+            </header>
+
+            <!-- Drivers Main Page Body -->
+            <main class="page-content">
+                <div class="page-header">
+                    <div class="page-title-group">
+                        <h1>
+                            <span>Authorized Drivers Directory</span>
+                        </h1>
+                        <p class="page-subtitle">Verified transport operators, background-cleared drivers, safety scores, and route assignments.</p>
+                    </div>
+                </div>
+
+                <!-- Search Drivers -->
+                <div class="card" style="margin-bottom: 2rem;">
+                    <div class="card-body" style="padding: 1.25rem 1.5rem; display: flex; gap: 1rem; flex-wrap: wrap; align-items: center; justify-content: space-between;">
+                        <div class="search-input-wrapper" style="flex: 1; max-width: 450px; background: var(--bg-base);">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><path d="m21 21-4.3-4.3"></path></svg>
+                            <input type="text" id="driverSearchInput" class="search-input" placeholder="Search driver name, bus number, or route...">
+                        </div>
+                        <span style="font-size: 0.85rem; color: var(--text-muted);">Showing <strong>6</strong> Verified Campus Drivers</span>
+                    </div>
+                </div>
+
+                <!-- Drivers Cards Grid -->
+                <div id="driversGridContainer" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 1.5rem;">
+                    <!-- Populated dynamically by JS below -->
+                </div>
+            </main>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="js/storage.js"></script>
+    <script src="js/audio.js"></script>
+    <script src="js/app.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const drivers = AppStorage.getDrivers();
+            const container = document.getElementById('driversGridContainer');
+            const searchInput = document.getElementById('driverSearchInput');
+
+            function renderDrivers(list) {
+                if (!container) return;
+
+                if (list.length === 0) {
+                    container.innerHTML = `
+                        <div style="grid-column: 1 / -1; padding: 3rem; text-align: center; color: var(--text-muted);">
+                            No drivers match your search.
+                        </div>
+                    `;
+                    return;
+                }
+
+                container.innerHTML = list.map(d => `
+                    <div class="card driver-profile-card">
+                        <div class="card-body" style="padding: 1.6rem;">
+                            <div style="display: flex; align-items: center; gap: 1.25rem; margin-bottom: 1.25rem;">
+                                <div style="width: 64px; height: 64px; border-radius: var(--radius-lg); background: linear-gradient(135deg, #1e3a8a, #0d9488); display: flex; align-items: center; justify-content: center; color: #ffffff; font-weight: 800; font-size: 1.4rem; box-shadow: var(--shadow-sm);">
+                                    ${d.name.split(' ').map(n => n[0]).join('').substring(0,2)}
+                                </div>
+                                <div style="flex: 1;">
+                                    <div style="display: flex; align-items: center; gap: 0.4rem;">
+                                        <h3 style="font-size: 1.15rem; font-weight: 800; color: var(--text-main);">${d.name}</h3>
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="#10b981" stroke="#ffffff" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><polyline points="9 12 11 14 15 10"></polyline></svg>
+                                    </div>
+                                    <div style="font-size: 0.8rem; color: var(--text-muted); margin-top: 0.15rem;">ID: ${d.id} • ${d.experience} Exp</div>
+                                    <span class="badge badge-success" style="font-size: 0.7rem; margin-top: 0.35rem;">${d.status}</span>
+                                </div>
+                            </div>
+
+                            <div style="display: flex; flex-direction: column; gap: 0.55rem; padding: 1rem; background-color: var(--bg-muted); border-radius: var(--radius-md); border: 1px solid var(--border-color); font-size: 0.86rem; margin-bottom: 1.25rem;">
+                                <div style="display: flex; justify-content: space-between;">
+                                    <span style="color: var(--text-muted);">Assigned Route:</span>
+                                    <strong style="color: var(--primary-light);">${d.route}</strong>
+                                </div>
+                                <div style="display: flex; justify-content: space-between;">
+                                    <span style="color: var(--text-muted);">Bus Number:</span>
+                                    <strong style="font-family: var(--font-mono); color: var(--text-main);">${d.busNumber}</strong>
+                                </div>
+                                <div style="display: flex; justify-content: space-between;">
+                                    <span style="color: var(--text-muted);">Safety Score:</span>
+                                    <strong style="color: var(--success);">${d.safetyScore} (${d.rating} ★)</strong>
+                                </div>
+                                <div style="display: flex; justify-content: space-between;">
+                                    <span style="color: var(--text-muted);">Contact:</span>
+                                    <strong style="font-family: var(--font-mono); color: var(--text-main);">${d.phone}</strong>
+                                </div>
+                            </div>
+
+                            <div style="display: flex; gap: 0.75rem;">
+                                <a href="tracking.html?route=${d.routeId}" class="btn btn-primary btn-sm" style="flex: 1;">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="3 11 22 2 13 21 11 13 3 11"></polygon></svg>
+                                    Track Bus
+                                </a>
+                                <button onclick="if(window.AppAudio) AppAudio.playClick(); showToast('Helpline Connected', 'Connecting to driver ${d.name} via ${d.phone}', 'info')" class="btn btn-secondary btn-sm" style="flex: 1;">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path></svg>
+                                    Call Driver
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                `).join('');
+            }
+
+            if (searchInput) {
+                searchInput.addEventListener('input', (e) => {
+                    const q = e.target.value.toLowerCase().trim();
+                    const filtered = drivers.filter(d => 
+                        d.name.toLowerCase().includes(q) ||
+                        d.busNumber.toLowerCase().includes(q) ||
+                        d.route.toLowerCase().includes(q)
+                    );
+                    renderDrivers(filtered);
+                });
+            }
+
+            renderDrivers(drivers);
+        });
+    </script>
+</body>
+</html>
