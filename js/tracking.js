@@ -52,6 +52,21 @@ class BusTrackingSimulation {
         const routeId = urlParams.get('route') || 'panaji-donapaula';
         this.route = AppStorage.getRouteById(routeId);
 
+        // Restore saved simulation state if valid for current route
+        const savedState = AppStorage.getSimulationState();
+        if (savedState && savedState.routeId === this.route.id) {
+            if (typeof savedState.currentStopIndex === 'number' &&
+                savedState.currentStopIndex >= 0 &&
+                savedState.currentStopIndex < this.route.stops.length) {
+                this.currentStopIndex = savedState.currentStopIndex;
+            }
+            if (typeof savedState.progressBetweenStops === 'number' &&
+                savedState.progressBetweenStops >= 0 &&
+                savedState.progressBetweenStops <= 1) {
+                this.progressBetweenStops = savedState.progressBetweenStops;
+            }
+        }
+
         // Populate Route Select
         if (this.routeSelect) {
             const allRoutes = AppStorage.getRoutes();
@@ -302,13 +317,34 @@ class BusTrackingSimulation {
                 activeBarriers
             });
 
+            let barrierBadgeHtml = '';
+            if (evalResult.criticalBarrierOverride) {
+                barrierBadgeHtml = `
+                    <span class="confidence-badge-pill confidence-low" style="font-size:0.75rem; padding: 0.25rem 0.65rem; margin-left: 0.35rem; background: #ef4444; color: #ffffff;">
+                        ⚠️ Critical Barrier (Forces LOW)
+                    </span>
+                `;
+            } else if (activeBarriers.length > 0 || evalResult.breakdown.barrierPenalty > 0) {
+                barrierBadgeHtml = `
+                    <span class="confidence-badge-pill confidence-moderate" style="font-size:0.75rem; padding: 0.25rem 0.65rem; margin-left: 0.35rem; background: #f59e0b; color: #ffffff;">
+                        ⚠️ Active Barrier (-${evalResult.breakdown.barrierPenalty} pts)
+                    </span>
+                `;
+            }
+
             const telemetryBadge = document.getElementById('safestopTelemetryBadge');
             if (telemetryBadge) {
                 telemetryBadge.innerHTML = `
                     <span class="confidence-badge-pill ${evalResult.levelMeta.class}" style="font-size:0.75rem; padding: 0.25rem 0.75rem;">
                         Boarding Confidence: ${evalResult.score}/100 (${evalResult.level})
                     </span>
+                    ${barrierBadgeHtml}
                 `;
+            }
+
+            const viewDetailsLink = document.querySelector('a[href^="safestop.html"]');
+            if (viewDetailsLink) {
+                viewDetailsLink.href = `safestop.html?route=${encodeURIComponent(this.route.id)}&stop=${encodeURIComponent(targetStop.id)}`;
             }
         }
 
@@ -316,6 +352,7 @@ class BusTrackingSimulation {
         AppStorage.saveSimulationState({
             routeId: this.route.id,
             currentStopIndex: this.currentStopIndex,
+            progressBetweenStops: this.progressBetweenStops,
             currentStopName: currentStop.name,
             nextStopName: nextStop.name,
             nextStopTime: nextStop.time,

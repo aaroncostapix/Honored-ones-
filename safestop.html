@@ -297,7 +297,12 @@
             const stopSelect = document.getElementById('safestopStopSelect');
             const routes = AppStorage.getRoutes();
 
+            const urlParams = new URLSearchParams(window.location.search);
+            const routeParam = urlParams.get('route');
+            const stopParam = urlParams.get('stop');
+
             // Populate Routes Dropdown
+            routeSelect.innerHTML = '';
             routes.forEach(r => {
                 const opt = document.createElement('option');
                 opt.value = r.id;
@@ -305,8 +310,12 @@
                 routeSelect.appendChild(opt);
             });
 
+            if (routeParam && routes.some(r => r.id === routeParam)) {
+                routeSelect.value = routeParam;
+            }
+
             // Populate Stops based on selected route
-            function updateStopsDropdown() {
+            function updateStopsDropdown(preferredStopId = null) {
                 const routeId = routeSelect.value;
                 const route = routes.find(r => r.id === routeId);
                 stopSelect.innerHTML = '';
@@ -317,14 +326,17 @@
                         opt.textContent = `Stop #${s.id}: ${s.name} (${s.time})`;
                         stopSelect.appendChild(opt);
                     });
+                    if (preferredStopId !== null && route.stops.some(s => String(s.id) === String(preferredStopId))) {
+                        stopSelect.value = preferredStopId;
+                    }
                 }
                 updateSafestopDisplay();
             }
 
-            routeSelect.addEventListener('change', updateStopsDropdown);
+            routeSelect.addEventListener('change', () => updateStopsDropdown());
             stopSelect.addEventListener('change', updateSafestopDisplay);
 
-            updateStopsDropdown();
+            updateStopsDropdown(stopParam);
 
             // Update main SAFESTOP Display
             function updateSafestopDisplay() {
