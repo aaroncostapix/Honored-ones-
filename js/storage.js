@@ -20,12 +20,13 @@ const STORAGE_KEYS = {
 const DEFAULT_DATA = {
     studentProfile: {
         id: "GOA-2026-PASS-089",
-        name: "Preyal Modi",
-        email: "preyal.modi@goamobility.in",
+        name: "Goan",
+        email: "goan.commuter@goamobility.in",
         phone: "+91 98765 43210",
-        course: "Computer Engineering",
-        department: "Computer Engineering",
-        semester: "6th Semester",
+        role: "Goa Commuter",
+        course: "Goa Commuter",
+        department: "Goa Transit Services",
+        semester: "Commuter Pass Holder",
         enrollmentNo: "210120116045",
         bloodGroup: "B+",
         assignedRoute: "panaji-donapaula",

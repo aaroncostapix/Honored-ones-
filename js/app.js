@@ -194,7 +194,7 @@ function initSosEmergencySystem() {
                         </div>
 
                         <div style="padding: 0.75rem; border-radius: var(--radius-md); background: var(--bg-muted); font-size: 0.82rem; color: var(--text-muted);">
-                            <strong>Passenger:</strong> Preyal Modi | <strong>Route:</strong> Route 453: Panaji → Dona Paula (KTCL-EV-Demo-06)
+                            <strong>Passenger:</strong> Goan | <strong>Route:</strong> Route 453: Panaji → Dona Paula (KTCL-EV-Demo-06)
                         </div>
                     </div>
                 </div>
@@ -260,57 +260,115 @@ function simulateEmergencyDispatch() {
 /* --------------------------------------------------------------------------
    Live Seat Heatmap & Capacity Modal
    -------------------------------------------------------------------------- */
+let seatModalTriggerElement = null;
+
+function openSeatHeatmapModal(triggerEl) {
+    seatModalTriggerElement = triggerEl || document.activeElement;
+    const modal = document.getElementById('seatHeatmapModal');
+    if (modal) {
+        modal.classList.add('active');
+        const firstFocusable = modal.querySelector('button:not([disabled]), [href], input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])');
+        if (firstFocusable) firstFocusable.focus();
+    }
+}
+
+function closeSeatHeatmapModal() {
+    const modal = document.getElementById('seatHeatmapModal');
+    if (modal) modal.classList.remove('active');
+    if (seatModalTriggerElement && typeof seatModalTriggerElement.focus === 'function') {
+        seatModalTriggerElement.focus();
+    }
+}
+
+window.openSeatHeatmapModal = openSeatHeatmapModal;
+window.closeSeatHeatmapModal = closeSeatHeatmapModal;
+
 function initSeatHeatmapModal() {
     if (!document.getElementById('seatHeatmapModal')) {
         const seatModalHtml = `
-            <div id="seatHeatmapModal" class="modal-backdrop">
-                <div class="modal-card" style="max-width: 580px;">
+            <div id="seatHeatmapModal" class="modal-backdrop" role="dialog" aria-modal="true" aria-labelledby="seatHeatmapTitle">
+                <div class="modal-card" style="max-width: 540px;">
                     <div class="modal-header">
                         <div class="card-title">
                             <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
-                            <span>Live Bus Seat Availability Heatmap</span>
+                            <span id="seatHeatmapTitle">Bus Seat Availability Heatmap</span>
                         </div>
-                        <button type="button" class="btn-sm btn-secondary" onclick="document.getElementById('seatHeatmapModal').classList.remove('active')">✕</button>
+                        <button type="button" class="btn-sm btn-secondary" aria-label="Close Seat Heatmap modal" onclick="closeSeatHeatmapModal()" style="font-weight: 700; font-size: 1.1rem; line-height: 1; padding: 0.35rem 0.65rem;">✕</button>
                     </div>
-                    <div style="padding: 1.5rem;">
-                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem; flex-wrap: wrap; gap: 0.5rem;">
+                    <div style="padding: 1.25rem;">
+                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.85rem; flex-wrap: wrap; gap: 0.5rem;">
                             <div>
-                                <strong style="font-size: 1.1rem; color: var(--text-main);">Bus #KTCL-EV-Demo-06 (Panaji - Dona Paula)</strong>
-                                <div style="font-size: 0.8rem; color: var(--text-muted);">Capacity: 54 Seats | <strong>48 Occupied</strong> | <span style="color:#10b981; font-weight:700;">6 Available</span></div>
+                                <strong style="font-size: 1.05rem; color: var(--text-main);">Bus #KTCL-EV-Demo-06 (Panaji - Dona Paula)</strong>
+                                <div style="font-size: 0.78rem; color: var(--text-muted);">Capacity: 54 Seats | <strong>48 Occupied</strong> | <span style="color:#10b981; font-weight:700;">6 Available</span></div>
                             </div>
-                            <div style="display: flex; gap: 0.75rem; font-size: 0.75rem;">
+                            <div style="display: flex; gap: 0.75rem; font-size: 0.72rem;">
                                 <span style="display:flex; align-items:center; gap:0.25rem;"><span style="width:10px;height:10px;border-radius:2px;background:#ef4444;"></span> Occupied</span>
                                 <span style="display:flex; align-items:center; gap:0.25rem;"><span style="width:10px;height:10px;border-radius:2px;background:#10b981;"></span> Available</span>
-                                <span style="display:flex; align-items:center; gap:0.25rem;"><span style="width:10px;height:10px;border-radius:2px;background:#8b5cf6;"></span> Reserved</span>
+                                <span style="display:flex; align-items:center; gap:0.25rem;"><span style="width:10px;height:10px;border-radius:2px;background:#8b5cf6;"></span> Priority/Reserved</span>
                             </div>
                         </div>
 
-                        <!-- 54 Seats Layout Grid -->
-                        <div class="bus-seat-grid" id="busSeatGridContainer">
-                            <!-- Populated dynamically -->
+                        <!-- Realistic Bus Chassis Layout -->
+                        <div class="bus-interior-chassis">
+                            <div class="bus-front-header">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>
+                                <span>FRONT OF BUS — DRIVER CABIN & BOARDING RAMP ENTRANCE</span>
+                            </div>
+
+                            <div class="bus-seat-deck">
+                                <div class="bus-front-row">
+                                    <div class="driver-cabin-card" title="Driver Operating Cabin">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><path d="M12 2a10 10 0 1 0 10 10H12V2z"></path></svg>
+                                        <span>DRIVER CABIN</span>
+                                    </div>
+                                    <div class="aisle-indicator-text">FRONT ENTRANCE ♿</div>
+                                    <div class="staff-seats-group">
+                                        <span class="seat-box staff-box" title="Conductor Station">COND</span>
+                                        <span class="seat-box staff-box" title="Staff Duty">STF</span>
+                                    </div>
+                                </div>
+
+                                <div class="seat-section-label">
+                                    <span>FRONT PASSENGER ROWS (SEATS 1-4 PRIORITY / FEMALE RESERVED)</span>
+                                </div>
+
+                                <!-- 52 Seats Layout Grid -->
+                                <div class="bus-seat-grid" id="busSeatGridContainer">
+                                    <!-- Populated dynamically -->
+                                </div>
+
+                                <div class="bus-rear-footer">
+                                    <span>REAR PASSENGER SEATING & ENGINE BAY</span>
+                                </div>
+                            </div>
                         </div>
 
-                        <div style="display: flex; justify-content: flex-end;">
-                            <button type="button" class="btn btn-secondary btn-sm" onclick="document.getElementById('seatHeatmapModal').classList.remove('active')">Close Heatmap</button>
+                        <div style="display: flex; justify-content: flex-end; margin-top: 1rem;">
+                            <button type="button" class="btn btn-secondary btn-sm" onclick="closeSeatHeatmapModal()">Close Heatmap</button>
                         </div>
                     </div>
                 </div>
             </div>
         `;
         document.body.insertAdjacentHTML('beforeend', seatModalHtml);
+
+        const modalEl = document.getElementById('seatHeatmapModal');
+        modalEl.addEventListener('click', (e) => {
+            if (e.target === modalEl) closeSeatHeatmapModal();
+        });
     }
 
     // Populate seats
     const seatGrid = document.getElementById('busSeatGridContainer');
     if (seatGrid) {
-        let seatsHtml = `<div class="seat-box driver-seat">DRIVER CABIN</div><div class="seat-aisle"></div><div class="seat-box reserved" title="Conductor">COND</div><div class="seat-box reserved" title="Staff">STF</div>`;
+        let seatsHtml = '';
         for (let i = 1; i <= 52; i++) {
             const isAvailable = [8, 14, 21, 33, 42, 49].includes(i);
             const isReserved = [1, 2, 3, 4].includes(i);
             let cls = isAvailable ? 'available' : (isReserved ? 'reserved' : 'occupied');
-            let tooltip = isAvailable ? `Seat #${i} Available` : (isReserved ? `Seat #${i} Female Reserved` : `Seat #${i} Occupied`);
+            let tooltip = isAvailable ? `Seat #${i} Available` : (isReserved ? `Seat #${i} Priority / Reserved` : `Seat #${i} Occupied`);
 
-            seatsHtml += `<button type="button" class="seat-box ${cls}" title="${tooltip}" onclick="showToast('Seat Selected', '${tooltip}', '${isAvailable ? 'success' : 'info'}')">${i}</button>`;
+            seatsHtml += `<button type="button" class="seat-box ${cls}" title="${tooltip}" aria-label="${tooltip}" onclick="showToast('Seat Selected', '${tooltip}', '${isAvailable ? 'success' : 'info'}')">${i}</button>`;
             if (i % 4 === 2) {
                 seatsHtml += `<div class="seat-aisle"></div>`;
             }
@@ -323,9 +381,42 @@ function initSeatHeatmapModal() {
         btn.addEventListener('click', (e) => {
             e.preventDefault();
             if (window.AppAudio) AppAudio.playClick();
-            document.getElementById('seatHeatmapModal').classList.add('active');
+            openSeatHeatmapModal(btn);
         });
     });
+
+    if (!document.body.dataset.seatKeydownBound) {
+        document.body.dataset.seatKeydownBound = 'true';
+        document.addEventListener('keydown', (e) => {
+            const modal = document.getElementById('seatHeatmapModal');
+            if (!modal || !modal.classList.contains('active')) return;
+
+            if (e.key === 'Escape') {
+                e.preventDefault();
+                closeSeatHeatmapModal();
+                return;
+            }
+
+            if (e.key === 'Tab') {
+                const focusables = modal.querySelectorAll('button:not([disabled]), [href], input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])');
+                if (focusables.length === 0) return;
+                const first = focusables[0];
+                const last = focusables[focusables.length - 1];
+
+                if (e.shiftKey) {
+                    if (document.activeElement === first || !modal.contains(document.activeElement)) {
+                        e.preventDefault();
+                        last.focus();
+                    }
+                } else {
+                    if (document.activeElement === last || !modal.contains(document.activeElement)) {
+                        e.preventDefault();
+                        first.focus();
+                    }
+                }
+            }
+        });
+    }
 }
 
 /* --------------------------------------------------------------------------
@@ -584,11 +675,15 @@ function initProfileSync() {
     const roleEls = document.querySelectorAll('.header-student-role');
     const avatarEls = document.querySelectorAll('.header-student-avatar');
 
-    nameEls.forEach(el => el.textContent = profile.name || 'Preyal Modi');
-    roleEls.forEach(el => el.textContent = profile.course || 'Computer Engineering');
+    const defaultName = 'Goan';
+    const defaultRole = 'Goa Commuter';
+
+    nameEls.forEach(el => el.textContent = profile.name || defaultName);
+    roleEls.forEach(el => el.textContent = (profile.role || profile.course || defaultRole));
     avatarEls.forEach(el => {
-        const initials = (profile.name || 'PM').split(' ').map(n => n[0]).join('').substring(0, 2).toUpperCase();
-        el.textContent = initials;
+        if (el.tagName.toLowerCase() === 'img') return;
+        const initials = (profile.name || defaultName).split(' ').map(n => n[0]).join('').substring(0, 2).toUpperCase();
+        el.textContent = initials || 'G';
     });
 }
 
