@@ -132,7 +132,7 @@ class BusTrackingSimulation {
                 const nextStop = this.route.stops[this.currentStopIndex + 1] || this.route.stops[this.currentStopIndex];
                 if (window.AppAudio) {
                     AppAudio.playArrivalChime();
-                    AppAudio.speakAnnouncement(`Attention students. Bus number ${this.route.busNumber}. Next stop is ${nextStop.name}. Scheduled time ${nextStop.time}.`);
+                    AppAudio.speakAnnouncement(`Attention passengers. Bus number ${this.route.busNumber}. Next stop is ${nextStop.name}. Scheduled time ${nextStop.time}.`);
                     showToast('Voice Announcement', `Broadcasting stop announcement for ${nextStop.name}`, 'info');
                 }
             });
@@ -406,7 +406,7 @@ class BusTrackingSimulation {
                             nodeIcon = `✓`;
                             badgeHtml = `<span class="badge badge-success" style="font-size:0.7rem;">Passed</span>`;
                         } else if (isDestination) {
-                            badgeHtml = `<span class="badge badge-accent" style="font-size:0.7rem;">College Campus</span>`;
+                            badgeHtml = `<span class="badge badge-accent" style="font-size:0.7rem;">Terminal Stop</span>`;
                         }
 
                         return `

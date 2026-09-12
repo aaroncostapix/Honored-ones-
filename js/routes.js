@@ -74,7 +74,7 @@ function initRoutesPage() {
                             <strong style="color: var(--text-main);">${route.totalDistance} (${route.totalDuration})</strong>
                         </div>
                         <div style="display: flex; align-items: center; justify-content: space-between;">
-                            <span>Assigned Driver:</span>
+                            <span>Assigned Operator:</span>
                             <strong style="color: var(--text-main);">${route.driverName}</strong>
                         </div>
                     </div>

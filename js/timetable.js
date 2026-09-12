@@ -47,7 +47,7 @@ function initTimetablePage() {
 
         // Update Notice
         if (routeNoticeEl) {
-            routeNoticeEl.textContent = route.notice || "Students are requested to reach their respective bus stand 2–5 minutes before the scheduled arrival time.";
+            routeNoticeEl.textContent = route.notice || "Passengers are requested to reach their respective bus stop 2–5 minutes before the scheduled arrival time.";
         }
 
         // Update Meta Header
@@ -61,7 +61,7 @@ function initTimetablePage() {
                         </div>
                         <p style="color: var(--text-muted); font-size: 0.88rem;">
                             Assigned Bus: <strong style="font-family: var(--font-mono); color: var(--text-main);">${route.busNumber}</strong> | 
-                            Driver: <strong style="color: var(--text-main);">${route.driverName}</strong> | 
+                            Operator: <strong style="color: var(--text-main);">${route.driverName}</strong> |
                             Departure: <strong>${route.startTime}</strong> → Arrival: <strong>${route.arrivalTime}</strong>
                         </p>
                     </div>

@@ -102,29 +102,29 @@ function initSosEmergencySystem() {
                     </div>
                     <div style="padding: 1.5rem;">
                         <p style="font-size: 0.92rem; color: var(--text-muted); line-height: 1.5; margin-bottom: 1.25rem;">
-                            If you require immediate medical, breakdown, or safety assistance while traveling on a college bus, trigger the dispatch protocol below:
+                            If you require immediate medical, breakdown, or safety assistance while traveling on a transit bus, trigger the dispatch protocol below:
                         </p>
 
                         <div style="display: flex; flex-direction: column; gap: 0.75rem; margin-bottom: 1.5rem;">
-                            <a href="tel:02766291000" class="btn btn-primary" style="background: #ef4444; justify-content: flex-start; padding: 0.85rem 1.2rem;">
+                            <a href="tel:08322438800" class="btn btn-primary" style="background: #ef4444; justify-content: flex-start; padding: 0.85rem 1.2rem;">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path></svg>
                                 <div>
-                                    <div style="font-weight: 800;">Call Campus Security: 02766-291000</div>
-                                    <div style="font-size: 0.74rem; opacity: 0.9;">Direct line to Main Gate Transport Control</div>
+                                    <div style="font-weight: 800;">Call Transit Control: 0832-2438800</div>
+                                    <div style="font-size: 0.74rem; opacity: 0.9;">Direct line to Main Transit Helpline</div>
                                 </div>
                             </a>
 
                             <button onclick="simulateEmergencyDispatch()" class="btn btn-secondary" style="border-color: #f59e0b; color: #d97706; justify-content: flex-start; padding: 0.85rem 1.2rem;">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2a8 8 0 0 0-8 8c0 5.25 8 12 8 12s8-6.75 8-12a8 8 0 0 0-8-8z"></path><circle cx="12" cy="10" r="3"></circle></svg>
                                 <div>
-                                    <div style="font-weight: 800;">Broadcast Live GPS to Parent & Security</div>
+                                    <div style="font-weight: 800;">Broadcast Live GPS to Emergency Contact</div>
                                     <div style="font-size: 0.74rem; color: var(--text-muted);">Transmits location telemetry via simulated SMS</div>
                                 </div>
                             </button>
                         </div>
 
                         <div style="padding: 0.75rem; border-radius: var(--radius-md); background: var(--bg-muted); font-size: 0.82rem; color: var(--text-muted);">
-                            <strong>Student:</strong> Preyal Modi | <strong>Route:</strong> Panaji → Dona Paula (KTCL-EV-Demo-06)
+                            <strong>Passenger:</strong> Preyal Modi | <strong>Route:</strong> Route 453: Panaji → Dona Paula (KTCL-EV-Demo-06)
                         </div>
                     </div>
                 </div>
@@ -147,7 +147,7 @@ function simulateEmergencyDispatch() {
     const modal = document.getElementById('sosEmergencyModal');
     if (modal) modal.classList.remove('active');
     if (window.AppAudio) AppAudio.playArrivalChime();
-    showToast('Emergency SOS Sent', 'Live coordinates dispatched to Father (+91 94280 12345) & Campus Security!', 'danger');
+    showToast('Emergency SOS Sent', 'Live coordinates dispatched to Emergency Contact (+91 94280 12345) & Transit Control Room!', 'danger');
 }
 
 /* --------------------------------------------------------------------------
