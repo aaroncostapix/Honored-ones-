@@ -17,8 +17,9 @@ const SafestopDemand = {
             windowText: "07:30–08:30 IST Peak-Demand Window",
             explanation: "Official Goa Legislative Assembly passenger-flow record documented elevated shuttle commuter volume on the Panaji–Margao shuttle service during morning peak hours.",
             sourceTitle: "Goa Legislative Assembly Passenger Flow Record",
-            sourceUrl: "https://goavidhansabha.gov.in/",
-            tier: "TIER 1 — OFFICIAL"
+            sourceUrl: "https://goavidhansabha.gov.in/questions-and-answers",
+            tier: "TIER 1 — OFFICIAL",
+            evidenceType: "OFFICIAL PASSENGER-FLOW EVIDENCE"
         },
         {
             id: "EVID-GOA-LEG-02",
@@ -30,8 +31,9 @@ const SafestopDemand = {
             windowText: "17:00–19:00 IST Peak Office Departures Window",
             explanation: "Assembly record documented passenger accumulation at Panaji terminal during evening peak office departure hours.",
             sourceTitle: "Goa Legislative Assembly Transport Service Record",
-            sourceUrl: "https://goavidhansabha.gov.in/",
-            tier: "TIER 1 — OFFICIAL"
+            sourceUrl: "https://goavidhansabha.gov.in/questions-and-answers",
+            tier: "TIER 1 — OFFICIAL",
+            evidenceType: "OFFICIAL PASSENGER-FLOW EVIDENCE"
         },
         {
             id: "EVID-GOA-HEALTH-01",
@@ -43,8 +45,9 @@ const SafestopDemand = {
             windowText: "08:00–09:30 IST GMC Hospital OPD Window",
             explanation: "Inferred contextual demand window based on Goa Health Services official OPD registration hours; not a live or measured passenger-crowding record.",
             sourceTitle: "Goa Health Services Public OPD Timetable",
-            sourceUrl: "https://gmc.goa.gov.in/",
-            tier: "TIER 1 — OFFICIAL"
+            sourceUrl: "https://gmc.goa.gov.in/opd-timings",
+            tier: "TIER 1 — OFFICIAL",
+            evidenceType: "INFERRED CONTEXT"
         },
         {
             id: "EVID-GOA-NEWS-01",
@@ -56,58 +59,63 @@ const SafestopDemand = {
             windowText: "08:00–09:00 IST Mandovi Corridor Morning Peak",
             explanation: "Published North Goa intra-district commuter flow guidelines indicate elevated morning highway travel demand.",
             sourceTitle: "KTCL Citizen Charter & Route Advisory",
-            sourceUrl: "https://ktclgoa.com/",
-            tier: "TIER 1 — OFFICIAL"
+            sourceUrl: "https://ktclgoa.com/bus-schedules/",
+            tier: "TIER 1 — OFFICIAL",
+            evidenceType: "OFFICIAL SERVICE EVIDENCE"
         }
     ],
 
     // Evaluate deterministic Boarding Demand Estimate
     evaluateDemand({ routeId, stopName, timeDate = (typeof SafestopTime !== 'undefined' ? SafestopTime.getISTDate() : new Date()) }) {
-        const istMinutes = (typeof SafestopTime !== 'undefined' ? SafestopTime.getISTMinutesOfDay(timeDate) : (timeDate.getHours() * 60 + timeDate.getMinutes()));
-
-        // Search for applicable evidence match
-        const matchingRecord = this.EVIDENCE_RECORDS.find(rec => {
-            const matchesRoute = !rec.corridorId || rec.corridorId === routeId;
-            const matchesStop = rec.stopNames.some(s => s.toLowerCase() === (stopName || '').toLowerCase());
-            return matchesRoute && matchesStop;
-        });
-
-        if (matchingRecord) {
-            const inPeakWindow = istMinutes >= matchingRecord.startMinutes && istMinutes <= matchingRecord.endMinutes;
-            if (inPeakWindow) {
-                return {
-                    level: matchingRecord.peakLevel,
-                    badgeClass: matchingRecord.peakLevel === 'HIGH' ? 'badge-danger' : 'badge-warning',
-                    windowText: matchingRecord.windowText,
-                    explanation: matchingRecord.explanation,
-                    sourceTitle: matchingRecord.sourceTitle,
-                    sourceUrl: matchingRecord.sourceUrl,
-                    tier: matchingRecord.tier,
-                    isOfficialEvidence: true
-                };
-            } else {
-                return {
-                    level: "MODERATE",
-                    badgeClass: "badge-warning",
-                    windowText: "Off-Peak Hours (Outside Documented Window)",
-                    explanation: `Historical demand evidence documented during ${matchingRecord.windowText}. Lower demand estimated currently.`,
-                    sourceTitle: matchingRecord.sourceTitle,
-                    sourceUrl: matchingRecord.sourceUrl,
-                    tier: matchingRecord.tier,
-                    isOfficialEvidence: true
-                };
-            }
+        if (!stopName) {
+            return {
+                level: "UNAVAILABLE",
+                badgeClass: "badge-warning",
+                windowText: "Demand Estimate Unavailable",
+                explanation: "Stop identity not specified.",
+                sourceTitle: "KTCL Official Timetable Baseline",
+                sourceUrl: "https://ktclgoa.com/",
+                tier: "NO ACTIVE DEMAND EVIDENCE",
+                evidenceType: "OFFICIAL SERVICE EVIDENCE",
+                isOfficialEvidence: false
+            };
         }
 
-        // For unevidenced stops or general off-peak times: default to LOW
+        const istMinutes = (typeof SafestopTime !== 'undefined' ? SafestopTime.getISTMinutesOfDay(timeDate) : (timeDate.getHours() * 60 + timeDate.getMinutes()));
+
+        // Search for an ACTIVE evidence window match
+        const activeRecord = this.EVIDENCE_RECORDS.find(rec => {
+            const matchesRoute = !rec.corridorId || rec.corridorId === routeId;
+            const matchesStop = rec.stopNames.some(s => s.toLowerCase() === (stopName || '').toLowerCase());
+            const inPeakWindow = istMinutes >= rec.startMinutes && istMinutes <= rec.endMinutes;
+            return matchesRoute && matchesStop && inPeakWindow;
+        });
+
+        if (activeRecord) {
+            const isOfficial = activeRecord.evidenceType === "OFFICIAL PASSENGER-FLOW EVIDENCE" || activeRecord.evidenceType === "OFFICIAL SERVICE EVIDENCE";
+            return {
+                level: activeRecord.peakLevel,
+                badgeClass: activeRecord.peakLevel === 'HIGH' ? 'badge-danger' : 'badge-warning',
+                windowText: activeRecord.windowText,
+                explanation: activeRecord.explanation,
+                sourceTitle: activeRecord.sourceTitle,
+                sourceUrl: activeRecord.sourceUrl,
+                tier: activeRecord.tier,
+                evidenceType: activeRecord.evidenceType,
+                isOfficialEvidence: isOfficial
+            };
+        }
+
+        // For off-peak hours (outside active evidence windows) or unevidenced stops: default to LOW
         return {
             level: "LOW",
             badgeClass: "badge-success",
-            windowText: "Standard Service Window",
-            explanation: "No elevated boarding demand or service disruption documented for this stop/time window.",
+            windowText: "Standard Off-Peak Baseline",
+            explanation: "No documented elevated demand signal applies at this time.",
             sourceTitle: "KTCL Official Timetable & Service Baseline",
-            sourceUrl: "https://ktclgoa.com/",
-            tier: "TIER 1 — OFFICIAL",
+            sourceUrl: "https://ktclgoa.com/bus-schedules/",
+            tier: "NO ACTIVE DEMAND EVIDENCE",
+            evidenceType: "OFFICIAL SERVICE EVIDENCE",
             isOfficialEvidence: false
         };
     }
