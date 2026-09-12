@@ -9,11 +9,12 @@ SAFESTOP combines vehicle accessibility, stop infrastructure, verification fresh
 
 ---
 
-## 1. Live Demo
+## 1. Demo
 
-* **Prototype Demo URL:** [https://smarttransport1.netlify.app/](https://smarttransport1.netlify.app/)
-* **Deployment Notice & Status Flag:** The live URL above hosts the initial static baseline demonstration. Note that the latest `main` branch codebase (including the full SAFESTOP Boarding Confidence engine, demand estimates, and Goa route dataset) can be run locally via the instructions in Section 17.
-* **Disclaimer:** This demo deployment is an independent hackathon prototype for evaluation purposes, not production or official transit software.
+The finalized SAFESTOP prototype is available in the `main` branch of this repository:
+[https://github.com/aaroncostapix/Honored-ones-.git](https://github.com/aaroncostapix/Honored-ones-.git)
+
+For local evaluation, follow the **Run Locally** instructions below.
 
 ---
 
