@@ -5,7 +5,7 @@
 Core question answered by SAFESTOP:
 > *"Can I realistically board this bus from this stop under current reported conditions?"*
 
-SAFESTOP combines vehicle accessibility attributes, physical stop infrastructure features, verification freshness, active community barrier reports, and time-aware boarding demand into a single, transparent **Boarding Confidence Score**.
+SAFESTOP combines vehicle accessibility, stop infrastructure, verification freshness, and reported barriers into a transparent Boarding Confidence Score, alongside a separate time-aware Boarding Demand Estimate.
 
 ---
 
