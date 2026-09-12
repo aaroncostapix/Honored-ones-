@@ -2,35 +2,50 @@
 
 > **Empowering commuters with disabilities and reduced mobility through transparent, multi-factor Boarding Confidence evaluations, barrier intelligence, and time-aware demand estimates across Goa's public transit network.**
 
----
+Core question answered by SAFESTOP:
+> *"Can I realistically board this bus from this stop under current reported conditions?"*
 
-## 1. Project Overview
-
-**SAFESTOP** is an accessible transit intelligence web prototype designed to solve one of the most critical challenges in public transportation: **the gap between vehicle accessibility and stop infrastructure accessibility.**
-
-While modern low-floor electric buses may be wheelchair-accessible on paper, a commuter with a mobility impairment cannot board if the bus stop lacks a ramp, has broken tactile paving, or is obstructed by active construction barriers.
-
-SAFESTOP bridges this gap by evaluating **bus feature data, physical stop attributes, verification freshness, active barrier reports, and time-aware boarding demand** into a transparent **0–100 Boarding Confidence score** and structured **Boarding Demand Estimate**.
+SAFESTOP combines vehicle accessibility attributes, physical stop infrastructure features, verification freshness, active community barrier reports, and time-aware boarding demand into a single, transparent **Boarding Confidence Score**.
 
 ---
 
-## 2. Problem Statement
+## 1. Live Demo
 
-* **Vehicle vs. Stop Infrastructure Mismatch:** A wheelchair-accessible bus servicing a step-only stop renders the bus unusable for mobility-impaired passengers.
-* **Unverified Claims & Travel Anxiety:** Static transit schedules declare routes as "accessible" without accounting for broken platform ramps or temporary sidewalk hazards.
-* **Lack of Real-Time Barrier Visibility:** Construction, illegally parked vehicles, and broken tactile paths frequently obstruct boarding bays without warning.
+* **Prototype Demo URL:** [https://smarttransport1.netlify.app/](https://smarttransport1.netlify.app/)
+* **Deployment Notice & Status Flag:** The live URL above hosts the initial static baseline demonstration. Note that the latest `main` branch codebase (including the full SAFESTOP Boarding Confidence engine, demand estimates, and Goa route dataset) can be run locally via the instructions in Section 17.
+* **Disclaimer:** This demo deployment is an independent hackathon prototype for evaluation purposes, not production or official transit software.
 
 ---
 
-## 3. Core Boarding Confidence Model
+## 2. The Problem
 
-SAFESTOP's deterministic engine calculates a **0–100 Boarding Confidence Score** divided into three evidence categories:
+While modern low-floor electric buses may be wheelchair-accessible on paper, a commuter with a mobility impairment cannot board if the bus stop lacks a platform ramp, has broken tactile paving, or is obstructed by active construction hazards.
+
+Static transit schedules declare routes as "accessible" without accounting for physical stop conditions. SAFESTOP bridges this specific gap by evaluating both the vehicle and the boarding stop infrastructure together.
+
+---
+
+## 3. The Solution
+
+SAFESTOP delivers three core capabilities:
+
+1. **Boarding Confidence Evaluation:** Transparent 0–100 scoring based on bus accessibility, stop features, and inspection freshness.
+2. **Barrier Intelligence:** Community barrier reporting, instant score recalculations, hard critical overrides, and alternate accessible stop recommendations.
+3. **Boarding Demand Estimate:** Deterministic, time-aware demand window heuristics for Goa transit corridors.
+
+*Note:* Tracking and radar visualization features are provided as a separate client-side **Tracking Simulation**.
+
+---
+
+## 4. Boarding Confidence Model
+
+SAFESTOP's engine calculates a **0–100 Boarding Confidence Score** based on verifiable evidence:
 
 ### Score Formula (100 Points Base)
 
 $$\text{Boarding Confidence} = \text{Vehicle Accessibility (35 pts)} + \text{Stop Accessibility (35 pts)} + \text{Verification Freshness (30 pts)} - \text{Barrier Penalties}$$
 
-> **Important Note:** Boarding Confidence is a **structured prototype evidence score** based on available assessment data. It is **not** a statistical probability or guarantee of boarding.
+> **Data Honesty Note:** Boarding Confidence is a **structured prototype evidence score** based on available assessment data. It is **not** a statistical probability, physical guarantee, or official accessibility certification.
 
 ### Category Breakdown
 
@@ -40,7 +55,7 @@ $$\text{Boarding Confidence} = \text{Vehicle Accessibility (35 pts)} + \text{Sto
 | **Stop Accessibility** | **35 pts** | • Step-free approach path (`12 pts`)<br>• Clear 1.5m boarding area (`9 pts`)<br>• Platform boarding ramp (`8 pts`)<br>• Tactile paving for vision support (`6 pts`) |
 | **Verification Freshness** | **30 pts** | • Verified $\le 7$ days: `30 pts`<br>• Verified $\le 30$ days: `20 pts`<br>• Verified $\le 90$ days: `10 pts`<br>• $> 90$ days or unverified: `0 pts` *(Caps confidence at 69)* |
 
-### Barrier Intelligence & Hard Overrides
+### Barrier Penalties & Hard Overrides
 
 * **Minor Barrier:** `-5 pts` (e.g., temporary narrow scaffolding).
 * **Moderate Barrier:** `-15 pts` (e.g., damaged tactile tiles).
@@ -56,81 +71,159 @@ $$\text{Boarding Confidence} = \text{Vehicle Accessibility (35 pts)} + \text{Sto
 
 ---
 
-## 4. Barrier Intelligence & Resolution Workflow
+## 5. Barrier Intelligence Workflow
 
-SAFESTOP provides full lifecycle barrier management:
-1. **Report Barrier:** Commuters or operators submit active physical obstacle reports.
-2. **Score Recalculation:** The engine recalculates the Boarding Confidence score instantly.
-3. **Critical Override:** A critical active barrier immediately caps confidence at **$\le 39$ / LOW**.
-4. **Alternate Stop Recommendation:** The engine automatically evaluates nearby accessible stops on the same route and recommends an alternate boarding location.
-5. **Barrier Resolution:** Operators or commuters can mark barriers as resolved.
-6. **Confidence Recovery:** Upon barrier resolution, the score automatically recovers to its baseline assessment.
+1. **Report Barrier:** Commuters or operators submit active physical obstacle reports via the barrier modal.
+2. **Score Recalculation:** The engine recalculates the Boarding Confidence score immediately.
+3. **Critical Override:** Active critical barriers immediately cap confidence at **$\le 39$ / LOW**.
+4. **Alternate Stop Recommendation:** The engine automatically identifies nearby accessible stops on the same route and presents a one-click alternate stop recommendation.
+5. **Barrier Resolution:** Commuters or operators can mark active barriers as resolved.
+6. **Confidence Recovery:** Score automatically recovers to baseline upon barrier resolution.
 
 ---
 
-## 5. Boarding Demand Estimate (SAFESTOP Estimate)
+## 6. Boarding Demand Estimate (SAFESTOP ESTIMATE)
 
-SAFESTOP includes a deterministic, time-aware **BOARDING DEMAND ESTIMATE** (also labeled **SAFESTOP ESTIMATE**).
+SAFESTOP includes a time-aware heuristic labeled **BOARDING DEMAND ESTIMATE** or **SAFESTOP ESTIMATE**.
 
 ### Valid Outcomes
-* **HIGH** (Peak commuting windows, e.g., 08:00–10:00 IST Morning Office Rush & 17:00–19:00 IST Evening Office Departures)
-* **MODERATE** (Mid-day campus & interchange transfers, e.g., 12:00–14:00 IST)
-* **LOW** (Off-peak baseline traffic)
-* **DEMAND ESTIMATE UNAVAILABLE** (Missing or invalid schedule window data)
+* **HIGH** (Peak commuting windows, e.g., 08:00–10:00 IST Morning Rush & 17:00–19:00 IST Office Departures)
+* **MODERATE** (Contextual windows, e.g., 08:00–09:30 IST Hospital OPD arrival window at GMC)
+* **LOW** (Standard off-peak baseline traffic)
+* **DEMAND ESTIMATE UNAVAILABLE** (Invalid time or missing schedule window data)
 
-> **Data Honesty Note:** The Boarding Demand Estimate is a deterministic time-window model based on scheduled Goa transit patterns. It is **not** live passenger occupancy, **not** live passenger counting, and **not** live crowd sensors.
-
----
-
-## 6. Bus Tracking & GPS Radar Simulation
-
-The tracking visualizer (`tracking.html`) is titled **Bus Tracking & GPS Radar Simulation** and displays **SIMULATED TELEMETRY**.
-
-* **Interactive Radar Canvas:** HTML5 2D Canvas sweep displaying animated bus progression along route stop nodes.
-* **Simulated Telemetry Metrics:** Client-side speed, ETA countdown, and stop-to-stop movement.
-* **Simulation Disclaimer:** All GPS coordinates, speeds, and radar telemetry are generated by client-side simulation loops and do **not** represent live hardware GPS transponders fitted to KTCL vehicles.
+> **Data Honesty Note:** The Boarding Demand Estimate is a deterministic time-window model based on scheduled Goa transit patterns. It is **NOT** live passenger occupancy, **NOT** live passenger counting, and **NOT** live crowd-sensor data.
 
 ---
 
-## 7. Data Provenance & Classification
+## 7. Current Demand Examples (Live Test Sourced)
 
-SAFESTOP clearly distinguishes between three data tiers across the entire platform:
+The following demand evaluations reflect the actual output of the deterministic demand engine across test runs:
 
-1. **OFFICIAL KTCL DATA:** Static route catalogs, published transit timetables, and official stop names.
-2. **SAFESTOP PROTOTYPE ASSESSMENT:** Boarding Confidence scores, sub-score breakdowns, feature availability flags, barrier reports, and time-aware demand estimates.
-3. **SIMULATED TELEMETRY:** Client-side GPS radar coordinates, vehicle speeds, and progress tracking.
+| Stop / Corridor | 08:00 IST | 12:00 IST | 17:30 IST | 21:00 IST |
+| :--- | :---: | :---: | :---: | :---: |
+| **Route 453 → Patto Plaza** | **LOW** *(Off-Peak)* | **LOW** *(Off-Peak)* | **HIGH** *(Office Peak)* | **LOW** *(Off-Peak)* |
+| **Route 453 → GMC** | **MODERATE** *(OPD Window)* | **LOW** *(Off-Peak)* | **LOW** *(Off-Peak)* | **LOW** *(Off-Peak)* |
+| **Route 335 → Margao KTC Bus Stand** | **HIGH** *(Morning Peak)* | **LOW** *(Off-Peak)* | **LOW** *(Off-Peak)* | **LOW** *(Off-Peak)* |
+| **Route 325 → Porvorim Junction** | **LOW** *(Off-Peak)* | **LOW** *(Off-Peak)* | **LOW** *(Off-Peak)* | **LOW** *(Off-Peak)* |
 
----
-
-## 8. Current Hackathon Judge Demo Flow
-
-To evaluate the application using the actual tested demo data:
-
-1. **Open SAFESTOP Portal (`safestop.html`)**
-   * Default selection: **Route 453 (Panaji → Dona Paula)** at **Patto Plaza (Stop #2)**.
-   * Observe **100/100 HIGH CONFIDENCE** score and **LOW BOARDING DEMAND ESTIMATE**.
-2. **Inspect Moderate Barrier Impact**
-   * Select **Goa Medical College (Stop #5)**.
-   * Observe **71/100 HIGH CONFIDENCE** score with moderate barrier alert (`-15 pts` deduction for damaged tactile paving).
-3. **Report Critical Barrier / Test Hard Override**
-   * Click **Report Accessibility Barrier** $\rightarrow$ Select **Blocked Boarding Ramp / High Curb Block** $\rightarrow$ Submit.
-   * Observe Boarding Confidence score instantly drop to **39/100 LOW**.
-4. **Alternate Stop Recommendation**
-   * Observe the engine automatically display a recommended alternate accessible stop on Route 453.
-   * Click **Switch to Alternate Stop**.
-5. **Resolve Barrier & Score Recovery**
-   * Return to original stop, click **Resolve Barrier**.
-   * Observe score instantly recover to baseline.
-6. **Explore Bus Tracking & GPS Radar Simulation (`tracking.html`)**
-   * Observe animated radar sweep, simulated bus telemetry, and voice arrival alerts.
-7. **Inspect Digital Pass (`bus-pass.html`)**
-   * View the prototype digital pass, verify **DEMO ACTIVE** status badge, and test **Save PNG** / **Print Pass (PDF)** export.
+*Contextual Note:* The 08:00 IST MODERATE rating at Goa Medical College (GMC) represents a scheduled hospital OPD window heuristic, not live passenger counts.
 
 ---
 
-## 9. Repository & Setup Instructions
+## 8. Bus Tracking & GPS Radar Simulation
 
-SAFESTOP is built as a zero-dependency static web application.
+The tracking page (`tracking.html`) features **Bus Tracking & GPS Radar Simulation** displaying **SIMULATED TELEMETRY**.
+
+* **Radar Visualizer:** HTML5 Canvas 2D sweep depicting animated bus movement along route stop nodes.
+* **Simulated Telemetry:** Client-side calculated speed, ETA countdown, and stop progression.
+* **Disclaimer:** All GPS coordinates, vehicle speeds, and radar telemetry are generated by client-side JavaScript loops for demonstration purposes. They are **NOT** live hardware GPS transponder streams from KTCL vehicles.
+
+---
+
+## 9. Data Provenance
+
+SAFESTOP maintains three clear data boundaries:
+
+1. **OFFICIAL KTCL DATA:** Published route numbers, static timetables, and official stop names.
+2. **SAFESTOP PROTOTYPE ASSESSMENT:** Boarding Confidence scores, sub-score breakdowns, feature evaluations, community barrier reports, and demand estimate heuristics.
+3. **SIMULATED TELEMETRY:** Client-side GPS radar coordinates, vehicle speeds, and animated route progress.
+
+---
+
+## 10. Prototype Digital Transit Pass
+
+The digital pass page (`bus-pass.html`) generates a **Prototype Digital Transit Pass**.
+
+* **Demo Artifact:** Displays passenger details, route ID, QR code visualization, and a **DEMO ACTIVE** status badge.
+* **Export Options:** Supports client-side PNG export and PDF printing.
+* **Disclaimer:** This digital pass is a prototype demo artifact for hackathon presentation and is **NOT** an officially issued transit credential, government ID, or KTCL authorization.
+
+---
+
+## 11. Accessibility Features
+
+SAFESTOP includes practical accessibility implementation details:
+
+* **Semantic HTML5 Markup:** Form controls, landmarks, and structured document hierarchy.
+* **Keyboard Navigation:** Focusable interactive controls, visible `:focus-visible` outlines, and skip links.
+* **Modal Accessibility:** Keyboard focus trapping, `Escape` key listeners, and focus restoration upon modal close.
+* **ARIA Attributes:** Accessible labels, modal roles (`role="dialog"`), and dynamic state messaging.
+* **User Motion Preferences:** Reduced-motion CSS `@media (prefers-reduced-motion: reduce)` support.
+* **Responsive Layout:** Mobile and desktop responsive layouts across standard viewports.
+
+---
+
+## 12. Secondary Transit Services
+
+SAFESTOP also includes supporting frontend views:
+
+* **Route Directory (`routes.html`):** Route catalog with low-floor vehicle badges.
+* **Timetable (`timetable.html`):** Interactive stop schedule viewer with Web Audio chimes.
+* **Commuter Profile (`profile.html`):** Travel preferences and neutral demo identity (`Goan` / `Goa Commuter`).
+* **Emergency SOS (`index.html` modal):** Prototype SOS alert simulation modal.
+* **Seat Heatmap (`index.html` modal):** Accessible 52-seat bus interior chassis layout visualizer.
+* **Settings & Announcements:** Data reset utility and service advisory views.
+
+---
+
+## 13. Hackathon Judge Demo Flow
+
+To evaluate the application using the tested demo sequence:
+
+1. **Open SAFESTOP Portal (`safestop.html`):** Default selection **Route 453 (Panaji → Dona Paula)** at **Patto Plaza (Stop #2)**. Observe **100/100 HIGH CONFIDENCE** score and **LOW BOARDING DEMAND ESTIMATE** (08:00 IST baseline).
+2. **Inspect Moderate Barrier:** Select **Goa Medical College (Stop #5)**. Observe **71/100 HIGH CONFIDENCE** with `-15 pts` deduction for damaged tactile paving.
+3. **Report Critical Barrier:** Click **Report Accessibility Barrier** $\rightarrow$ Select **Blocked Boarding Ramp / High Curb Block** $\rightarrow$ Submit. Observe score instantly drop to **39/100 LOW**.
+4. **Alternate Stop Recommendation:** Observe the recommended alternate accessible stop on Route 453. Click **Switch to Alternate Stop**.
+5. **Resolve Barrier:** Return to Patto Plaza, click **Resolve Barrier**, and observe confidence score recovery.
+6. **Bus Tracking Simulation (`tracking.html`):** View animated Canvas radar sweep, simulated bus telemetry, and voice arrival alerts.
+7. **Prototype Digital Pass (`bus-pass.html`):** View pass card, verify **DEMO ACTIVE** badge, and test **Save PNG** / **Print Pass (PDF)**.
+
+---
+
+## 14. Tech Stack
+
+* **Frontend:** HTML5, Vanilla CSS3 (CSS Variables, Flexbox, Grid), Native JavaScript ES6+.
+* **Web APIs:** HTML5 Canvas 2D, Web Audio API, Web Speech API (`SpeechSynthesis`), LocalStorage.
+* **Dependencies:** Zero external runtime frameworks or npm package dependencies.
+* **Backend:** 100% Client-side static application (no backend server required).
+
+---
+
+## 15. Project Structure
+
+```
+smart-college-transport-main/
+├── index.html            # Goa Mobility Dashboard & Quick Stats
+├── safestop.html         # SAFESTOP Accessible Boarding Portal
+├── tracking.html         # Bus Tracking & GPS Radar Simulation Visualizer
+├── timetable.html        # Interactive Bus Timetable & Schedules
+├── routes.html           # KTCL Route Directory
+├── announcements.html    # Transit Service Advisories
+├── bus-pass.html         # Prototype Digital Transit Pass
+├── profile.html          # Commuter Profile & Preferences
+├── drivers.html          # Driver Roster Directory
+├── settings.html         # Local Data Reset & Theme Options
+├── css/
+│   ├── style.css         # Main Design System & UI Utility Tokens
+│   ├── safestop.css      # SAFESTOP Gauge & Card Styling
+│   ├── dashboard.css     # Grid Layouts & Card Utilities
+│   └── responsive.css    # Responsive Mobile/Tablet Breakpoints
+└── js/
+    ├── storage.js        # AppStorage Persistence & Demo Profile
+    ├── safestop-data.js   # SAFESTOP Seed Data & Profiles
+    ├── safestop-demand.js # SAFESTOP Boarding Demand Estimate Engine
+    ├── safestop.js        # SAFESTOP Boarding Confidence Engine
+    ├── tracking.js        # Canvas Radar Engine & Telemetry Simulation
+    ├── timetable.js       # Timetable Renderer
+    ├── routes.js          # Route Directory Renderer
+    ├── audio.js           # Web Audio & Speech Synthesis Engine
+    └── app.js             # Global Modals, SOS System & Toasts
+```
+
+---
+
+## 16. Run Locally
 
 ### Clone Repository
 ```bash
@@ -138,58 +231,25 @@ git clone https://github.com/aaroncostapix/Honored-ones-.git
 cd Honored-ones-/smart-college-transport-main
 ```
 
-### Running Locally
-No build tools, npm installs, or backend server dependencies are required.
-
-* **Option A (Direct File):** Open `index.html` directly in any modern web browser.
-* **Option B (Local HTTP Server):**
-  ```bash
-  python -m http.server 8000
-  ```
-  Then open `http://localhost:8000` in your browser.
-
----
-
-## 10. Project Structure
-
+### Serve Locally
+Run using Python's built-in HTTP server:
+```bash
+python -m http.server 8000
 ```
-smart-college-transport-main/
-├── index.html            # Goa Transit Overview & Core Metrics
-├── safestop.html         # SAFESTOP Boarding Confidence & Barrier Portal
-├── tracking.html         # Bus Tracking & GPS Radar Simulation Visualizer
-├── timetable.html        # Interactive Bus Timetable & Scheduled Halts
-├── routes.html           # KTCL Route Directory & Accessibility Flags
-├── announcements.html    # Transit Service Advisories & System Notices
-├── bus-pass.html         # Prototype Digital Transit Pass (Demo Artifact)
-├── profile.html          # Commuter Profile & Travel Preferences
-├── drivers.html          # Driver Directory & Contact Roster
-├── settings.html         # Theme Settings & Local Data Reset
-├── css/
-│   ├── style.css         # Main Design System & CSS Utility Tokens
-│   ├── safestop.css      # SAFESTOP Gauge & Score Card Styling
-│   ├── dashboard.css     # Layout Grids & Dashboard Utilities
-│   └── responsive.css    # Responsive Mobile/Tablet Breakpoints
-└── js/
-    ├── storage.js        # AppStorage Persistence & Default Demo Seeding
-    ├── safestop-data.js   # SAFESTOP Seed Data & Evidence Records
-    ├── safestop.js        # SAFESTOP Scoring & Demand Assessment Engine
-    ├── tracking.js        # Canvas Radar Engine & Telemetry Simulation
-    ├── timetable.js       # Timetable Render & Schedule Viewer Logic
-    ├── routes.js          # Route Directory Renderer
-    ├── audio.js           # Web Audio & Speech Synthesis Engine
-    └── app.js             # Global Modals, SOS System & Toast Notifications
-```
+Then open `http://localhost:8000` in any modern web browser.
 
 ---
 
-## 11. Prototype Disclaimer & Data Honesty
+## 17. Prototype Disclaimer & Data Honesty
 
-* **Independent Hackathon Prototype:** SAFESTOP is an independent hackathon demonstration project. It is **not** an official product of Kadamba Transport Corporation Limited (KTCL) or the Government of Goa.
-* **Prototype Assessment Data:** Boarding Confidence scores, stop feature evaluations, barrier reports, and demand estimates represent prototype demo evaluations created for hackathon demonstration purposes. They do **not** constitute official government accessibility certification.
-* **Simulated Telemetry:** Bus locations, speeds, and radar animations are client-side simulations and do **not** connect to live vehicle hardware GPS hardware.
+* **Independent Hackathon Prototype:** SAFESTOP is an independent hackathon demonstration project. It is **NOT** an official product of Kadamba Transport Corporation Limited (KTCL) or the Government of Goa.
+* **Prototype Assessment Data:** Boarding Confidence scores, stop feature assessments, barrier reports, and demand estimates represent prototype evaluations created for hackathon demonstration purposes. They do **NOT** constitute official government accessibility certification.
+* **Simulated Telemetry:** Bus positions, speeds, and radar sweeps are client-side simulations and do **NOT** represent live hardware GPS streams from KTCL vehicles.
+* **Digital Pass:** The digital bus pass is a prototype demo artifact and is **NOT** an officially issued transit credential.
+* **No Guarantee:** Boarding Confidence scores provide structured evidence ratings and do **NOT** guarantee physical boarding outcomes.
 
 ---
 
-## 12. License
+## 18. License
 
 This project is licensed under the **MIT License**.
