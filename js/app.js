@@ -5,6 +5,7 @@
  */
 
 document.addEventListener('DOMContentLoaded', () => {
+    initReducedMotion();
     initTheme();
     initMobileNav();
     initLiveClock();
@@ -16,6 +17,50 @@ document.addEventListener('DOMContentLoaded', () => {
     initStatCounters();
     highlightActiveNavLink();
 });
+
+/* --------------------------------------------------------------------------
+   Reduced Motion & Animation Control
+   -------------------------------------------------------------------------- */
+function applyReducedMotion(isReduced) {
+    if (isReduced) {
+        document.documentElement.setAttribute('data-reduced-motion', 'reduce');
+        document.documentElement.classList.add('reduced-motion');
+        if (document.body) document.body.classList.add('reduced-motion');
+    } else {
+        document.documentElement.setAttribute('data-reduced-motion', 'no-preference');
+        document.documentElement.classList.remove('reduced-motion');
+        if (document.body) document.body.classList.remove('reduced-motion');
+    }
+}
+
+function isReducedMotion() {
+    const appPref = typeof AppStorage !== 'undefined' && AppStorage.getReducedMotion ? AppStorage.getReducedMotion() : false;
+    const osPref = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    return appPref || osPref;
+}
+
+window.applyReducedMotion = applyReducedMotion;
+window.isReducedMotion = isReducedMotion;
+
+function initReducedMotion() {
+    const isStored = typeof AppStorage !== 'undefined' && AppStorage.getReducedMotion ? AppStorage.getReducedMotion() : false;
+    applyReducedMotion(isStored);
+
+    if (window.matchMedia) {
+        const mediaQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
+        const handleOsChange = () => {
+            const manualSetting = typeof AppStorage !== 'undefined' && AppStorage.getReducedMotion ? AppStorage.getReducedMotion() : false;
+            if (!manualSetting) {
+                applyReducedMotion(mediaQuery.matches);
+            }
+        };
+        if (mediaQuery.addEventListener) {
+            mediaQuery.addEventListener('change', handleOsChange);
+        } else if (mediaQuery.addListener) {
+            mediaQuery.addListener(handleOsChange);
+        }
+    }
+}
 
 /* --------------------------------------------------------------------------
    Theme Management (Light / Dark Mode)
@@ -82,11 +127,36 @@ function initAudioControls() {
 /* --------------------------------------------------------------------------
    Emergency SOS System & Modal
    -------------------------------------------------------------------------- */
+let sosModalTriggerElement = null;
+
+function openSosModal(triggerEl) {
+    sosModalTriggerElement = triggerEl || document.activeElement;
+    const modal = document.getElementById('sosEmergencyModal');
+    if (!modal) return;
+    modal.classList.add('active');
+    const firstFocusable = modal.querySelector('button:not([disabled]), [href], input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])');
+    if (firstFocusable) {
+        firstFocusable.focus();
+    }
+}
+
+function closeSosModal() {
+    const modal = document.getElementById('sosEmergencyModal');
+    if (!modal || !modal.classList.contains('active')) return;
+    modal.classList.remove('active');
+    if (sosModalTriggerElement && typeof sosModalTriggerElement.focus === 'function') {
+        sosModalTriggerElement.focus();
+    }
+}
+
+window.openSosModal = openSosModal;
+window.closeSosModal = closeSosModal;
+
 function initSosEmergencySystem() {
     // Inject SOS Modal if not in DOM
     if (!document.getElementById('sosEmergencyModal')) {
         const sosModalHtml = `
-            <div id="sosEmergencyModal" class="modal-backdrop">
+            <div id="sosEmergencyModal" class="modal-backdrop" role="dialog" aria-modal="true" aria-labelledby="sosModalTitle" aria-describedby="sosModalDesc">
                 <div class="modal-card" style="max-width: 520px; border-top: 5px solid #ef4444;">
                     <div class="modal-header" style="background: rgba(239, 68, 68, 0.1);">
                         <div style="display: flex; align-items: center; gap: 0.75rem;">
@@ -94,43 +164,48 @@ function initSosEmergencySystem() {
                                 <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path><line x1="12" y1="9" x2="12" y2="13"></line><line x1="12" y1="17" x2="12.01" y2="17"></line></svg>
                             </div>
                             <div>
-                                <h3 style="color: #ef4444; font-size: 1.2rem; font-weight: 800;">Emergency Safety SOS</h3>
-                                <div style="font-size: 0.78rem; color: var(--text-muted);">24x7 ITR Transit Security Command Center</div>
+                                <h3 id="sosModalTitle" style="color: #ef4444; font-size: 1.2rem; font-weight: 800;">Emergency Safety SOS</h3>
+                                <div style="font-size: 0.78rem; color: var(--text-muted);">24x7 Goa Mobility Transit Command Center</div>
                             </div>
                         </div>
-                        <button class="btn-sm btn-secondary" onclick="document.getElementById('sosEmergencyModal').classList.remove('active')">✕</button>
+                        <button type="button" class="btn-sm btn-secondary" aria-label="Close Emergency SOS modal" onclick="closeSosModal()">✕</button>
                     </div>
                     <div style="padding: 1.5rem;">
-                        <p style="font-size: 0.92rem; color: var(--text-muted); line-height: 1.5; margin-bottom: 1.25rem;">
-                            If you require immediate medical, breakdown, or safety assistance while traveling on a college bus, trigger the dispatch protocol below:
+                        <p id="sosModalDesc" style="font-size: 0.92rem; color: var(--text-muted); line-height: 1.5; margin-bottom: 1.25rem;">
+                            If you require immediate medical, breakdown, or safety assistance while traveling on a transit bus, trigger the dispatch protocol below:
                         </p>
 
                         <div style="display: flex; flex-direction: column; gap: 0.75rem; margin-bottom: 1.5rem;">
-                            <a href="tel:02766291000" class="btn btn-primary" style="background: #ef4444; justify-content: flex-start; padding: 0.85rem 1.2rem;">
+                            <a href="tel:08322438800" class="btn btn-primary" style="background: #ef4444; justify-content: flex-start; padding: 0.85rem 1.2rem;">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path></svg>
                                 <div>
-                                    <div style="font-weight: 800;">Call Campus Security: 02766-291000</div>
-                                    <div style="font-size: 0.74rem; opacity: 0.9;">Direct line to Main Gate Transport Control</div>
+                                    <div style="font-weight: 800;">Call Transit Control: 0832-2438800</div>
+                                    <div style="font-size: 0.74rem; opacity: 0.9;">Direct line to Main Transit Helpline</div>
                                 </div>
                             </a>
 
-                            <button onclick="simulateEmergencyDispatch()" class="btn btn-secondary" style="border-color: #f59e0b; color: #d97706; justify-content: flex-start; padding: 0.85rem 1.2rem;">
+                            <button type="button" onclick="simulateEmergencyDispatch()" class="btn btn-secondary" style="border-color: #f59e0b; color: #d97706; justify-content: flex-start; padding: 0.85rem 1.2rem;">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2a8 8 0 0 0-8 8c0 5.25 8 12 8 12s8-6.75 8-12a8 8 0 0 0-8-8z"></path><circle cx="12" cy="10" r="3"></circle></svg>
                                 <div>
-                                    <div style="font-weight: 800;">Broadcast Live GPS to Parent & Security</div>
+                                    <div style="font-weight: 800;">Broadcast Location Telemetry to Emergency Contact</div>
                                     <div style="font-size: 0.74rem; color: var(--text-muted);">Transmits location telemetry via simulated SMS</div>
                                 </div>
                             </button>
                         </div>
 
                         <div style="padding: 0.75rem; border-radius: var(--radius-md); background: var(--bg-muted); font-size: 0.82rem; color: var(--text-muted);">
-                            <strong>Student:</strong> Preyal Modi | <strong>Route:</strong> Patan → ITR (GJ-02-AZ-4512)
+                            <strong>Passenger:</strong> Goan | <strong>Route:</strong> Route 453: Panaji → Dona Paula (KTCL-EV-Demo-06)
                         </div>
                     </div>
                 </div>
             </div>
         `;
         document.body.insertAdjacentHTML('beforeend', sosModalHtml);
+
+        const sosModalEl = document.getElementById('sosEmergencyModal');
+        sosModalEl.addEventListener('click', (e) => {
+            if (e.target === sosModalEl) closeSosModal();
+        });
     }
 
     const sosBtns = document.querySelectorAll('.trigger-sos-modal');
@@ -138,72 +213,162 @@ function initSosEmergencySystem() {
         btn.addEventListener('click', (e) => {
             e.preventDefault();
             if (window.AppAudio) AppAudio.playSosAlarm();
-            document.getElementById('sosEmergencyModal').classList.add('active');
+            openSosModal(btn);
         });
     });
+
+    if (!document.body.dataset.sosKeydownBound) {
+        document.body.dataset.sosKeydownBound = 'true';
+        document.addEventListener('keydown', (e) => {
+            const modal = document.getElementById('sosEmergencyModal');
+            if (!modal || !modal.classList.contains('active')) return;
+
+            if (e.key === 'Escape') {
+                e.preventDefault();
+                closeSosModal();
+                return;
+            }
+
+            if (e.key === 'Tab') {
+                const focusables = modal.querySelectorAll('a[href], button:not([disabled]), textarea:not([disabled]), input:not([disabled]), select:not([disabled]), [tabindex]:not([tabindex="-1"])');
+                if (focusables.length === 0) return;
+                const first = focusables[0];
+                const last = focusables[focusables.length - 1];
+
+                if (e.shiftKey) {
+                    if (document.activeElement === first || !modal.contains(document.activeElement)) {
+                        e.preventDefault();
+                        last.focus();
+                    }
+                } else {
+                    if (document.activeElement === last || !modal.contains(document.activeElement)) {
+                        e.preventDefault();
+                        first.focus();
+                    }
+                }
+            }
+        });
+    }
 }
 
 function simulateEmergencyDispatch() {
-    const modal = document.getElementById('sosEmergencyModal');
-    if (modal) modal.classList.remove('active');
+    closeSosModal();
     if (window.AppAudio) AppAudio.playArrivalChime();
-    showToast('Emergency SOS Sent', 'Live coordinates dispatched to Father (+91 94280 12345) & Campus Security!', 'danger');
+    showToast('Emergency SOS Sent', 'Simulated location telemetry dispatched to Emergency Contact (+91 94280 12345) & Transit Control Room!', 'danger');
 }
 
 /* --------------------------------------------------------------------------
    Live Seat Heatmap & Capacity Modal
    -------------------------------------------------------------------------- */
+let seatModalTriggerElement = null;
+
+function openSeatHeatmapModal(triggerEl) {
+    seatModalTriggerElement = triggerEl || document.activeElement;
+    const modal = document.getElementById('seatHeatmapModal');
+    if (modal) {
+        modal.classList.add('active');
+        const firstFocusable = modal.querySelector('button:not([disabled]), [href], input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])');
+        if (firstFocusable) firstFocusable.focus();
+    }
+}
+
+function closeSeatHeatmapModal() {
+    const modal = document.getElementById('seatHeatmapModal');
+    if (modal) modal.classList.remove('active');
+    if (seatModalTriggerElement && typeof seatModalTriggerElement.focus === 'function') {
+        seatModalTriggerElement.focus();
+    }
+}
+
+window.openSeatHeatmapModal = openSeatHeatmapModal;
+window.closeSeatHeatmapModal = closeSeatHeatmapModal;
+
 function initSeatHeatmapModal() {
     if (!document.getElementById('seatHeatmapModal')) {
         const seatModalHtml = `
-            <div id="seatHeatmapModal" class="modal-backdrop">
-                <div class="modal-card" style="max-width: 580px;">
+            <div id="seatHeatmapModal" class="modal-backdrop" role="dialog" aria-modal="true" aria-labelledby="seatHeatmapTitle">
+                <div class="modal-card" style="max-width: 540px;">
                     <div class="modal-header">
                         <div class="card-title">
                             <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
-                            <span>Live Bus Seat Availability Heatmap</span>
+                            <span id="seatHeatmapTitle">Bus Seat Availability Heatmap</span>
                         </div>
-                        <button class="btn-sm btn-secondary" onclick="document.getElementById('seatHeatmapModal').classList.remove('active')">✕</button>
+                        <button type="button" class="btn-sm btn-secondary" aria-label="Close Seat Heatmap modal" onclick="closeSeatHeatmapModal()" style="font-weight: 700; font-size: 1.1rem; line-height: 1; padding: 0.35rem 0.65rem;">✕</button>
                     </div>
-                    <div style="padding: 1.5rem;">
-                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem; flex-wrap: wrap; gap: 0.5rem;">
+                    <div style="padding: 1.25rem;">
+                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.85rem; flex-wrap: wrap; gap: 0.5rem;">
                             <div>
-                                <strong style="font-size: 1.1rem; color: var(--text-main);">Bus #GJ-02-AZ-4512 (Patan Route)</strong>
-                                <div style="font-size: 0.8rem; color: var(--text-muted);">Capacity: 54 Seats | <strong>48 Occupied</strong> | <span style="color:#10b981; font-weight:700;">6 Available</span></div>
+                                <strong style="font-size: 1.05rem; color: var(--text-main);">Bus #KTCL-EV-Demo-06 (Panaji - Dona Paula)</strong>
+                                <div style="font-size: 0.78rem; color: var(--text-muted);">Capacity: 54 Seats | <strong>48 Occupied</strong> | <span style="color:#10b981; font-weight:700;">6 Available</span></div>
                             </div>
-                            <div style="display: flex; gap: 0.75rem; font-size: 0.75rem;">
+                            <div style="display: flex; gap: 0.75rem; font-size: 0.72rem;">
                                 <span style="display:flex; align-items:center; gap:0.25rem;"><span style="width:10px;height:10px;border-radius:2px;background:#ef4444;"></span> Occupied</span>
                                 <span style="display:flex; align-items:center; gap:0.25rem;"><span style="width:10px;height:10px;border-radius:2px;background:#10b981;"></span> Available</span>
-                                <span style="display:flex; align-items:center; gap:0.25rem;"><span style="width:10px;height:10px;border-radius:2px;background:#8b5cf6;"></span> Reserved</span>
+                                <span style="display:flex; align-items:center; gap:0.25rem;"><span style="width:10px;height:10px;border-radius:2px;background:#8b5cf6;"></span> Priority/Reserved</span>
                             </div>
                         </div>
 
-                        <!-- 54 Seats Layout Grid -->
-                        <div class="bus-seat-grid" id="busSeatGridContainer">
-                            <!-- Populated dynamically -->
+                        <!-- Realistic Bus Chassis Layout -->
+                        <div class="bus-interior-chassis">
+                            <div class="bus-front-header">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>
+                                <span>FRONT OF BUS — DRIVER CABIN & BOARDING RAMP ENTRANCE</span>
+                            </div>
+
+                            <div class="bus-seat-deck">
+                                <div class="bus-front-row">
+                                    <div class="driver-cabin-card" title="Driver Operating Cabin">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><path d="M12 2a10 10 0 1 0 10 10H12V2z"></path></svg>
+                                        <span>DRIVER CABIN</span>
+                                    </div>
+                                    <div class="aisle-indicator-text">FRONT ENTRANCE ♿</div>
+                                    <div class="staff-seats-group">
+                                        <span class="seat-box staff-box" title="Conductor Station">COND</span>
+                                        <span class="seat-box staff-box" title="Staff Duty">STF</span>
+                                    </div>
+                                </div>
+
+                                <div class="seat-section-label">
+                                    <span>FRONT PASSENGER ROWS (SEATS 1-4 PRIORITY / FEMALE RESERVED)</span>
+                                </div>
+
+                                <!-- 52 Seats Layout Grid -->
+                                <div class="bus-seat-grid" id="busSeatGridContainer">
+                                    <!-- Populated dynamically -->
+                                </div>
+
+                                <div class="bus-rear-footer">
+                                    <span>REAR PASSENGER SEATING & ENGINE BAY</span>
+                                </div>
+                            </div>
                         </div>
 
-                        <div style="display: flex; justify-content: flex-end;">
-                            <button class="btn btn-secondary btn-sm" onclick="document.getElementById('seatHeatmapModal').classList.remove('active')">Close Heatmap</button>
+                        <div style="display: flex; justify-content: flex-end; margin-top: 1rem;">
+                            <button type="button" class="btn btn-secondary btn-sm" onclick="closeSeatHeatmapModal()">Close Heatmap</button>
                         </div>
                     </div>
                 </div>
             </div>
         `;
         document.body.insertAdjacentHTML('beforeend', seatModalHtml);
+
+        const modalEl = document.getElementById('seatHeatmapModal');
+        modalEl.addEventListener('click', (e) => {
+            if (e.target === modalEl) closeSeatHeatmapModal();
+        });
     }
 
     // Populate seats
     const seatGrid = document.getElementById('busSeatGridContainer');
     if (seatGrid) {
-        let seatsHtml = `<div class="seat-box driver-seat">DRIVER CABIN</div><div class="seat-aisle"></div><div class="seat-box reserved" title="Conductor">COND</div><div class="seat-box reserved" title="Staff">STF</div>`;
+        let seatsHtml = '';
         for (let i = 1; i <= 52; i++) {
             const isAvailable = [8, 14, 21, 33, 42, 49].includes(i);
             const isReserved = [1, 2, 3, 4].includes(i);
             let cls = isAvailable ? 'available' : (isReserved ? 'reserved' : 'occupied');
-            let tooltip = isAvailable ? `Seat #${i} Available` : (isReserved ? `Seat #${i} Female Reserved` : `Seat #${i} Occupied`);
+            let tooltip = isAvailable ? `Seat #${i} Available` : (isReserved ? `Seat #${i} Priority / Reserved` : `Seat #${i} Occupied`);
 
-            seatsHtml += `<div class="seat-box ${cls}" title="${tooltip}" onclick="showToast('Seat Selected', '${tooltip}', '${isAvailable ? 'success' : 'info'}')">${i}</div>`;
+            seatsHtml += `<button type="button" class="seat-box ${cls}" title="${tooltip}" aria-label="${tooltip}" onclick="showToast('Seat Selected', '${tooltip}', '${isAvailable ? 'success' : 'info'}')">${i}</button>`;
             if (i % 4 === 2) {
                 seatsHtml += `<div class="seat-aisle"></div>`;
             }
@@ -216,9 +381,42 @@ function initSeatHeatmapModal() {
         btn.addEventListener('click', (e) => {
             e.preventDefault();
             if (window.AppAudio) AppAudio.playClick();
-            document.getElementById('seatHeatmapModal').classList.add('active');
+            openSeatHeatmapModal(btn);
         });
     });
+
+    if (!document.body.dataset.seatKeydownBound) {
+        document.body.dataset.seatKeydownBound = 'true';
+        document.addEventListener('keydown', (e) => {
+            const modal = document.getElementById('seatHeatmapModal');
+            if (!modal || !modal.classList.contains('active')) return;
+
+            if (e.key === 'Escape') {
+                e.preventDefault();
+                closeSeatHeatmapModal();
+                return;
+            }
+
+            if (e.key === 'Tab') {
+                const focusables = modal.querySelectorAll('button:not([disabled]), [href], input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])');
+                if (focusables.length === 0) return;
+                const first = focusables[0];
+                const last = focusables[focusables.length - 1];
+
+                if (e.shiftKey) {
+                    if (document.activeElement === first || !modal.contains(document.activeElement)) {
+                        e.preventDefault();
+                        last.focus();
+                    }
+                } else {
+                    if (document.activeElement === last || !modal.contains(document.activeElement)) {
+                        e.preventDefault();
+                        first.focus();
+                    }
+                }
+            }
+        });
+    }
 }
 
 /* --------------------------------------------------------------------------
@@ -226,9 +424,14 @@ function initSeatHeatmapModal() {
    -------------------------------------------------------------------------- */
 function initStatCounters() {
     const statValues = document.querySelectorAll('.stat-value');
+    const reduced = isReducedMotion();
     statValues.forEach(el => {
         const target = parseInt(el.textContent.replace(/[^0-9]/g, '')) || 0;
         if (target <= 0) return;
+        if (reduced) {
+            el.textContent = target;
+            return;
+        }
         let count = 0;
         const step = Math.max(1, Math.floor(target / 25));
         const timer = setInterval(() => {
@@ -296,14 +499,17 @@ function initLiveClock() {
     if (!clockElement) return;
 
     function updateClock() {
-        const now = new Date();
-        const hours = now.getHours();
-        const minutes = String(now.getMinutes()).padStart(2, '0');
-        const seconds = String(now.getSeconds()).padStart(2, '0');
-        const ampm = hours >= 12 ? 'PM' : 'AM';
-        const formattedHours = String(hours % 12 || 12).padStart(2, '0');
-        
-        clockElement.textContent = `${formattedHours}:${minutes}:${seconds} ${ampm}`;
+        if (typeof SafestopTime !== 'undefined') {
+            clockElement.textContent = SafestopTime.formatISTClock();
+        } else {
+            const now = new Date();
+            const hours = now.getHours();
+            const minutes = String(now.getMinutes()).padStart(2, '0');
+            const seconds = String(now.getSeconds()).padStart(2, '0');
+            const ampm = hours >= 12 ? 'PM' : 'AM';
+            const formattedHours = String(hours % 12 || 12).padStart(2, '0');
+            clockElement.textContent = `${formattedHours}:${minutes}:${seconds} ${ampm} IST`;
+        }
     }
 
     updateClock();
@@ -321,7 +527,7 @@ function initGlobalSearch() {
                     <div class="search-modal-header">
                         <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="search-icon"><circle cx="11" cy="11" r="8"></circle><path d="m21 21-4.3-4.3"></path></svg>
                         <input type="text" id="globalModalSearchInput" class="search-modal-input" placeholder="Search routes, bus stops, bus numbers, drivers..." autocomplete="off">
-                        <button id="closeSearchModalBtn" class="btn-sm btn-secondary">ESC</button>
+                        <button type="button" id="closeSearchModalBtn" class="btn-sm btn-secondary">ESC</button>
                     </div>
                     <div id="globalSearchResults" class="search-modal-results">
                         <div style="padding: 1.5rem; text-align: center; color: var(--text-muted);">Type to search all routes, stops, and transport information...</div>
@@ -447,13 +653,13 @@ function initGlobalSearch() {
                 resultsContainer.innerHTML = `<div style="padding: 2rem; text-align: center; color: var(--text-subtle);">No matching transport data found for "<strong>${escapeHtml(query)}</strong>"</div>`;
             } else {
                 resultsContainer.innerHTML = matches.slice(0, 10).map(m => `
-                    <div class="search-result-item" onclick="window.location.href='${m.link}'">
+                    <a class="search-result-item" href="${m.link}">
                         <div>
                             <div style="font-weight: 700; color: var(--text-main); font-size: 0.95rem;">${m.title}</div>
                             <div style="font-size: 0.78rem; color: var(--text-muted); margin-top: 0.2rem;">${m.sub}</div>
                         </div>
                         <span class="badge ${m.type === 'Route' ? 'badge-primary' : m.type === 'Bus Stop' ? 'badge-info' : 'badge-warning'}">${m.type}</span>
-                    </div>
+                    </a>
                 `).join('');
             }
         });
@@ -469,11 +675,15 @@ function initProfileSync() {
     const roleEls = document.querySelectorAll('.header-student-role');
     const avatarEls = document.querySelectorAll('.header-student-avatar');
 
-    nameEls.forEach(el => el.textContent = profile.name || 'Preyal Modi');
-    roleEls.forEach(el => el.textContent = profile.course || 'Computer Engineering');
+    const defaultName = 'Goan';
+    const defaultRole = 'Goa Commuter';
+
+    nameEls.forEach(el => el.textContent = profile.name || defaultName);
+    roleEls.forEach(el => el.textContent = (profile.role || profile.course || defaultRole));
     avatarEls.forEach(el => {
-        const initials = (profile.name || 'PM').split(' ').map(n => n[0]).join('').substring(0, 2).toUpperCase();
-        el.textContent = initials;
+        if (el.tagName.toLowerCase() === 'img') return;
+        const initials = (profile.name || defaultName).split(' ').map(n => n[0]).join('').substring(0, 2).toUpperCase();
+        el.textContent = initials || 'G';
     });
 }
 

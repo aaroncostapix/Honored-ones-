@@ -5,9 +5,9 @@
 
 class BusTrackingSimulation {
     constructor() {
-        this.route = AppStorage.getRouteById('patan-itr');
-        this.currentStopIndex = 4; // Default: Chanasma (Index 4) -> Next: Lanva (Index 5)
-        this.progressBetweenStops = 0.55; // 55% between Chanasma and Lanva
+        this.route = AppStorage.getRouteById('panaji-donapaula');
+        this.currentStopIndex = 1; // Default: Patto Plaza (Index 1) -> Next: Portais (Index 2)
+        this.progressBetweenStops = 0.40; // 40% between Patto Plaza and Portais
         this.isPlaying = true;
         this.speedMultiplier = 1; // 1x, 2x, 5x
         this.simInterval = null;
@@ -15,21 +15,16 @@ class BusTrackingSimulation {
         this.busSpeedKmH = 45;
         this.radarAngle = 0;
 
-        // Telemetry GPS Coordinates (Simulated along Patan -> ITR Highway)
+        // Telemetry GPS Coordinates (Simulated along Panaji -> Dona Paula highway)
         this.coordinates = [
-            { lat: 23.8502, lng: 72.1265 }, // Bagavada Darwaja
-            { lat: 23.8410, lng: 72.1520 }, // Sidhpur Cross Road
-            { lat: 23.8340, lng: 72.1640 }, // Padhmnath Chokdi
-            { lat: 23.8180, lng: 72.1890 }, // Harij Cross Road
-            { lat: 23.7890, lng: 72.2210 }, // Chanasma
-            { lat: 23.7540, lng: 72.2680 }, // Lanva
-            { lat: 23.7210, lng: 72.3120 }, // Dhinoj
-            { lat: 23.6890, lng: 72.3480 }, // DMart
-            { lat: 23.6780, lng: 72.3610 }, // Golden Square
-            { lat: 23.6650, lng: 72.3740 }, // Kashi Vishwanath Temple
-            { lat: 23.6520, lng: 72.3890 }, // Kapila Hanuman Temple
-            { lat: 23.6380, lng: 72.4080 }, // Radhanpur Cross Road
-            { lat: 23.5890, lng: 72.4450 }  // ITR Campus
+            { lat: 15.4989, lng: 73.8370 }, // Panaji Bus Stand
+            { lat: 15.4975, lng: 73.8340 }, // Patto Plaza
+            { lat: 15.4920, lng: 73.8310 }, // Portais
+            { lat: 15.4780, lng: 73.8320 }, // St. Cruz Church
+            { lat: 15.4605, lng: 73.8350 }, // Goa Medical College (GMC)
+            { lat: 15.4650, lng: 73.8210 }, // AIR Tower
+            { lat: 15.4590, lng: 73.8110 }, // Goa University
+            { lat: 15.4540, lng: 73.8040 }  // Dona Paula Circle
         ];
 
         // Elements
@@ -54,8 +49,23 @@ class BusTrackingSimulation {
     init() {
         // Load URL Param if any
         const urlParams = new URLSearchParams(window.location.search);
-        const routeId = urlParams.get('route') || 'patan-itr';
+        const routeId = urlParams.get('route') || 'panaji-donapaula';
         this.route = AppStorage.getRouteById(routeId);
+
+        // Restore saved simulation state if valid for current route
+        const savedState = AppStorage.getSimulationState();
+        if (savedState && savedState.routeId === this.route.id) {
+            if (typeof savedState.currentStopIndex === 'number' &&
+                savedState.currentStopIndex >= 0 &&
+                savedState.currentStopIndex < this.route.stops.length) {
+                this.currentStopIndex = savedState.currentStopIndex;
+            }
+            if (typeof savedState.progressBetweenStops === 'number' &&
+                savedState.progressBetweenStops >= 0 &&
+                savedState.progressBetweenStops <= 1) {
+                this.progressBetweenStops = savedState.progressBetweenStops;
+            }
+        }
 
         // Populate Route Select
         if (this.routeSelect) {
@@ -107,8 +117,18 @@ class BusTrackingSimulation {
 
         const setSpeed = (spd, btn) => {
             this.speedMultiplier = spd;
-            [speed1x, speed2x, speed5x].forEach(b => b && b.classList.remove('btn-primary'));
-            if (btn) btn.classList.add('btn-primary');
+            [speed1x, speed2x, speed5x].forEach(b => {
+                if (b) {
+                    b.classList.remove('btn-primary');
+                    b.classList.add('btn-secondary');
+                    b.setAttribute('aria-pressed', 'false');
+                }
+            });
+            if (btn) {
+                btn.classList.remove('btn-secondary');
+                btn.classList.add('btn-primary');
+                btn.setAttribute('aria-pressed', 'true');
+            }
             if (window.AppAudio) AppAudio.playTone(700, 0.05);
             showToast('Simulation Speed', `Speed set to ${spd}x`, 'info');
         };
@@ -122,7 +142,7 @@ class BusTrackingSimulation {
                 const nextStop = this.route.stops[this.currentStopIndex + 1] || this.route.stops[this.currentStopIndex];
                 if (window.AppAudio) {
                     AppAudio.playArrivalChime();
-                    AppAudio.speakAnnouncement(`Attention students. Bus number ${this.route.busNumber}. Next stop is ${nextStop.name}. Scheduled time ${nextStop.time}.`);
+                    AppAudio.speakAnnouncement(`Attention passengers. Bus number ${this.route.busNumber}. Next stop is ${nextStop.name}. Scheduled time ${nextStop.time}.`);
                     showToast('Voice Announcement', `Broadcasting stop announcement for ${nextStop.name}`, 'info');
                 }
             });
@@ -150,7 +170,7 @@ class BusTrackingSimulation {
                     // Audio & Speech Alert
                     if (window.AppAudio) {
                         AppAudio.playArrivalChime();
-                        AppAudio.speakAnnouncement(`Bus arrived at ${currentStop.name}. Next stop is ${this.route.stops[this.currentStopIndex + 1]?.name || 'ITR Campus'}.`);
+                        AppAudio.speakAnnouncement(`Bus arrived at ${currentStop.name}. Next stop is ${this.route.stops[this.currentStopIndex + 1]?.name || 'Dona Paula Circle'}.`);
                     }
 
                     showToast('Bus Arrival', `Bus ${this.route.busNumber} arrived at ${currentStop.name}`, 'success');
@@ -159,7 +179,7 @@ class BusTrackingSimulation {
                     this.isPlaying = false;
                     if (window.AppAudio) {
                         AppAudio.playArrivalChime();
-                        AppAudio.speakAnnouncement(`Bus reached destination at ITR Campus.`);
+                        AppAudio.speakAnnouncement(`Bus reached destination at Dona Paula Circle.`);
                     }
                     showToast('Destination Reached', `Bus ${this.route.busNumber} reached ${this.route.destination}`, 'success');
                 }
@@ -202,6 +222,7 @@ class BusTrackingSimulation {
         this.etaSeconds = 600;
         this.isPlaying = true;
         this.updateDisplays();
+        this.updateControlButtons();
         this.renderTimeline();
         if (window.AppAudio) AppAudio.playTone(400, 0.1);
         showToast('Simulation Reset', `Restarted at ${this.route.stops[0].name}`, 'info');
@@ -223,10 +244,18 @@ class BusTrackingSimulation {
         if (playBtn && pauseBtn) {
             if (this.isPlaying) {
                 playBtn.classList.add('btn-primary');
+                playBtn.classList.remove('btn-secondary');
+                playBtn.setAttribute('aria-pressed', 'true');
                 pauseBtn.classList.remove('btn-primary');
+                pauseBtn.classList.add('btn-secondary');
+                pauseBtn.setAttribute('aria-pressed', 'false');
             } else {
                 pauseBtn.classList.add('btn-primary');
+                pauseBtn.classList.remove('btn-secondary');
+                pauseBtn.setAttribute('aria-pressed', 'true');
                 playBtn.classList.remove('btn-primary');
+                playBtn.classList.add('btn-secondary');
+                playBtn.setAttribute('aria-pressed', 'false');
             }
         }
     }
@@ -248,7 +277,7 @@ class BusTrackingSimulation {
     updateDisplays() {
         const totalPercent = this.calculateTotalPercentage();
         const currentStop = this.route.stops[this.currentStopIndex] || this.route.stops[0];
-        const nextStop = this.route.stops[this.currentStopIndex + 1] || { name: 'Destination Reached (ITR)', time: this.route.arrivalTime };
+        const nextStop = this.route.stops[this.currentStopIndex + 1] || { name: 'Destination Reached (Dona Paula)', time: this.route.arrivalTime };
 
         if (this.currentStopEl) this.currentStopEl.textContent = currentStop.name;
         if (this.nextStopEl) this.nextStopEl.textContent = nextStop.name;
@@ -293,10 +322,72 @@ class BusTrackingSimulation {
             this.progressAsciiBar.textContent = this.generateAsciiBar(totalPercent);
         }
 
+        // SAFESTOP Live Telemetry Evaluation
+        if (typeof SafestopEngine !== 'undefined' && typeof SafestopData !== 'undefined') {
+            const targetStop = this.route.stops[this.currentStopIndex + 1] || currentStop;
+            const busProfile = SafestopData.getBusProfile(this.route.id, this.route.busNumber);
+            const stopProfile = SafestopData.getStopProfile(this.route.id, targetStop.id, targetStop.name);
+            const compositeId = SafestopData.getCompositeStopId(this.route.id, targetStop.id);
+            const activeBarriers = SafestopData.getActiveBarriersForStop(compositeId);
+
+            const evalResult = SafestopEngine.calculateConfidence({
+                busProfile,
+                stopProfile,
+                activeBarriers
+            });
+
+            let barrierBadgeHtml = '';
+            if (evalResult.criticalBarrierOverride) {
+                barrierBadgeHtml = `
+                    <span class="confidence-badge-pill confidence-low" style="font-size:0.75rem; padding: 0.25rem 0.65rem; margin-left: 0.35rem; background: #ef4444; color: #ffffff;">
+                        ⚠️ Critical Barrier (Forces LOW)
+                    </span>
+                `;
+            } else if (activeBarriers.length > 0 || evalResult.breakdown.barrierPenalty > 0) {
+                barrierBadgeHtml = `
+                    <span class="confidence-badge-pill confidence-moderate" style="font-size:0.75rem; padding: 0.25rem 0.65rem; margin-left: 0.35rem; background: #f59e0b; color: #ffffff;">
+                        ⚠️ Active Barrier (-${evalResult.breakdown.barrierPenalty} pts)
+                    </span>
+                `;
+            }
+
+            const telemetryBadge = document.getElementById('safestopTelemetryBadge');
+            if (telemetryBadge) {
+                telemetryBadge.innerHTML = `
+                    <span class="confidence-badge-pill ${evalResult.levelMeta.class}" style="font-size:0.75rem; padding: 0.25rem 0.75rem;">
+                        Boarding Confidence: ${evalResult.score}/100 (${evalResult.level})
+                    </span>
+                    <span class="badge badge-source-prototype" style="font-size:0.68rem; padding: 0.2rem 0.5rem;">Prototype Assessment</span>
+                    ${barrierBadgeHtml}
+                `;
+            }
+
+            if (typeof SafestopDemand !== 'undefined') {
+                const demandEval = SafestopDemand.evaluateDemand({
+                    routeId: this.route.id,
+                    stopName: targetStop.name
+                });
+                const demandBadge = document.getElementById('safestopDemandTelemetryBadge');
+                if (demandBadge) {
+                    demandBadge.innerHTML = `
+                        <span class="badge ${demandEval.badgeClass}" style="font-size:0.72rem; padding: 0.25rem 0.65rem;">
+                            SAFESTOP DEMAND ESTIMATE: ${demandEval.level}
+                        </span>
+                    `;
+                }
+            }
+
+            const viewDetailsLink = document.querySelector('a[href^="safestop.html"]');
+            if (viewDetailsLink) {
+                viewDetailsLink.href = `safestop.html?route=${encodeURIComponent(this.route.id)}&stop=${encodeURIComponent(targetStop.id)}`;
+            }
+        }
+
         // Save state for synchronization with dashboard
         AppStorage.saveSimulationState({
             routeId: this.route.id,
             currentStopIndex: this.currentStopIndex,
+            progressBetweenStops: this.progressBetweenStops,
             currentStopName: currentStop.name,
             nextStopName: nextStop.name,
             nextStopTime: nextStop.time,
@@ -350,11 +441,11 @@ class BusTrackingSimulation {
                             nodeIcon = `✓`;
                             badgeHtml = `<span class="badge badge-success" style="font-size:0.7rem;">Passed</span>`;
                         } else if (isDestination) {
-                            badgeHtml = `<span class="badge badge-accent" style="font-size:0.7rem;">College Campus</span>`;
+                            badgeHtml = `<span class="badge badge-accent" style="font-size:0.7rem;">Terminal Stop</span>`;
                         }
 
                         return `
-                            <div class="stop-node-item" onclick="window.busSim && window.busSim.jumpToStop(${idx})" style="display: flex; align-items: center; gap: 1.25rem; cursor: pointer; padding: 0.5rem 0.75rem; border-radius: var(--radius-md); transition: background-color var(--transition-fast);">
+                            <button type="button" class="stop-node-item" onclick="window.busSim && window.busSim.jumpToStop(${idx})" style="display: flex; align-items: center; gap: 1.25rem; cursor: pointer; padding: 0.5rem 0.75rem; border-radius: var(--radius-md); transition: background-color var(--transition-fast); background: none; border: none; text-align: left; width: 100%; font: inherit; color: inherit;">
                                 <div class="node-circle" style="width: 42px; height: 42px; border-radius: 50%; background: ${nodeBg}; border: 2.5px solid ${nodeBorder}; color: ${nodeColor}; display: flex; align-items: center; justify-content: center; flex-shrink: 0; box-shadow: var(--shadow-sm); transition: all 0.3s ease;">
                                     ${nodeIcon}
                                 </div>
@@ -368,7 +459,7 @@ class BusTrackingSimulation {
                                         ${badgeHtml}
                                     </div>
                                 </div>
-                            </div>
+                            </button>
                         `;
                     }).join('')}
                 </div>
@@ -422,7 +513,13 @@ class BusTrackingSimulation {
             }
 
             // Radar Sweep
-            this.radarAngle += 0.02;
+            const isReduced = typeof window.isReducedMotion === 'function'
+                ? window.isReducedMotion()
+                : (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches);
+
+            if (!isReduced) {
+                this.radarAngle += 0.02;
+            }
             const centerX = w / 2;
             const centerY = h / 2;
             const maxRadius = Math.min(w, h) * 0.45;
@@ -439,7 +536,7 @@ class BusTrackingSimulation {
             const sweepX = centerX + Math.cos(this.radarAngle) * maxRadius;
             const sweepY = centerY + Math.sin(this.radarAngle) * maxRadius;
             const sweepGrad = ctx.createLinearGradient(centerX, centerY, sweepX, sweepY);
-            sweepGrad.addColorStop(0, 'rgba(13, 148, 136, 0.4)');
+            sweepGrad.addColorStop(0, isReduced ? 'rgba(13, 148, 136, 0.2)' : 'rgba(13, 148, 136, 0.4)');
             sweepGrad.addColorStop(1, 'rgba(13, 148, 136, 0)');
             ctx.strokeStyle = sweepGrad;
             ctx.lineWidth = 2;
@@ -509,7 +606,8 @@ class BusTrackingSimulation {
             // Glowing Pulse Ring
             ctx.fillStyle = 'rgba(37, 99, 235, 0.25)';
             ctx.beginPath();
-            ctx.arc(0, 0, 18 + Math.sin(Date.now() * 0.005) * 4, 0, Math.PI * 2);
+            const pulseRadius = isReduced ? 18 : (18 + Math.sin(Date.now() * 0.005) * 4);
+            ctx.arc(0, 0, pulseRadius, 0, Math.PI * 2);
             ctx.fill();
 
             // Bus Body Icon

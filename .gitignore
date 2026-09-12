@@ -12,3 +12,9 @@ desktop.ini
 .vscode/
 .idea/
 *.swp
+
+# Local Antigravity / agent configuration
+.agents/
+
+# Local QA scratch directory
+scratch/

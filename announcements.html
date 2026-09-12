@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Transport Announcements - Smart College Transport Management</title>
-    <meta name="description" content="Official college bus transportation circulars, timetable revisions, route advisories, and holiday schedules.">
+    <title>Transit & Accessibility Notices | GOA MOBILITY</title>
+    <meta name="description" content="Official public transit circulars, timetable revisions, route advisories, and service notices.">
     
     <!-- CSS Stylesheets -->
     <link rel="stylesheet" href="css/style.css">
@@ -21,8 +21,8 @@
                         <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M8 6v6"></path><path d="M15 6v6"></path><path d="M2 12h19.6"></path><path d="M18 18h3s.5-1.7.8-2.8c.1-.4.2-.8.2-1.2 0-.4-.1-.8-.2-1.2l-.8-2.8H18"></path><path d="M4 18H2"></path><path d="m4 6 2-2h12l2 2"></path><circle cx="7" cy="18" r="2"></circle><circle cx="17" cy="18" r="2"></circle></svg>
                     </div>
                     <div class="brand-text">
-                        <span class="brand-title">ITR Transport</span>
-                        <span class="brand-subtitle">Smart Mobility</span>
+                        <span class="brand-title">SAFESTOP</span>
+                        <span class="brand-subtitle">Accessible Transit · Goa</span>
                     </div>
                 </a>
             </div>
@@ -32,6 +32,11 @@
                 <a href="index.html" class="nav-link">
                     <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="7" height="9" x="3" y="3" rx="1"></rect><rect width="7" height="5" x="14" y="3" rx="1"></rect><rect width="7" height="9" x="14" y="12" rx="1"></rect><rect width="7" height="5" x="3" y="16" rx="1"></rect></svg>
                     <span>Dashboard</span>
+                </a>
+                <a href="safestop.html" class="nav-link">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>
+                    <span>SAFESTOP</span>
+                    <span class="nav-badge" style="background: var(--accent); color: white;">ACCESS</span>
                 </a>
                 <a href="routes.html" class="nav-link">
                     <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="6" cy="19" r="3"></circle><path d="M9 19h8.5a3.5 3.5 0 0 0 0-7h-11a3.5 3.5 0 0 1 0-7H15"></path><circle cx="18" cy="5" r="3"></circle></svg>
@@ -44,15 +49,15 @@
                 </a>
                 <a href="tracking.html" class="nav-link">
                     <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="3 11 22 2 13 21 11 13 3 11"></polygon></svg>
-                    <span>Live Tracking</span>
-                    <span class="nav-badge live-pulse">LIVE</span>
+                    <span>Bus Tracking</span>
+                    <span class="nav-badge" style="background: rgba(168, 85, 247, 0.15); color: #a855f7; border: 1px solid rgba(168, 85, 247, 0.3);">SIMULATED</span>
                 </a>
                 <a href="bus-pass.html" class="nav-link">
                     <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="20" height="14" x="2" y="5" rx="2"></rect><line x1="2" x2="22" y1="10" y2="10"></line></svg>
                     <span>Bus Pass</span>
                 </a>
 
-                <div class="nav-section-title">Campus & Services</div>
+                <div class="nav-section-title">Transit Services</div>
                 <a href="drivers.html" class="nav-link">
                     <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M22 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>
                     <span>Drivers</span>
@@ -78,7 +83,7 @@
             <!-- Header -->
             <header class="top-header">
                 <div class="header-left">
-                    <button class="menu-toggle-btn" aria-label="Toggle Navigation Menu">
+                    <button type="button" class="menu-toggle-btn" aria-label="Toggle Navigation Menu">
                         <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="4" x2="20" y1="12" y2="12"></line><line x1="4" x2="20" y1="6" y2="6"></line><line x1="4" x2="20" y1="18" y2="18"></line></svg>
                     </button>
                     <div class="global-search-bar trigger-search-modal">
@@ -92,13 +97,13 @@
 
                 <div class="header-right">
                     <!-- SOS Safety Button -->
-                    <button class="sos-header-btn trigger-sos-modal" aria-label="Emergency SOS">
+                    <button type="button" class="sos-header-btn trigger-sos-modal" aria-label="Emergency SOS">
                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path><line x1="12" y1="9" x2="12" y2="13"></line><line x1="12" y1="17" x2="12.01" y2="17"></line></svg>
                         <span>SOS</span>
                     </button>
 
                     <!-- Audio Synth Mute Toggle -->
-                    <button id="headerAudioToggleBtn" class="header-action-btn" aria-label="Toggle Sound & Voice">
+                    <button type="button" id="headerAudioToggleBtn" class="header-action-btn" aria-label="Toggle Sound & Voice">
                         <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon><path d="M15.54 8.46a5 5 0 0 1 0 7.07"></path></svg>
                     </button>
 
@@ -106,16 +111,16 @@
                         <span class="pulse-dot"></span>
                         <span id="liveClockDisplay">07:40:00 AM</span>
                     </div>
-                    <button class="header-action-btn theme-toggle-btn" aria-label="Toggle Theme">
+                    <button type="button" class="header-action-btn theme-toggle-btn" aria-label="Toggle Theme">
                         <span class="theme-icon">
                             <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"></path></svg>
                         </span>
                     </button>
                     <a href="profile.html" class="header-profile-btn">
-                        <div class="avatar-circle header-student-avatar">PM</div>
+                        <div class="avatar-circle header-student-avatar">G</div>
                         <div class="profile-meta">
-                            <div class="profile-name header-student-name">Preyal Modi</div>
-                            <div class="profile-role header-student-role">Computer Engineering</div>
+                            <div class="profile-name header-student-name">Goan</div>
+                            <div class="profile-role header-student-role">Goa Commuter</div>
                         </div>
                     </a>
                 </div>
@@ -126,7 +131,7 @@
                 <div class="page-header">
                     <div class="page-title-group">
                         <h1>
-                            <span>Transport Notice Board</span>
+                            <span>Transit & Accessibility Notices</span>
                         </h1>
                         <p class="page-subtitle">Official alerts, timing adjustments, holiday bus operations, and maintenance notices.</p>
                     </div>
@@ -147,12 +152,12 @@
                             <input type="text" id="announcementSearchInput" class="search-input" placeholder="Search notices and advisories...">
                         </div>
 
-                        <div style="display: flex; gap: 0.5rem; flex-wrap: wrap;" id="categoryFilterBtns">
-                            <button class="btn btn-sm btn-primary cat-btn" data-cat="all">All (5)</button>
-                            <button class="btn btn-sm btn-secondary cat-btn" data-cat="Urgent Notice">Urgent</button>
-                            <button class="btn btn-sm btn-secondary cat-btn" data-cat="Timetable Update">Timetable</button>
-                            <button class="btn btn-sm btn-secondary cat-btn" data-cat="Holiday Notice">Holidays</button>
-                            <button class="btn btn-sm btn-secondary cat-btn" data-cat="Maintenance">Maintenance</button>
+                        <div style="display: flex; gap: 0.5rem; flex-wrap: wrap;" id="categoryFilterBtns" role="group" aria-label="Filter announcements by category">
+                            <button type="button" class="btn btn-sm btn-primary cat-btn" data-cat="all" aria-pressed="true">All (5)</button>
+                            <button type="button" class="btn btn-sm btn-secondary cat-btn" data-cat="Urgent Notice" aria-pressed="false">Urgent</button>
+                            <button type="button" class="btn btn-sm btn-secondary cat-btn" data-cat="Timetable Update" aria-pressed="false">Timetable</button>
+                            <button type="button" class="btn btn-sm btn-secondary cat-btn" data-cat="Holiday Notice" aria-pressed="false">Holidays</button>
+                            <button type="button" class="btn btn-sm btn-secondary cat-btn" data-cat="Maintenance" aria-pressed="false">Maintenance</button>
                         </div>
                     </div>
                 </div>
@@ -167,6 +172,7 @@
 
     <!-- Scripts -->
     <script src="js/storage.js"></script>
+    <script src="js/time-util.js"></script>
     <script src="js/audio.js"></script>
     <script src="js/app.js"></script>
     <script>
@@ -251,8 +257,12 @@
             catBtns.forEach(btn => {
                 btn.addEventListener('click', () => {
                     if (window.AppAudio) AppAudio.playClick();
-                    catBtns.forEach(b => b.classList.replace('btn-primary', 'btn-secondary'));
+                    catBtns.forEach(b => {
+                        b.classList.replace('btn-primary', 'btn-secondary');
+                        b.setAttribute('aria-pressed', 'false');
+                    });
                     btn.classList.replace('btn-secondary', 'btn-primary');
+                    btn.setAttribute('aria-pressed', 'true');
                     currentCat = btn.getAttribute('data-cat');
                     filterAnnouncements();
                 });

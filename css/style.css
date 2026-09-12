@@ -1,12 +1,12 @@
 /* ==========================================================================
-   Smart College Transport Management System - Main Design System
+   Goa Mobility & SAFESTOP Transit Management System - Main Design System
    Modern, Professional, Clean UI with Light/Dark Mode Support
    ========================================================================== */
 
 @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap');
 
 :root {
-    /* Brand Colors - Sophisticated College Navy & Electric Emerald */
+    /* Brand Colors - Sophisticated Transit Navy & Electric Emerald */
     --primary: #1e3a8a;
     --primary-light: #2563eb;
     --primary-subtle: #eff6ff;
@@ -24,6 +24,14 @@
     --danger-bg: #fef2f2;
     --info: #0284c7;
     --info-bg: #f0f9ff;
+
+    /* SAFESTOP Boarding Confidence Tokens */
+    --confidence-high: #10b981;
+    --confidence-high-bg: #ecfdf5;
+    --confidence-moderate: #f59e0b;
+    --confidence-moderate-bg: #fffbeb;
+    --confidence-low: #ef4444;
+    --confidence-low-bg: #fef2f2;
 
     /* Theme Neutral Scales (Light Mode Default) */
     --bg-base: #f8fafc;
@@ -321,6 +329,11 @@ h1, h2, h3, h4, h5, h6 {
     position: relative;
 }
 
+.nav-badge.nav-badge-accent {
+    background-color: var(--accent);
+    color: #ffffff;
+}
+
 .sidebar-footer {
     padding: 1.1rem 1.25rem;
     border-top: 1px solid var(--border-color);
@@ -461,6 +474,10 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .search-input::placeholder {
+    color: var(--text-subtle);
+}
+
+.search-input-placeholder {
     color: var(--text-subtle);
 }
 
@@ -713,6 +730,18 @@ h1, h2, h3, h4, h5, h6 {
     border-radius: var(--radius-sm);
 }
 
+.btn-translucent {
+    background: rgba(255, 255, 255, 0.2);
+    color: #ffffff;
+    border: none;
+    backdrop-filter: blur(8px);
+}
+
+.btn-translucent:hover {
+    background: rgba(255, 255, 255, 0.3);
+    color: #ffffff;
+}
+
 /* --------------------------------------------------------------------------
    Badges
    -------------------------------------------------------------------------- */
@@ -753,6 +782,30 @@ h1, h2, h3, h4, h5, h6 {
     color: var(--primary-light);
 }
 
+.badge-accent {
+    background-color: var(--accent-subtle);
+    color: var(--accent);
+}
+
+/* Source / Prototype Attribution Badges */
+.badge-source-official {
+    background-color: var(--success-bg);
+    color: var(--success);
+    border: 1px solid rgba(16, 185, 129, 0.35);
+}
+
+.badge-source-prototype {
+    background-color: var(--info-bg);
+    color: var(--info);
+    border: 1px solid rgba(59, 130, 246, 0.35);
+}
+
+.badge-source-simulated {
+    background-color: rgba(168, 85, 247, 0.12);
+    color: #a855f7;
+    border: 1px solid rgba(168, 85, 247, 0.35);
+}
+
 /* --------------------------------------------------------------------------
    Cards
    -------------------------------------------------------------------------- */
@@ -788,6 +841,89 @@ h1, h2, h3, h4, h5, h6 {
 
 .card-body {
     padding: 1.5rem;
+}
+
+.card-highlight {
+    border-color: var(--primary-border);
+}
+
+.card-header-muted {
+    background-color: var(--bg-muted);
+}
+
+.card-inset {
+    padding: 0.9rem;
+    border-radius: var(--radius-md);
+    background-color: var(--bg-base);
+    border: 1px solid var(--border-color);
+}
+
+/* --------------------------------------------------------------------------
+   Form Components
+   -------------------------------------------------------------------------- */
+.form-label {
+    display: block;
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    color: var(--text-muted);
+    margin-bottom: 0.3rem;
+}
+
+.form-control {
+    width: 100%;
+    background-color: var(--bg-surface);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-md);
+    padding: 0.65rem 0.85rem;
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: var(--text-main);
+    transition: border-color var(--transition-fast), box-shadow var(--transition-fast);
+}
+
+.form-control:focus {
+    border-color: var(--primary-light);
+    outline: none;
+}
+
+/* --------------------------------------------------------------------------
+   Callout & Alert Boxes
+   -------------------------------------------------------------------------- */
+.callout {
+    padding: 0.85rem 1rem;
+    border-radius: var(--radius-md);
+    background-color: var(--bg-muted);
+    border-left: 3px solid var(--primary);
+}
+
+.callout-success {
+    border-left-color: var(--success);
+}
+
+.callout-warning {
+    border-left-color: var(--warning);
+}
+
+.callout-danger {
+    border-left-color: var(--danger);
+}
+
+.callout-primary {
+    border-left-color: var(--primary);
+}
+
+.callout-title {
+    font-weight: 700;
+    font-size: 0.88rem;
+    color: var(--text-main);
+}
+
+.callout-desc {
+    font-size: 0.78rem;
+    color: var(--text-muted);
+    margin-top: 0.2rem;
 }
 
 /* --------------------------------------------------------------------------
@@ -940,6 +1076,8 @@ h1, h2, h3, h4, h5, h6 {
     justify-content: space-between;
     transition: all var(--transition-fast);
     cursor: pointer;
+    text-decoration: none;
+    color: inherit;
 }
 
 .search-result-item:hover {
@@ -960,52 +1098,158 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 /* --------------------------------------------------------------------------
-   Seat Layout Heatmap Modal
+   Seat Layout Heatmap Modal — Realistic Bus Interior
    -------------------------------------------------------------------------- */
+.bus-interior-chassis {
+    background: var(--bg-surface);
+    border: 2px solid var(--border-color);
+    border-radius: 20px 20px 14px 14px;
+    padding: 0.85rem;
+    box-shadow: inset 0 0 15px rgba(0, 0, 0, 0.04), var(--shadow-sm);
+    position: relative;
+    max-width: 480px;
+    margin: 1rem auto;
+}
+
+.bus-front-header {
+    background: linear-gradient(135deg, #1e3a8a, #2563eb);
+    color: #ffffff;
+    padding: 0.45rem 0.85rem;
+    border-radius: 14px 14px 6px 6px;
+    font-size: 0.7rem;
+    font-weight: 800;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.45rem;
+    margin-bottom: 0.75rem;
+    box-shadow: 0 2px 8px rgba(37, 99, 235, 0.25);
+}
+
+.bus-seat-deck {
+    background: var(--bg-base);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-md);
+    padding: 0.85rem;
+}
+
+.bus-front-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding-bottom: 0.65rem;
+    margin-bottom: 0.65rem;
+    border-bottom: 1px dashed var(--border-color);
+    gap: 0.5rem;
+}
+
+.driver-cabin-card {
+    background: linear-gradient(135deg, #1e293b, #0f172a);
+    color: #38bdf8;
+    border: 1.5px solid #334155;
+    border-radius: var(--radius-sm);
+    padding: 0.35rem 0.65rem;
+    font-size: 0.7rem;
+    font-weight: 800;
+    display: flex;
+    align-items: center;
+    gap: 0.35rem;
+    letter-spacing: 0.04em;
+}
+
+.aisle-indicator-text {
+    font-size: 0.65rem;
+    font-weight: 700;
+    color: var(--text-muted);
+    font-family: var(--font-mono);
+}
+
+.staff-seats-group {
+    display: flex;
+    gap: 0.35rem;
+}
+
+.seat-box.staff-box {
+    background: var(--bg-muted);
+    color: var(--text-muted);
+    border: 1px solid var(--border-color);
+    width: 32px;
+    height: 32px;
+    font-size: 0.62rem;
+    cursor: default;
+}
+
+.seat-section-label {
+    font-size: 0.63rem;
+    font-weight: 800;
+    color: var(--text-muted);
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    margin-bottom: 0.5rem;
+    text-align: center;
+}
+
 .bus-seat-grid {
     display: grid;
-    grid-template-columns: repeat(4, 1fr) 20px repeat(2, 1fr);
-    gap: 0.65rem;
-    max-width: 480px;
-    margin: 1.5rem auto;
-    padding: 1.5rem;
-    background: var(--bg-muted);
-    border-radius: var(--radius-lg);
-    border: 1px solid var(--border-color);
+    grid-template-columns: repeat(2, 36px) 24px repeat(2, 36px);
+    gap: 0.5rem 0.4rem;
+    justify-content: center;
+    margin: 0.5rem auto;
+    max-height: 320px;
+    overflow-y: auto;
+    padding: 0.5rem 0.25rem;
 }
 
 .seat-box {
-    width: 38px;
-    height: 42px;
-    border-radius: var(--radius-sm);
+    width: 36px;
+    height: 38px;
+    border-radius: 8px 8px 5px 5px;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    font-size: 0.68rem;
-    font-weight: 700;
+    font-size: 0.7rem;
+    font-weight: 800;
     font-family: var(--font-mono);
     cursor: pointer;
     transition: all var(--transition-fast);
     border: 1.5px solid transparent;
+    padding: 0;
+    box-sizing: border-box;
+    position: relative;
+    box-shadow: inset 0 -3px 0 rgba(0, 0, 0, 0.15), var(--shadow-sm);
+}
+
+.seat-box::after {
+    content: '';
+    position: absolute;
+    top: 2px;
+    left: 4px;
+    right: 4px;
+    height: 3px;
+    background: rgba(255, 255, 255, 0.35);
+    border-radius: 2px;
 }
 
 .seat-box.occupied {
-    background-color: #ef4444;
+    background: linear-gradient(180deg, #ef4444 0%, #dc2626 100%);
     color: #ffffff;
-    border-color: #dc2626;
+    border-color: #b91c1c;
 }
 
 .seat-box.available {
-    background-color: #10b981;
+    background: linear-gradient(180deg, #10b981 0%, #059669 100%);
     color: #ffffff;
-    border-color: #059669;
+    border-color: #047857;
+    box-shadow: inset 0 -3px 0 rgba(0, 0, 0, 0.15), 0 0 6px rgba(16, 185, 129, 0.3);
 }
 
 .seat-box.reserved {
-    background-color: #8b5cf6;
+    background: linear-gradient(180deg, #8b5cf6 0%, #7c3aed 100%);
     color: #ffffff;
-    border-color: #7c3aed;
+    border-color: #6d28d9;
 }
 
 .seat-box.driver-seat {
@@ -1016,7 +1260,146 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .seat-aisle {
-    width: 20px;
+    width: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.bus-rear-footer {
+    background: var(--bg-muted);
+    color: var(--text-muted);
+    border-top: 1px dashed var(--border-color);
+    padding: 0.35rem;
+    font-size: 0.63rem;
+    font-weight: 700;
+    text-align: center;
+    letter-spacing: 0.05em;
+    border-radius: 0 0 var(--radius-sm) var(--radius-sm);
+    margin-top: 0.5rem;
+}
+
+.stop-node-item {
+    background: none;
+    border: none;
+    text-align: left;
+    width: 100%;
+    font-family: inherit;
+    font-size: inherit;
+    color: inherit;
+}
+
+/* --------------------------------------------------------------------------
+   Accessibility & Keyboard Navigation Focus Styles
+   -------------------------------------------------------------------------- */
+:focus-visible,
+a:focus-visible,
+button:focus-visible,
+input:focus-visible,
+select:focus-visible,
+textarea:focus-visible,
+.btn:focus-visible,
+.nav-link:focus-visible,
+.brand-badge:focus-visible,
+.header-action-btn:focus-visible,
+.menu-toggle-btn:focus-visible,
+.sos-header-btn:focus-visible,
+.header-profile-btn:focus-visible,
+.bottom-nav-item:focus-visible,
+.search-result-item:focus-visible,
+.stop-node-item:focus-visible,
+.seat-box:focus-visible,
+.card:focus-visible,
+[tabindex]:focus-visible {
+    outline: 2px solid var(--accent) !important;
+    outline-offset: 2px !important;
+}
+
+.seat-box:focus-visible {
+    z-index: 3;
+}
+
+/* --------------------------------------------------------------------------
+   Reduced Motion & Animation Control
+   -------------------------------------------------------------------------- */
+@media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+        scroll-behavior: auto !important;
+    }
+
+    .pulse-dot,
+    .live-dot,
+    .sos-header-btn,
+    .nav-badge.live-pulse,
+    .stop-preview-item.current-target .stop-dot {
+        animation: none !important;
+        box-shadow: none !important;
+    }
+
+    .confidence-gauge-fill {
+        transition: none !important;
+    }
+
+    .modal-backdrop,
+    .search-modal-backdrop,
+    .modal-card,
+    .search-modal,
+    .toast {
+        transition: none !important;
+        transform: none !important;
+        animation: none !important;
+    }
+}
+
+:root[data-reduced-motion="reduce"] *,
+:root[data-reduced-motion="reduce"] *::before,
+:root[data-reduced-motion="reduce"] *::after,
+.reduced-motion *,
+.reduced-motion *::before,
+.reduced-motion *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+}
+
+:root[data-reduced-motion="reduce"] .pulse-dot,
+:root[data-reduced-motion="reduce"] .live-dot,
+:root[data-reduced-motion="reduce"] .sos-header-btn,
+:root[data-reduced-motion="reduce"] .nav-badge.live-pulse,
+:root[data-reduced-motion="reduce"] .stop-preview-item.current-target .stop-dot,
+.reduced-motion .pulse-dot,
+.reduced-motion .live-dot,
+.reduced-motion .sos-header-btn,
+.reduced-motion .nav-badge.live-pulse,
+.reduced-motion .stop-preview-item.current-target .stop-dot {
+    animation: none !important;
+    box-shadow: none !important;
+}
+
+:root[data-reduced-motion="reduce"] .confidence-gauge-fill,
+.reduced-motion .confidence-gauge-fill {
+    transition: none !important;
+}
+
+:root[data-reduced-motion="reduce"] .modal-backdrop,
+:root[data-reduced-motion="reduce"] .search-modal-backdrop,
+:root[data-reduced-motion="reduce"] .modal-card,
+:root[data-reduced-motion="reduce"] .search-modal,
+:root[data-reduced-motion="reduce"] .toast,
+.reduced-motion .modal-backdrop,
+.reduced-motion .search-modal-backdrop,
+.reduced-motion .modal-card,
+.reduced-motion .search-modal,
+.reduced-motion .toast {
+    transition: none !important;
+    transform: none !important;
+    animation: none !important;
 }
 
 /* --------------------------------------------------------------------------

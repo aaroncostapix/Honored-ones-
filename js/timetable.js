@@ -18,7 +18,7 @@ function initTimetablePage() {
 
     // Parse URL params for pre-selection
     const urlParams = new URLSearchParams(window.location.search);
-    const preselectedRouteId = urlParams.get('route') || 'patan-itr';
+    const preselectedRouteId = urlParams.get('route') || 'panaji-donapaula';
     const preselectedStop = urlParams.get('stop') || '';
 
     // Populate route selector
@@ -40,14 +40,14 @@ function initTimetablePage() {
     }
 
     function renderTimetable() {
-        const activeRouteId = routeSelect ? routeSelect.value : 'patan-itr';
+        const activeRouteId = routeSelect ? routeSelect.value : 'panaji-donapaula';
         const route = AppStorage.getRouteById(activeRouteId);
         const searchQuery = (searchStopInput ? searchStopInput.value : '').toLowerCase().trim();
         const activeTimeFilter = timeFilter ? timeFilter.value : 'all';
 
         // Update Notice
         if (routeNoticeEl) {
-            routeNoticeEl.textContent = route.notice || "Students are requested to reach their respective bus stand 2–5 minutes before the scheduled arrival time.";
+            routeNoticeEl.textContent = route.notice || "Passengers are requested to reach their respective bus stop 2–5 minutes before the scheduled arrival time.";
         }
 
         // Update Meta Header
@@ -55,13 +55,14 @@ function initTimetablePage() {
             routeInfoCard.innerHTML = `
                 <div style="display: flex; flex-wrap: wrap; gap: 1.5rem; justify-content: space-between; align-items: center;">
                     <div>
-                        <div style="display: flex; align-items: center; gap: 0.75rem; margin-bottom: 0.35rem;">
-                            <span class="badge badge-primary">${route.code}</span>
-                            <h2 style="font-size: 1.4rem; font-weight: 800; color: var(--text-main);">${route.name}</h2>
+                        <div style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.35rem; flex-wrap: wrap;">
+                            <span class="badge badge-source-official" title="Official KTCL GTFS Route Code">${route.code}</span>
+                            <span class="badge badge-source-official" style="font-size: 0.68rem;">Official GTFS</span>
+                            <h2 style="font-size: 1.4rem; font-weight: 800; color: var(--text-main); margin-left: 0.25rem;">${route.name}</h2>
                         </div>
                         <p style="color: var(--text-muted); font-size: 0.88rem;">
                             Assigned Bus: <strong style="font-family: var(--font-mono); color: var(--text-main);">${route.busNumber}</strong> | 
-                            Driver: <strong style="color: var(--text-main);">${route.driverName}</strong> | 
+                            Operator: <strong style="color: var(--text-main);">${route.driverName}</strong> |
                             Departure: <strong>${route.startTime}</strong> → Arrival: <strong>${route.arrivalTime}</strong>
                         </p>
                     </div>
@@ -70,7 +71,7 @@ function initTimetablePage() {
                             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="3 11 22 2 13 21 11 13 3 11"></polygon></svg>
                             Track Bus Live
                         </a>
-                        <button onclick="window.print()" class="btn btn-secondary btn-sm">
+                        <button type="button" onclick="window.print()" class="btn btn-secondary btn-sm">
                             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 6 2 18 2 18 9"></polyline><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path><rect width="12" height="8" x="6" y="14"></rect></svg>
                             Print Timetable
                         </button>
@@ -107,9 +108,9 @@ function initTimetablePage() {
             return;
         }
 
-        // Determine "Upcoming / Next" stop simulation (defaults to stop #5 Chanasma or based on current simulated progress)
+        // Determine "Upcoming / Next" stop simulation (defaults to stop #5 Patto Plaza or based on current simulated progress)
         const activeSim = AppStorage.getSimulationState() || { currentStopIndex: 4 };
-        const highlightStopIndex = activeSim.currentStopIndex || 4; // default Chanasma / Lanva
+        const highlightStopIndex = activeSim.currentStopIndex || 4; // default Patto Plaza / Portais
 
         tableBody.innerHTML = filteredStops.map((stop, idx) => {
             const originalIndex = route.stops.findIndex(s => s.id === stop.id);
@@ -127,6 +128,16 @@ function initTimetablePage() {
                 statusBadge = `<span class="badge badge-success" style="font-size: 0.72rem;">Passed</span>`;
             } else if (isDestination) {
                 statusBadge = `<span class="badge badge-primary" style="font-size: 0.72rem;">Destination</span>`;
+            }
+
+            let confidencePill = `<span class="badge" style="font-size: 0.72rem; background: var(--bg-muted); color: var(--text-muted);">Unverified</span>`;
+            if (typeof SafestopData !== 'undefined' && typeof SafestopEngine !== 'undefined') {
+                const busProfile = SafestopData.getBusProfile(route.id, route.busNumber);
+                const stopProfile = SafestopData.getStopProfile(route.id, stop.id, stop.name);
+                const compositeId = SafestopData.getCompositeStopId(route.id, stop.id);
+                const activeBarriers = SafestopData.getActiveBarriersForStop(compositeId);
+                const evalRes = SafestopEngine.calculateConfidence({ busProfile, stopProfile, activeBarriers });
+                confidencePill = `<span class="confidence-badge-pill ${evalRes.levelMeta.class}" style="font-size:0.7rem; padding: 0.2rem 0.5rem;">${evalRes.score}/100 (${evalRes.level})</span>`;
             }
 
             return `
@@ -151,6 +162,9 @@ function initTimetablePage() {
                     <td data-label="Distance" style="font-family: var(--font-mono); font-size: 0.84rem; color: var(--text-muted);">
                         ${stop.distanceKm} km
                     </td>
+                    <td data-label="SAFESTOP Confidence">
+                        ${confidencePill}
+                    </td>
                     <td data-label="Status">
                         ${statusBadge}
                     </td>
@@ -159,8 +173,37 @@ function initTimetablePage() {
         }).join('');
     }
 
+    const timeFilterBtns = document.querySelectorAll('.timetable-filter-btn');
+    if (timeFilterBtns.length > 0) {
+        timeFilterBtns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                const slot = btn.dataset.time;
+                timeFilterBtns.forEach(b => {
+                    b.classList.remove('btn-primary');
+                    b.classList.add('btn-secondary');
+                    b.setAttribute('aria-pressed', 'false');
+                });
+                btn.classList.remove('btn-secondary');
+                btn.classList.add('btn-primary');
+                btn.setAttribute('aria-pressed', 'true');
+                if (timeFilter) timeFilter.value = slot;
+                renderTimetable();
+            });
+        });
+    }
+
     if (searchStopInput) searchStopInput.addEventListener('input', renderTimetable);
-    if (timeFilter) timeFilter.addEventListener('change', renderTimetable);
+    if (timeFilter) {
+        timeFilter.addEventListener('change', () => {
+            timeFilterBtns.forEach(b => {
+                const isSelected = b.dataset.time === timeFilter.value;
+                b.classList.toggle('btn-primary', isSelected);
+                b.classList.toggle('btn-secondary', !isSelected);
+                b.setAttribute('aria-pressed', isSelected ? 'true' : 'false');
+            });
+            renderTimetable();
+        });
+    }
 
     // Initial Render
     renderTimetable();

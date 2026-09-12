@@ -1,5 +1,5 @@
 /* ==========================================================================
-   Smart College Transport Management System - Responsive Styles
+   Goa Mobility & SAFESTOP Transit Management System - Responsive Styles
    Mobile-first adaptations, hamburger menu, grid collapse, touch-friendly UI
    ========================================================================== */
 
@@ -118,6 +118,24 @@
         font-size: 1.5rem;
     }
 
+    .page-content > div[style*="grid-template-columns: 1fr 2fr"] {
+        grid-template-columns: 1fr !important;
+    }
+
+    #routesGridContainer,
+    #driversGridContainer {
+        grid-template-columns: repeat(auto-fill, minmax(0, 1fr)) !important;
+    }
+
+    .card-body > div[style*="min-width: 280px"],
+    .card-body > div[style*="min-width: 260px"],
+    .card-body > div[style*="min-width: 240px"],
+    #trackingRouteSelect {
+        min-width: 0 !important;
+        max-width: none !important;
+        width: 100%;
+    }
+
     .upcoming-bus-card {
         padding: 1.4rem;
     }
@@ -190,5 +208,15 @@
         color: var(--text-muted);
         font-size: 0.8rem;
         text-transform: uppercase;
+    }
+}
+
+@media (max-width: 480px) {
+    .live-clock-pill {
+        display: none;
+    }
+
+    .header-right {
+        gap: 0.4rem;
     }
 }

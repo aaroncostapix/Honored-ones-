@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Drivers Directory - Smart College Transport Management</title>
-    <meta name="description" content="College transport authorized drivers directory, safety ratings, assigned route numbers, and fleet contacts.">
+    <title>Transit Operators & Accessibility Support | GOA MOBILITY</title>
+    <meta name="description" content="Goa public transit operators directory, service ratings, assigned routes, and accessibility support details.">
     
     <!-- CSS Stylesheets -->
     <link rel="stylesheet" href="css/style.css">
@@ -21,8 +21,8 @@
                         <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M8 6v6"></path><path d="M15 6v6"></path><path d="M2 12h19.6"></path><path d="M18 18h3s.5-1.7.8-2.8c.1-.4.2-.8.2-1.2 0-.4-.1-.8-.2-1.2l-.8-2.8H18"></path><path d="M4 18H2"></path><path d="m4 6 2-2h12l2 2"></path><circle cx="7" cy="18" r="2"></circle><circle cx="17" cy="18" r="2"></circle></svg>
                     </div>
                     <div class="brand-text">
-                        <span class="brand-title">ITR Transport</span>
-                        <span class="brand-subtitle">Smart Mobility</span>
+                        <span class="brand-title">SAFESTOP</span>
+                        <span class="brand-subtitle">Accessible Transit · Goa</span>
                     </div>
                 </a>
             </div>
@@ -32,6 +32,11 @@
                 <a href="index.html" class="nav-link">
                     <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="7" height="9" x="3" y="3" rx="1"></rect><rect width="7" height="5" x="14" y="3" rx="1"></rect><rect width="7" height="9" x="14" y="12" rx="1"></rect><rect width="7" height="5" x="3" y="16" rx="1"></rect></svg>
                     <span>Dashboard</span>
+                </a>
+                <a href="safestop.html" class="nav-link">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>
+                    <span>SAFESTOP</span>
+                    <span class="nav-badge" style="background: var(--accent); color: white;">ACCESS</span>
                 </a>
                 <a href="routes.html" class="nav-link">
                     <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="6" cy="19" r="3"></circle><path d="M9 19h8.5a3.5 3.5 0 0 0 0-7h-11a3.5 3.5 0 0 1 0-7H15"></path><circle cx="18" cy="5" r="3"></circle></svg>
@@ -44,15 +49,15 @@
                 </a>
                 <a href="tracking.html" class="nav-link">
                     <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="3 11 22 2 13 21 11 13 3 11"></polygon></svg>
-                    <span>Live Tracking</span>
-                    <span class="nav-badge live-pulse">LIVE</span>
+                    <span>Bus Tracking</span>
+                    <span class="nav-badge" style="background: rgba(168, 85, 247, 0.15); color: #a855f7; border: 1px solid rgba(168, 85, 247, 0.3);">SIMULATED</span>
                 </a>
                 <a href="bus-pass.html" class="nav-link">
                     <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="20" height="14" x="2" y="5" rx="2"></rect><line x1="2" x2="22" y1="10" y2="10"></line></svg>
                     <span>Bus Pass</span>
                 </a>
 
-                <div class="nav-section-title">Campus & Services</div>
+                <div class="nav-section-title">Transit Services</div>
                 <a href="drivers.html" class="nav-link active">
                     <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M22 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>
                     <span>Drivers</span>
@@ -78,13 +83,13 @@
             <!-- Header -->
             <header class="top-header">
                 <div class="header-left">
-                    <button class="menu-toggle-btn" aria-label="Toggle Navigation Menu">
+                    <button type="button" class="menu-toggle-btn" aria-label="Toggle Navigation Menu">
                         <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="4" x2="20" y1="12" y2="12"></line><line x1="4" x2="20" y1="6" y2="6"></line><line x1="4" x2="20" y1="18" y2="18"></line></svg>
                     </button>
                     <div class="global-search-bar trigger-search-modal">
                         <div class="search-input-wrapper">
                             <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="search-icon"><circle cx="11" cy="11" r="8"></circle><path d="m21 21-4.3-4.3"></path></svg>
-                            <span class="search-input" style="color: var(--text-subtle);">Search drivers...</span>
+                            <span class="search-input" style="color: var(--text-subtle);">Search operators...</span>
                             <span class="search-shortcut">/</span>
                         </div>
                     </div>
@@ -92,13 +97,13 @@
 
                 <div class="header-right">
                     <!-- SOS Safety Button -->
-                    <button class="sos-header-btn trigger-sos-modal" aria-label="Emergency SOS">
+                    <button type="button" class="sos-header-btn trigger-sos-modal" aria-label="Emergency SOS">
                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path><line x1="12" y1="9" x2="12" y2="13"></line><line x1="12" y1="17" x2="12.01" y2="17"></line></svg>
                         <span>SOS</span>
                     </button>
 
                     <!-- Audio Synth Mute Toggle -->
-                    <button id="headerAudioToggleBtn" class="header-action-btn" aria-label="Toggle Sound & Voice">
+                    <button type="button" id="headerAudioToggleBtn" class="header-action-btn" aria-label="Toggle Sound & Voice">
                         <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon><path d="M15.54 8.46a5 5 0 0 1 0 7.07"></path></svg>
                     </button>
 
@@ -106,16 +111,16 @@
                         <span class="pulse-dot"></span>
                         <span id="liveClockDisplay">07:40:00 AM</span>
                     </div>
-                    <button class="header-action-btn theme-toggle-btn" aria-label="Toggle Theme">
+                    <button type="button" class="header-action-btn theme-toggle-btn" aria-label="Toggle Theme">
                         <span class="theme-icon">
                             <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"></path></svg>
                         </span>
                     </button>
                     <a href="profile.html" class="header-profile-btn">
-                        <div class="avatar-circle header-student-avatar">PM</div>
+                        <div class="avatar-circle header-student-avatar">G</div>
                         <div class="profile-meta">
-                            <div class="profile-name header-student-name">Preyal Modi</div>
-                            <div class="profile-role header-student-role">Computer Engineering</div>
+                            <div class="profile-name header-student-name">Goan</div>
+                            <div class="profile-role header-student-role">Goa Commuter</div>
                         </div>
                     </a>
                 </div>
@@ -126,9 +131,9 @@
                 <div class="page-header">
                     <div class="page-title-group">
                         <h1>
-                            <span>Authorized Drivers Directory</span>
+                            <span>Transit Operators & Accessibility Support</span>
                         </h1>
-                        <p class="page-subtitle">Verified transport operators, background-cleared drivers, safety scores, and route assignments.</p>
+                        <p class="page-subtitle">Demo transit operators assigned to the Goa prototype network.</p>
                     </div>
                 </div>
 
@@ -137,9 +142,9 @@
                     <div class="card-body" style="padding: 1.25rem 1.5rem; display: flex; gap: 1rem; flex-wrap: wrap; align-items: center; justify-content: space-between;">
                         <div class="search-input-wrapper" style="flex: 1; max-width: 450px; background: var(--bg-base);">
                             <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><path d="m21 21-4.3-4.3"></path></svg>
-                            <input type="text" id="driverSearchInput" class="search-input" placeholder="Search driver name, bus number, or route...">
+                            <input type="text" id="driverSearchInput" class="search-input" placeholder="Search operator, vehicle, or route...">
                         </div>
-                        <span style="font-size: 0.85rem; color: var(--text-muted);">Showing <strong>6</strong> Verified Campus Drivers</span>
+                        <span style="font-size: 0.85rem; color: var(--text-muted); display: flex; align-items: center; gap: 0.4rem;">Showing <strong>6</strong> Prototype Operators <span class="badge badge-source-prototype" style="font-size: 0.65rem;">Prototype / Demo Data</span></span>
                     </div>
                 </div>
 
@@ -153,6 +158,7 @@
 
     <!-- Scripts -->
     <script src="js/storage.js"></script>
+    <script src="js/time-util.js"></script>
     <script src="js/audio.js"></script>
     <script src="js/app.js"></script>
     <script>
@@ -167,7 +173,7 @@
                 if (list.length === 0) {
                     container.innerHTML = `
                         <div style="grid-column: 1 / -1; padding: 3rem; text-align: center; color: var(--text-muted);">
-                            No drivers match your search.
+                            No operators match your search.
                         </div>
                     `;
                     return;
@@ -183,10 +189,11 @@
                                 <div style="flex: 1;">
                                     <div style="display: flex; align-items: center; gap: 0.4rem;">
                                         <h3 style="font-size: 1.15rem; font-weight: 800; color: var(--text-main);">${d.name}</h3>
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="#10b981" stroke="#ffffff" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><polyline points="9 12 11 14 15 10"></polyline></svg>
                                     </div>
-                                    <div style="font-size: 0.8rem; color: var(--text-muted); margin-top: 0.15rem;">ID: ${d.id} • ${d.experience} Exp</div>
-                                    <span class="badge badge-success" style="font-size: 0.7rem; margin-top: 0.35rem;">${d.status}</span>
+                                    <div style="display: flex; gap: 0.35rem; align-items: center; flex-wrap: wrap; margin-top: 0.35rem;">
+                                        <span class="badge badge-success" style="font-size: 0.7rem;">${d.status}</span>
+                                        <span class="badge badge-source-prototype" style="font-size: 0.65rem;">Prototype Operator</span>
+                                    </div>
                                 </div>
                             </div>
 
@@ -196,16 +203,16 @@
                                     <strong style="color: var(--primary-light);">${d.route}</strong>
                                 </div>
                                 <div style="display: flex; justify-content: space-between;">
-                                    <span style="color: var(--text-muted);">Bus Number:</span>
+                                    <span style="color: var(--text-muted);">Vehicle:</span>
                                     <strong style="font-family: var(--font-mono); color: var(--text-main);">${d.busNumber}</strong>
                                 </div>
                                 <div style="display: flex; justify-content: space-between;">
-                                    <span style="color: var(--text-muted);">Safety Score:</span>
-                                    <strong style="color: var(--success);">${d.safetyScore} (${d.rating} ★)</strong>
+                                    <span style="color: var(--text-muted);">Service Rating (Prototype):</span>
+                                    <strong style="color: var(--success);">${d.rating} ★ (${d.safetyScore})</strong>
                                 </div>
                                 <div style="display: flex; justify-content: space-between;">
-                                    <span style="color: var(--text-muted);">Contact:</span>
-                                    <strong style="font-family: var(--font-mono); color: var(--text-main);">${d.phone}</strong>
+                                    <span style="color: var(--text-muted);">Accessibility Support:</span>
+                                    <strong style="color: var(--success);">Ramp Assistance (Prototype)</strong>
                                 </div>
                             </div>
 
@@ -214,9 +221,9 @@
                                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="3 11 22 2 13 21 11 13 3 11"></polygon></svg>
                                     Track Bus
                                 </a>
-                                <button onclick="if(window.AppAudio) AppAudio.playClick(); showToast('Helpline Connected', 'Connecting to driver ${d.name} via ${d.phone}', 'info')" class="btn btn-secondary btn-sm" style="flex: 1;">
+                                <button type="button" onclick="if(window.AppAudio) AppAudio.playClick(); showToast('Operator Contact (Demo)', 'Connecting to operator ${d.name} via ${d.phone}', 'info')" class="btn btn-secondary btn-sm" style="flex: 1;">
                                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path></svg>
-                                    Call Driver
+                                    Call Operator (Demo)
                                 </button>
                             </div>
                         </div>

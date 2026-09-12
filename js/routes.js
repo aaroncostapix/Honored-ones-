@@ -33,7 +33,13 @@ function initRoutesPage() {
                 <div class="card-body" style="padding: 1.6rem;">
                     <div style="display: flex; align-items: flex-start; justify-content: space-between; margin-bottom: 1.2rem;">
                         <div>
-                            <span class="badge badge-primary" style="margin-bottom: 0.4rem;">${route.code}</span>
+                            <div style="display: flex; gap: 0.4rem; align-items: center; margin-bottom: 0.4rem; flex-wrap: wrap;">
+                                <span class="badge badge-source-official" title="Official KTCL GTFS Route Code">${route.code}</span>
+                                ${typeof SafestopData !== 'undefined' && SafestopData.getBusProfile(route.id, route.busNumber).lowFloor
+                                    ? '<span class="badge badge-success" style="font-size: 0.7rem; background: var(--confidence-high-bg); color: var(--confidence-high); border: 1px solid var(--confidence-high);">♿ Low Floor</span>'
+                                    : '<span class="badge" style="font-size: 0.7rem; background: var(--bg-muted); color: var(--text-muted);">Step Entry</span>'}
+                                <span class="badge badge-source-prototype" style="font-size: 0.65rem;">Prototype Data</span>
+                            </div>
                             <h2 style="font-size: 1.35rem; font-weight: 800; color: var(--text-main); letter-spacing: -0.02em;">${route.name}</h2>
                         </div>
                         <span class="badge badge-success">
@@ -69,7 +75,7 @@ function initRoutesPage() {
                             <strong style="color: var(--text-main);">${route.totalDistance} (${route.totalDuration})</strong>
                         </div>
                         <div style="display: flex; align-items: center; justify-content: space-between;">
-                            <span>Assigned Driver:</span>
+                            <span>Assigned Operator:</span>
                             <strong style="color: var(--text-main);">${route.driverName}</strong>
                         </div>
                     </div>
@@ -106,8 +112,37 @@ function initRoutesPage() {
         renderRoutes(filtered);
     }
 
+    const filterBtns = document.querySelectorAll('.route-filter-btn');
+    if (filterBtns.length > 0) {
+        filterBtns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                const status = btn.dataset.status;
+                filterBtns.forEach(b => {
+                    b.classList.remove('btn-primary');
+                    b.classList.add('btn-secondary');
+                    b.setAttribute('aria-pressed', 'false');
+                });
+                btn.classList.remove('btn-secondary');
+                btn.classList.add('btn-primary');
+                btn.setAttribute('aria-pressed', 'true');
+                if (filterStatus) filterStatus.value = status;
+                filterData();
+            });
+        });
+    }
+
     if (searchInput) searchInput.addEventListener('input', filterData);
-    if (filterStatus) filterStatus.addEventListener('change', filterData);
+    if (filterStatus) {
+        filterStatus.addEventListener('change', () => {
+            filterBtns.forEach(b => {
+                const isSelected = b.dataset.status === filterStatus.value;
+                b.classList.toggle('btn-primary', isSelected);
+                b.classList.toggle('btn-secondary', !isSelected);
+                b.setAttribute('aria-pressed', isSelected ? 'true' : 'false');
+            });
+            filterData();
+        });
+    }
 
     // Initial Render
     renderRoutes(routes);
