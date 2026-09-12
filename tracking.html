@@ -244,11 +244,12 @@
                                 </div>
                         <!-- SAFESTOP Live Boarding Confidence Badge -->
                         <div style="margin-bottom: 1.25rem; display: flex; align-items: center; justify-content: space-between; background: var(--bg-surface); padding: 0.75rem 1rem; border-radius: var(--radius-md); border: 1px solid var(--border-color);">
-                            <div style="display: flex; align-items: center; gap: 0.5rem;">
+                            <div style="display: flex; align-items: center; gap: 0.5rem; flex-wrap: wrap;">
                                 <span style="font-weight: 700; font-size: 0.85rem; text-transform: uppercase; letter-spacing: 0.05em; color: var(--text-muted);">SAFESTOP Telemetry:</span>
                                 <div id="safestopTelemetryBadge" class="safestop-telemetry-badge">
                                     <span>Boarding Confidence: <strong>Evaluating...</strong></span>
                                 </div>
+                                <div id="safestopDemandTelemetryBadge" style="display: inline-flex;"></div>
                             </div>
                             <a href="safestop.html" class="btn btn-sm btn-secondary" style="font-size: 0.75rem; padding: 0.25rem 0.6rem;">View Full Details &rarr;</a>
                         </div>
@@ -295,6 +296,8 @@
 
     <!-- Scripts -->
     <script src="js/storage.js"></script>
+    <script src="js/time-util.js"></script>
+    <script src="js/safestop-demand.js"></script>
     <script src="js/safestop-data.js"></script>
     <script src="js/safestop.js"></script>
     <script src="js/audio.js"></script>

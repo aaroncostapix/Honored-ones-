@@ -342,6 +342,21 @@ class BusTrackingSimulation {
                 `;
             }
 
+            if (typeof SafestopDemand !== 'undefined') {
+                const demandEval = SafestopDemand.evaluateDemand({
+                    routeId: this.route.id,
+                    stopName: targetStop.name
+                });
+                const demandBadge = document.getElementById('safestopDemandTelemetryBadge');
+                if (demandBadge) {
+                    demandBadge.innerHTML = `
+                        <span class="badge ${demandEval.badgeClass}" style="font-size:0.72rem; padding: 0.25rem 0.65rem;">
+                            SAFESTOP DEMAND ESTIMATE: ${demandEval.level}
+                        </span>
+                    `;
+                }
+            }
+
             const viewDetailsLink = document.querySelector('a[href^="safestop.html"]');
             if (viewDetailsLink) {
                 viewDetailsLink.href = `safestop.html?route=${encodeURIComponent(this.route.id)}&stop=${encodeURIComponent(targetStop.id)}`;

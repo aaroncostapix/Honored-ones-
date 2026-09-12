@@ -209,6 +209,26 @@
                         </div>
                     </div>
 
+                    <!-- Boarding Demand Estimate Card -->
+                    <div class="card" style="margin-bottom: 1.5rem; padding: 1.5rem; border-radius: 16px; background: var(--bg-surface); border: 1px solid var(--border-color);">
+                        <div style="display: flex; align-items: center; justify-content: space-between; gap: 0.5rem; flex-wrap: wrap; margin-bottom: 0.85rem;">
+                            <div style="display: flex; align-items: center; gap: 0.5rem;">
+                                <span style="font-size: 0.85rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; color: var(--text-muted);">Boarding Demand Estimate</span>
+                                <span class="badge badge-info" style="font-size: 0.68rem; font-weight: 700;">SAFESTOP ESTIMATE</span>
+                            </div>
+                            <span id="safestopDemandPill" class="badge" style="font-size: 0.85rem; font-weight: 800; padding: 0.3rem 0.85rem;">EVALUATING...</span>
+                        </div>
+                        <div style="font-size: 0.88rem; font-weight: 700; color: var(--text-main); margin-bottom: 0.35rem;" id="safestopDemandWindow">--</div>
+                        <p style="font-size: 0.82rem; color: var(--text-muted); line-height: 1.45; margin-bottom: 0.85rem;" id="safestopDemandExplanation">--</p>
+                        <div style="padding-top: 0.75rem; border-top: 1px dashed var(--border-color); display: flex; align-items: center; justify-content: space-between; gap: 0.5rem; flex-wrap: wrap; font-size: 0.76rem; color: var(--text-muted);">
+                            <span>"Based on current IST time, published service frequency and historical public demand evidence."</span>
+                            <span style="font-style: italic;">Not a live passenger-occupancy measurement.</span>
+                        </div>
+                        <div style="margin-top: 0.5rem; font-size: 0.76rem;" id="safestopDemandSource">
+                            <!-- Source link appended dynamically -->
+                        </div>
+                    </div>
+
                     <!-- Accessibility Checklists Card -->
                     <div class="feature-card-grid" style="grid-template-columns: 1fr;">
                         <!-- Vehicle Profile Card -->
@@ -297,6 +317,8 @@
 
     <!-- Scripts -->
     <script src="js/storage.js"></script>
+    <script src="js/time-util.js"></script>
+    <script src="js/safestop-demand.js"></script>
     <script src="js/safestop-data.js"></script>
     <script src="js/safestop.js"></script>
     <script src="js/audio.js"></script>
@@ -569,6 +591,38 @@
                 document.getElementById('busPlateDisplay').textContent = busProfile.busNumber;
                 document.getElementById('stopNameDisplay').textContent = stopProfile.stopName;
                 document.getElementById('stopVerifiedDate').textContent = stopProfile.lastVerified ? `Verified: ${stopProfile.lastVerified.split('T')[0]}` : 'Unverified';
+
+                // Render Boarding Demand Signal
+                if (typeof SafestopDemand !== 'undefined') {
+                    const demandEval = SafestopDemand.evaluateDemand({
+                        routeId: currentRoute.id,
+                        stopName: currentStop.name
+                    });
+
+                    const demandPill = document.getElementById('safestopDemandPill');
+                    const demandWindow = document.getElementById('safestopDemandWindow');
+                    const demandExp = document.getElementById('safestopDemandExplanation');
+                    const demandSource = document.getElementById('safestopDemandSource');
+
+                    if (demandPill) {
+                        demandPill.textContent = `${demandEval.level} DEMAND ESTIMATE`;
+                        demandPill.className = `badge ${demandEval.badgeClass}`;
+                    }
+                    if (demandWindow) {
+                        demandWindow.textContent = demandEval.windowText;
+                    }
+                    if (demandExp) {
+                        demandExp.textContent = demandEval.explanation;
+                    }
+                    if (demandSource) {
+                        demandSource.innerHTML = `
+                            <strong>Evidence Source:</strong>
+                            <a href="${demandEval.sourceUrl}" target="_blank" rel="noopener" style="color: var(--primary-light); text-decoration: underline;">
+                                ${demandEval.sourceTitle}
+                            </a> (${demandEval.tier})
+                        `;
+                    }
+                }
 
                 // Render Bus Features
                 const busList = document.getElementById('busFeatureList');

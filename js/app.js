@@ -296,14 +296,17 @@ function initLiveClock() {
     if (!clockElement) return;
 
     function updateClock() {
-        const now = new Date();
-        const hours = now.getHours();
-        const minutes = String(now.getMinutes()).padStart(2, '0');
-        const seconds = String(now.getSeconds()).padStart(2, '0');
-        const ampm = hours >= 12 ? 'PM' : 'AM';
-        const formattedHours = String(hours % 12 || 12).padStart(2, '0');
-        
-        clockElement.textContent = `${formattedHours}:${minutes}:${seconds} ${ampm}`;
+        if (typeof SafestopTime !== 'undefined') {
+            clockElement.textContent = SafestopTime.formatISTClock();
+        } else {
+            const now = new Date();
+            const hours = now.getHours();
+            const minutes = String(now.getMinutes()).padStart(2, '0');
+            const seconds = String(now.getSeconds()).padStart(2, '0');
+            const ampm = hours >= 12 ? 'PM' : 'AM';
+            const formattedHours = String(hours % 12 || 12).padStart(2, '0');
+            clockElement.textContent = `${formattedHours}:${minutes}:${seconds} ${ampm} IST`;
+        }
     }
 
     updateClock();
