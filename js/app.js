@@ -187,7 +187,7 @@ function initSosEmergencySystem() {
                             <button type="button" onclick="simulateEmergencyDispatch()" class="btn btn-secondary" style="border-color: #f59e0b; color: #d97706; justify-content: flex-start; padding: 0.85rem 1.2rem;">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2a8 8 0 0 0-8 8c0 5.25 8 12 8 12s8-6.75 8-12a8 8 0 0 0-8-8z"></path><circle cx="12" cy="10" r="3"></circle></svg>
                                 <div>
-                                    <div style="font-weight: 800;">Broadcast Live GPS to Emergency Contact</div>
+                                    <div style="font-weight: 800;">Broadcast Location Telemetry to Emergency Contact</div>
                                     <div style="font-size: 0.74rem; color: var(--text-muted);">Transmits location telemetry via simulated SMS</div>
                                 </div>
                             </button>
@@ -254,7 +254,7 @@ function initSosEmergencySystem() {
 function simulateEmergencyDispatch() {
     closeSosModal();
     if (window.AppAudio) AppAudio.playArrivalChime();
-    showToast('Emergency SOS Sent', 'Live coordinates dispatched to Emergency Contact (+91 94280 12345) & Transit Control Room!', 'danger');
+    showToast('Emergency SOS Sent', 'Simulated location telemetry dispatched to Emergency Contact (+91 94280 12345) & Transit Control Room!', 'danger');
 }
 
 /* --------------------------------------------------------------------------
