@@ -83,7 +83,7 @@
             <!-- Header -->
             <header class="top-header">
                 <div class="header-left">
-                    <button class="menu-toggle-btn" aria-label="Toggle Navigation Menu">
+                    <button type="button" class="menu-toggle-btn" aria-label="Toggle Navigation Menu">
                         <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="4" x2="20" y1="12" y2="12"></line><line x1="4" x2="20" y1="6" y2="6"></line><line x1="4" x2="20" y1="18" y2="18"></line></svg>
                     </button>
                     <div class="global-search-bar trigger-search-modal">
@@ -97,13 +97,13 @@
 
                 <div class="header-right">
                     <!-- SOS Safety Button -->
-                    <button class="sos-header-btn trigger-sos-modal" aria-label="Emergency SOS">
+                    <button type="button" class="sos-header-btn trigger-sos-modal" aria-label="Emergency SOS">
                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path><line x1="12" y1="9" x2="12" y2="13"></line><line x1="12" y1="17" x2="12.01" y2="17"></line></svg>
                         <span>SOS</span>
                     </button>
 
                     <!-- Audio Synth Mute Toggle -->
-                    <button id="headerAudioToggleBtn" class="header-action-btn" aria-label="Toggle Sound & Voice">
+                    <button type="button" id="headerAudioToggleBtn" class="header-action-btn" aria-label="Toggle Sound & Voice">
                         <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon><path d="M15.54 8.46a5 5 0 0 1 0 7.07"></path></svg>
                     </button>
 
@@ -111,7 +111,7 @@
                         <span class="pulse-dot"></span>
                         <span id="liveClockDisplay">07:40:00 AM</span>
                     </div>
-                    <button class="header-action-btn theme-toggle-btn" aria-label="Toggle Theme">
+                    <button type="button" class="header-action-btn theme-toggle-btn" aria-label="Toggle Theme">
                         <span class="theme-icon">
                             <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"></path></svg>
                         </span>
@@ -139,7 +139,7 @@
 
                 <!-- GTFS Data Source Banner -->
                 <div style="display: flex; align-items: center; justify-content: space-between; gap: 0.75rem; flex-wrap: wrap; margin-bottom: 1.25rem; padding: 0.75rem 1rem; background: var(--bg-muted); border-radius: var(--radius-md); border-left: 3px solid var(--success);">
-                    <span class="badge badge-success" style="font-size: 0.72rem; font-weight: 700; white-space: nowrap;">🟢 OFFICIAL KTCL DATA</span>
+                    <span class="badge badge-source-official" style="font-size: 0.72rem; font-weight: 700; white-space: nowrap;">🟢 Official KTCL Data</span>
                     <span style="font-size: 0.76rem; color: var(--text-muted); flex: 1; min-width: 260px;">Route and stop numbers cross-referenced against KTCL's official GTFS open data feed (<a href="https://ktclgoa.com/gtfs/" target="_blank" rel="noopener" style="color: var(--primary-light); text-decoration: underline;">ktclgoa.com/gtfs</a>, CC BY 4.0). SAFESTOP's accessibility assessments are not part of this official feed.</span>
                 </div>
 
@@ -153,9 +153,13 @@
                             </div>
                         </div>
 
-                        <div style="display: flex; gap: 0.85rem; align-items: center;">
+                        <div style="display: flex; gap: 0.85rem; align-items: center; flex-wrap: wrap;">
                             <label for="routeStatusFilter" style="font-size: 0.85rem; font-weight: 600; color: var(--text-muted);">Status:</label>
-                            <select id="routeStatusFilter" style="background: var(--bg-base); border: 1px solid var(--border-color); border-radius: var(--radius-md); padding: 0.5rem 1rem; font-size: 0.88rem; font-weight: 600;">
+                            <div class="filter-btn-group" id="routeStatusFilterBtns" style="display: flex; gap: 0.4rem;" role="group" aria-label="Filter routes by status">
+                                <button type="button" class="btn btn-sm btn-primary route-filter-btn" data-status="all" aria-pressed="true">All Active Corridors</button>
+                                <button type="button" class="btn btn-sm btn-secondary route-filter-btn" data-status="active" aria-pressed="false">Active</button>
+                            </div>
+                            <select id="routeStatusFilter" style="display: none;">
                                 <option value="all">All Active Corridors</option>
                                 <option value="active">Active</option>
                             </select>

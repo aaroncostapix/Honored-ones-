@@ -83,7 +83,7 @@
             <!-- Header -->
             <header class="top-header">
                 <div class="header-left">
-                    <button class="menu-toggle-btn" aria-label="Toggle Navigation Menu">
+                    <button type="button" class="menu-toggle-btn" aria-label="Toggle Navigation Menu">
                         <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="4" x2="20" y1="12" y2="12"></line><line x1="4" x2="20" y1="6" y2="6"></line><line x1="4" x2="20" y1="18" y2="18"></line></svg>
                     </button>
                     <div class="global-search-bar trigger-search-modal">
@@ -97,13 +97,13 @@
 
                 <div class="header-right">
                     <!-- SOS Safety Button -->
-                    <button class="sos-header-btn trigger-sos-modal" aria-label="Emergency SOS">
+                    <button type="button" class="sos-header-btn trigger-sos-modal" aria-label="Emergency SOS">
                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path><line x1="12" y1="9" x2="12" y2="13"></line><line x1="12" y1="17" x2="12.01" y2="17"></line></svg>
                         <span>SOS</span>
                     </button>
 
                     <!-- Audio Synth Mute Toggle -->
-                    <button id="headerAudioToggleBtn" class="header-action-btn" aria-label="Toggle Sound & Voice">
+                    <button type="button" id="headerAudioToggleBtn" class="header-action-btn" aria-label="Toggle Sound & Voice">
                         <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon><path d="M15.54 8.46a5 5 0 0 1 0 7.07"></path></svg>
                     </button>
 
@@ -111,7 +111,7 @@
                         <span class="pulse-dot"></span>
                         <span id="liveClockDisplay">07:40:00 AM</span>
                     </div>
-                    <button class="header-action-btn theme-toggle-btn" aria-label="Toggle Theme">
+                    <button type="button" class="header-action-btn theme-toggle-btn" aria-label="Toggle Theme">
                         <span class="theme-icon">
                             <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"></path></svg>
                         </span>
@@ -152,12 +152,12 @@
                             <input type="text" id="announcementSearchInput" class="search-input" placeholder="Search notices and advisories...">
                         </div>
 
-                        <div style="display: flex; gap: 0.5rem; flex-wrap: wrap;" id="categoryFilterBtns">
-                            <button class="btn btn-sm btn-primary cat-btn" data-cat="all">All (5)</button>
-                            <button class="btn btn-sm btn-secondary cat-btn" data-cat="Urgent Notice">Urgent</button>
-                            <button class="btn btn-sm btn-secondary cat-btn" data-cat="Timetable Update">Timetable</button>
-                            <button class="btn btn-sm btn-secondary cat-btn" data-cat="Holiday Notice">Holidays</button>
-                            <button class="btn btn-sm btn-secondary cat-btn" data-cat="Maintenance">Maintenance</button>
+                        <div style="display: flex; gap: 0.5rem; flex-wrap: wrap;" id="categoryFilterBtns" role="group" aria-label="Filter announcements by category">
+                            <button type="button" class="btn btn-sm btn-primary cat-btn" data-cat="all" aria-pressed="true">All (5)</button>
+                            <button type="button" class="btn btn-sm btn-secondary cat-btn" data-cat="Urgent Notice" aria-pressed="false">Urgent</button>
+                            <button type="button" class="btn btn-sm btn-secondary cat-btn" data-cat="Timetable Update" aria-pressed="false">Timetable</button>
+                            <button type="button" class="btn btn-sm btn-secondary cat-btn" data-cat="Holiday Notice" aria-pressed="false">Holidays</button>
+                            <button type="button" class="btn btn-sm btn-secondary cat-btn" data-cat="Maintenance" aria-pressed="false">Maintenance</button>
                         </div>
                     </div>
                 </div>
@@ -257,8 +257,12 @@
             catBtns.forEach(btn => {
                 btn.addEventListener('click', () => {
                     if (window.AppAudio) AppAudio.playClick();
-                    catBtns.forEach(b => b.classList.replace('btn-primary', 'btn-secondary'));
+                    catBtns.forEach(b => {
+                        b.classList.replace('btn-primary', 'btn-secondary');
+                        b.setAttribute('aria-pressed', 'false');
+                    });
                     btn.classList.replace('btn-secondary', 'btn-primary');
+                    btn.setAttribute('aria-pressed', 'true');
                     currentCat = btn.getAttribute('data-cat');
                     filterAnnouncements();
                 });

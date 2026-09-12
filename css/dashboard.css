@@ -1,5 +1,5 @@
 /* ==========================================================================
-   Smart College Transport Management System - Dashboard Styles
+   Goa Mobility & SAFESTOP Transit Management System - Dashboard Styles
    ========================================================================== */
 
 /* --------------------------------------------------------------------------
@@ -594,4 +594,116 @@
     padding: 0.15rem 0.55rem;
     border-radius: var(--radius-full);
     margin-top: 0.35rem;
+}
+
+.driver-snapshot-tags {
+    display: flex;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+    margin-top: 0.5rem;
+}
+
+.hero-seat-btn {
+    color: #6ee7b7;
+    cursor: pointer;
+    background: none;
+    border: none;
+    padding: 0;
+    font: inherit;
+    font-weight: 700;
+    text-align: left;
+}
+
+.gtfs-banner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.75rem;
+    flex-wrap: wrap;
+    margin-bottom: 0.85rem;
+    padding: 0.5rem 0.75rem;
+}
+
+.card-gradient-primary {
+    background: linear-gradient(135deg, var(--bg-surface) 0%, var(--primary-subtle) 100%);
+}
+
+/* --------------------------------------------------------------------------
+   SAFESTOP Hero Confidence & Accessibility Components
+   -------------------------------------------------------------------------- */
+.hero-confidence-bar {
+    background: rgba(255, 255, 255, 0.12);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid rgba(255, 255, 255, 0.22);
+    border-radius: var(--radius-lg);
+    padding: 0.9rem 1.15rem;
+    margin-bottom: 1.25rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.85rem;
+    flex-wrap: wrap;
+    position: relative;
+    z-index: 1;
+}
+
+.hero-confidence-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.45rem;
+    background: #10b981;
+    color: #ffffff;
+    font-weight: 800;
+    font-size: 0.82rem;
+    letter-spacing: 0.02em;
+    padding: 0.35rem 0.75rem;
+    border-radius: var(--radius-full);
+    box-shadow: 0 2px 8px rgba(16, 185, 129, 0.35);
+}
+
+.hero-access-tags {
+    display: flex;
+    align-items: center;
+    gap: 0.45rem;
+    flex-wrap: wrap;
+}
+
+.hero-access-tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.3rem;
+    background: rgba(255, 255, 255, 0.18);
+    color: #ffffff;
+    font-size: 0.74rem;
+    font-weight: 600;
+    padding: 0.25rem 0.55rem;
+    border-radius: var(--radius-full);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.stat-card-featured {
+    border-color: var(--primary-light);
+    box-shadow: 0 4px 14px rgba(37, 99, 235, 0.12);
+}
+
+.stop-access-chip {
+    font-size: 0.68rem;
+    font-weight: 700;
+    padding: 0.1rem 0.45rem;
+    border-radius: var(--radius-full);
+    margin-left: 0.4rem;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.2rem;
+}
+
+.stop-access-chip.accessible {
+    background: rgba(16, 185, 129, 0.15);
+    color: #10b981;
+}
+
+.stop-access-chip.barrier {
+    background: rgba(239, 68, 68, 0.15);
+    color: #ef4444;
 }

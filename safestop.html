@@ -70,7 +70,7 @@
                 <div class="nav-section-title" style="margin-top: 1.5rem;">User Account</div>
                 <a href="profile.html" class="nav-link">
                     <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><circle cx="12" cy="10" r="3"></circle><path d="M7 20.662V19a2 2 0 0 1 2-2h6a2 2 0 0 1 2 2v1.662"></path></svg>
-                    <span>Student Profile</span>
+                    <span>Passenger Profile</span>
                 </a>
                 <a href="settings.html" class="nav-link">
                     <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.38a2 2 0 0 0-.73-2.73l-.15-.1a2 2 0 0 1-1-1.72v-.51a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z"></path><circle cx="12" cy="12" r="3"></circle></svg>
@@ -84,46 +84,53 @@
             <!-- Top Header -->
             <header class="top-header">
                 <div class="header-left">
-                    <button id="sidebarToggleBtn" class="icon-btn mobile-only" aria-label="Toggle Navigation">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="4" x2="20" y1="12" y2="12"></line><line x1="4" x2="20" y1="6" y2="6"></line><line x1="4" x2="20" y1="18" y2="18"></line></svg>
+                    <button type="button" class="menu-toggle-btn" aria-label="Toggle Navigation Menu">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="4" x2="20" y1="12" y2="12"></line><line x1="4" x2="20" y1="6" y2="6"></line><line x1="4" x2="20" y1="18" y2="18"></line></svg>
                     </button>
-                    <div class="live-clock" id="liveClockDisplay">00:00:00 AM</div>
+                    <div class="global-search-bar trigger-search-modal">
+                        <div class="search-input-wrapper">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="search-icon"><circle cx="11" cy="11" r="8"></circle><path d="m21 21-4.3-4.3"></path></svg>
+                            <span class="search-input" style="color: var(--text-subtle);">Search routes, stops...</span>
+                            <span class="search-shortcut">Ctrl+K</span>
+                        </div>
+                    </div>
                 </div>
 
                 <div class="header-right">
-                    <button class="search-trigger-btn" id="openSearchModalBtn">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><path d="m21 21-4.3-4.3"></path></svg>
-                        <span>Search routes, stops...</span>
-                        <kbd>Ctrl+K</kbd>
-                    </button>
-
-                    <button class="sos-trigger-btn" id="sosEmergencyBtn" title="Emergency Assistance">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 9v4"></path><path d="M12 17h.01"></path><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z"></path></svg>
+                    <button type="button" class="sos-header-btn trigger-sos-modal" aria-label="Emergency SOS">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path><line x1="12" y1="9" x2="12" y2="13"></line><line x1="12" y1="17" x2="12.01" y2="17"></line></svg>
                         <span>SOS</span>
                     </button>
 
-                    <button class="icon-btn theme-toggle-btn" id="themeToggleBtn" aria-label="Toggle Theme">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="sun-icon"><circle cx="12" cy="12" r="4"></circle><path d="M12 2v2"></path><path d="M12 20v2"></path><path d="m4.93 4.93 1.41 1.41"></path><path d="m17.66 17.66 1.41 1.41"></path><path d="M2 12h2"></path><path d="M20 12h2"></path><path d="m6.34 17.66-1.41 1.41"></path><path d="m19.07 4.93-1.41 1.41"></path></svg>
+                    <div class="live-clock-pill">
+                        <span class="pulse-dot"></span>
+                        <span id="liveClockDisplay">00:00:00 AM</span>
+                    </div>
+
+                    <button type="button" class="header-action-btn theme-toggle-btn" aria-label="Toggle Theme">
+                        <span class="theme-icon">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"></path></svg>
+                        </span>
                     </button>
 
-                    <div class="user-profile-summary" id="headerProfileSummary">
-                        <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=100&auto=format&fit=crop&q=80" alt="Passenger Profile" class="avatar-img" id="headerAvatar">
-                        <div class="user-details">
-                            <span class="user-name" id="headerUserName">Preyal Modi</span>
-                            <span class="user-role" id="headerUserRole">Goa Commuter</span>
+                    <a href="profile.html" class="header-profile-btn">
+                        <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=100&auto=format&fit=crop&q=80" alt="Passenger Profile" class="avatar-circle header-student-avatar" id="headerAvatar">
+                        <div class="profile-meta">
+                            <div class="profile-name header-student-name" id="headerUserName">Preyal Modi</div>
+                            <div class="profile-role header-student-role" id="headerUserRole">Goa Commuter</div>
                         </div>
-                    </div>
+                    </a>
                 </div>
             </header>
 
             <!-- Main Content Container -->
-            <main class="main-content">
-                <div class="content-header">
-                    <div>
-                        <h1 class="page-title">SAFESTOP Accessibility Portal</h1>
-                        <p class="page-description">Real-time transparent Boarding Confidence scoring, vehicle accessibility features, and community barrier reports.</p>
+            <main class="page-content">
+                <div class="page-header">
+                    <div class="page-title-group">
+                        <h1>SAFESTOP Accessibility Portal</h1>
+                        <p class="page-subtitle">Real-time transparent Boarding Confidence scoring, vehicle accessibility features, and community barrier reports.</p>
                     </div>
-                    <button class="btn btn-primary" id="openReportBarrierModalBtn">
+                    <button type="button" class="btn btn-primary" id="openReportBarrierModalBtn">
                         <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14"></path><path d="M5 12h14"></path></svg>
                         <span>Report Barrier</span>
                     </button>
@@ -151,8 +158,11 @@
                         </div>
                     </div>
                     <div style="margin-top: 0.85rem; padding-top: 0.75rem; border-top: 1px solid var(--border-color); font-size: 0.76rem; color: var(--text-muted); display: flex; align-items: center; justify-content: space-between; gap: 0.75rem; flex-wrap: wrap;">
-                        <span style="flex: 1; min-width: 260px;">Route and stop numbers cross-referenced against KTCL's official GTFS open data feed (<a href="https://ktclgoa.com/gtfs/" target="_blank" rel="noopener" style="color: var(--primary-light); text-decoration: underline;">ktclgoa.com/gtfs</a>, CC BY 4.0). SAFESTOP's accessibility assessments are not part of this official feed.</span>
-                        <span class="badge badge-warning" style="font-size: 0.7rem; font-weight: 700; white-space: nowrap;">🔵 SAFESTOP PROTOTYPE ASSESSMENT</span>
+                        <div style="display: flex; align-items: center; gap: 0.5rem; flex: 1; min-width: 260px;">
+                            <span class="badge badge-source-official" style="font-size: 0.68rem; font-weight: 700; white-space: nowrap;">Official KTCL GTFS Data</span>
+                            <span>Route and stop numbers cross-referenced against KTCL's official GTFS open data feed (<a href="https://ktclgoa.com/gtfs/" target="_blank" rel="noopener" style="color: var(--primary-light); text-decoration: underline;">ktclgoa.com/gtfs</a>, CC BY 4.0). SAFESTOP's accessibility assessments are not part of this official feed.</span>
+                        </div>
+                        <span class="badge badge-source-prototype" style="font-size: 0.7rem; font-weight: 700; white-space: nowrap;">Prototype Assessment</span>
                     </div>
                 </div>
 
@@ -277,15 +287,15 @@
     </div>
 
     <!-- Report Barrier Modal -->
-    <div class="modal-backdrop" id="barrierReportModal" style="display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.5); z-index: 9999; align-items: center; justify-content: center;">
+    <div class="modal-backdrop" id="barrierReportModal" role="dialog" aria-modal="true" aria-labelledby="barrierModalTitle" style="display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.5); z-index: 9999; align-items: center; justify-content: center;">
         <div class="modal-card" style="background: var(--bg-surface); padding: 2rem; border-radius: 16px; width: 100%; max-width: 500px; box-shadow: var(--shadow-lg);">
             <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;">
-                <h3 style="margin: 0; font-size: 1.25rem;">Report Accessibility Barrier</h3>
-                <button id="closeBarrierModalBtn" style="background: none; border: none; font-size: 1.5rem; cursor: pointer; color: var(--text-muted);">&times;</button>
+                <h3 id="barrierModalTitle" style="margin: 0; font-size: 1.25rem;">Report Accessibility Barrier</h3>
+                <button type="button" id="closeBarrierModalBtn" aria-label="Close barrier report modal" style="background: none; border: none; font-size: 1.5rem; cursor: pointer; color: var(--text-muted);">&times;</button>
             </div>
             <form id="barrierReportForm">
                 <div style="margin-bottom: 1rem;">
-                    <label style="display: block; font-weight: 600; margin-bottom: 0.35rem; font-size: 0.875rem;">Barrier Type:</label>
+                    <label for="barrierTypeSelect" style="display: block; font-weight: 600; margin-bottom: 0.35rem; font-size: 0.875rem;">Barrier Type:</label>
                     <select id="barrierTypeSelect" class="form-control" style="width: 100%; padding: 0.6rem; border-radius: 8px; border: 1px solid var(--border-color); background: var(--bg-base); color: var(--text-main);" required>
                         <option value="blocked_ramp">Blocked Boarding Ramp</option>
                         <option value="obstructed_path">Obstructed Approach Path</option>
@@ -296,7 +306,7 @@
                     </select>
                 </div>
                 <div style="margin-bottom: 1rem;">
-                    <label style="display: block; font-weight: 600; margin-bottom: 0.35rem; font-size: 0.875rem;">Severity Level:</label>
+                    <label for="barrierSeveritySelect" style="display: block; font-weight: 600; margin-bottom: 0.35rem; font-size: 0.875rem;">Severity Level:</label>
                     <select id="barrierSeveritySelect" class="form-control" style="width: 100%; padding: 0.6rem; border-radius: 8px; border: 1px solid var(--border-color); background: var(--bg-base); color: var(--text-main);" required>
                         <option value="critical">Critical (Forces LOW Confidence) - Completely prevents boarding</option>
                         <option value="moderate" selected>Moderate (-15 pts) - Requires significant assistance</option>
@@ -304,7 +314,7 @@
                     </select>
                 </div>
                 <div style="margin-bottom: 1.5rem;">
-                    <label style="display: block; font-weight: 600; margin-bottom: 0.35rem; font-size: 0.875rem;">Description:</label>
+                    <label for="barrierDescription" style="display: block; font-weight: 600; margin-bottom: 0.35rem; font-size: 0.875rem;">Description:</label>
                     <textarea id="barrierDescription" class="form-control" rows="3" style="width: 100%; padding: 0.6rem; border-radius: 8px; border: 1px solid var(--border-color); background: var(--bg-base); color: var(--text-main);" placeholder="Describe the obstruction or hazard..." required></textarea>
                 </div>
                 <div style="display: flex; justify-content: flex-end; gap: 0.75rem;">
@@ -711,20 +721,86 @@
 
             // Modal Form Management
             const modal = document.getElementById('barrierReportModal');
-            document.getElementById('openReportBarrierModalBtn').addEventListener('click', () => {
-                modal.style.display = 'flex';
-            });
-            document.getElementById('closeBarrierModalBtn').addEventListener('click', () => {
-                modal.style.display = 'none';
-            });
-            document.getElementById('cancelBarrierReportBtn').addEventListener('click', () => {
-                modal.style.display = 'none';
-            });
+            let barrierModalTrigger = null;
 
-            // Close modal on Escape key if open
-            document.addEventListener('keydown', (e) => {
-                if (e.key === 'Escape' && modal && modal.style.display === 'flex') {
+            function openBarrierModal(triggerEl) {
+                barrierModalTrigger = triggerEl || document.activeElement;
+                if (modal) {
+                    modal.style.display = 'flex';
+                    modal.classList.add('active');
+                    const firstFocusable = modal.querySelector('button:not([disabled]), [href], input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])');
+                    if (firstFocusable) {
+                        firstFocusable.focus();
+                    }
+                }
+            }
+
+            function closeBarrierModal() {
+                if (modal && (modal.style.display === 'flex' || modal.classList.contains('active'))) {
                     modal.style.display = 'none';
+                    modal.classList.remove('active');
+                    if (barrierModalTrigger && typeof barrierModalTrigger.focus === 'function') {
+                        barrierModalTrigger.focus();
+                    }
+                }
+            }
+
+            const openReportBtn = document.getElementById('openReportBarrierModalBtn');
+            if (openReportBtn) {
+                openReportBtn.addEventListener('click', (e) => {
+                    openBarrierModal(e.currentTarget);
+                });
+            }
+
+            const closeReportBtn = document.getElementById('closeBarrierModalBtn');
+            if (closeReportBtn) {
+                closeReportBtn.addEventListener('click', () => {
+                    closeBarrierModal();
+                });
+            }
+
+            const cancelReportBtn = document.getElementById('cancelBarrierReportBtn');
+            if (cancelReportBtn) {
+                cancelReportBtn.addEventListener('click', () => {
+                    closeBarrierModal();
+                });
+            }
+
+            if (modal) {
+                modal.addEventListener('click', (e) => {
+                    if (e.target === modal) {
+                        closeBarrierModal();
+                    }
+                });
+            }
+
+            // Close modal on Escape key if open, and trap focus while open
+            document.addEventListener('keydown', (e) => {
+                if (modal && (modal.style.display === 'flex' || modal.classList.contains('active'))) {
+                    if (e.key === 'Escape') {
+                        e.preventDefault();
+                        closeBarrierModal();
+                        return;
+                    }
+
+                    if (e.key === 'Tab') {
+                        const focusables = modal.querySelectorAll('button:not([disabled]), [href], input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])');
+                        if (focusables.length === 0) return;
+                        const first = focusables[0];
+                        const last = focusables[focusables.length - 1];
+
+                        if (e.shiftKey) {
+                            if (document.activeElement === first || !modal.contains(document.activeElement)) {
+                                e.preventDefault();
+                                last.focus();
+                            }
+                        } else {
+                            if (document.activeElement === last || !modal.contains(document.activeElement)) {
+                                e.preventDefault();
+                                first.focus();
+                            }
+                        }
+                    }
                 }
             });
 
@@ -747,12 +823,12 @@
                     severity: document.getElementById('barrierSeveritySelect').value,
                     description: document.getElementById('barrierDescription').value,
                     timestamp: new Date().toISOString(),
-                    reportedBy: 'Student #' + Math.floor(1000 + Math.random() * 9000),
+                    reportedBy: 'Commuter #' + Math.floor(1000 + Math.random() * 9000),
                     status: 'active'
                 };
 
                 AppStorage.addSafestopBarrier(newBarrier);
-                modal.style.display = 'none';
+                closeBarrierModal();
                 document.getElementById('barrierDescription').value = '';
 
                 if (typeof showToast === 'function') {

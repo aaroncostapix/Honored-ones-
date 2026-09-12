@@ -1,12 +1,12 @@
 /* ==========================================================================
-   Smart College Transport Management System - Main Design System
+   Goa Mobility & SAFESTOP Transit Management System - Main Design System
    Modern, Professional, Clean UI with Light/Dark Mode Support
    ========================================================================== */
 
 @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap');
 
 :root {
-    /* Brand Colors - Sophisticated College Navy & Electric Emerald */
+    /* Brand Colors - Sophisticated Transit Navy & Electric Emerald */
     --primary: #1e3a8a;
     --primary-light: #2563eb;
     --primary-subtle: #eff6ff;
@@ -329,6 +329,11 @@ h1, h2, h3, h4, h5, h6 {
     position: relative;
 }
 
+.nav-badge.nav-badge-accent {
+    background-color: var(--accent);
+    color: #ffffff;
+}
+
 .sidebar-footer {
     padding: 1.1rem 1.25rem;
     border-top: 1px solid var(--border-color);
@@ -469,6 +474,10 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .search-input::placeholder {
+    color: var(--text-subtle);
+}
+
+.search-input-placeholder {
     color: var(--text-subtle);
 }
 
@@ -721,6 +730,18 @@ h1, h2, h3, h4, h5, h6 {
     border-radius: var(--radius-sm);
 }
 
+.btn-translucent {
+    background: rgba(255, 255, 255, 0.2);
+    color: #ffffff;
+    border: none;
+    backdrop-filter: blur(8px);
+}
+
+.btn-translucent:hover {
+    background: rgba(255, 255, 255, 0.3);
+    color: #ffffff;
+}
+
 /* --------------------------------------------------------------------------
    Badges
    -------------------------------------------------------------------------- */
@@ -761,6 +782,30 @@ h1, h2, h3, h4, h5, h6 {
     color: var(--primary-light);
 }
 
+.badge-accent {
+    background-color: var(--accent-subtle);
+    color: var(--accent);
+}
+
+/* Source / Prototype Attribution Badges */
+.badge-source-official {
+    background-color: var(--success-bg);
+    color: var(--success);
+    border: 1px solid rgba(16, 185, 129, 0.35);
+}
+
+.badge-source-prototype {
+    background-color: var(--info-bg);
+    color: var(--info);
+    border: 1px solid rgba(59, 130, 246, 0.35);
+}
+
+.badge-source-simulated {
+    background-color: rgba(168, 85, 247, 0.12);
+    color: #a855f7;
+    border: 1px solid rgba(168, 85, 247, 0.35);
+}
+
 /* --------------------------------------------------------------------------
    Cards
    -------------------------------------------------------------------------- */
@@ -796,6 +841,89 @@ h1, h2, h3, h4, h5, h6 {
 
 .card-body {
     padding: 1.5rem;
+}
+
+.card-highlight {
+    border-color: var(--primary-border);
+}
+
+.card-header-muted {
+    background-color: var(--bg-muted);
+}
+
+.card-inset {
+    padding: 0.9rem;
+    border-radius: var(--radius-md);
+    background-color: var(--bg-base);
+    border: 1px solid var(--border-color);
+}
+
+/* --------------------------------------------------------------------------
+   Form Components
+   -------------------------------------------------------------------------- */
+.form-label {
+    display: block;
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    color: var(--text-muted);
+    margin-bottom: 0.3rem;
+}
+
+.form-control {
+    width: 100%;
+    background-color: var(--bg-surface);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-md);
+    padding: 0.65rem 0.85rem;
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: var(--text-main);
+    transition: border-color var(--transition-fast), box-shadow var(--transition-fast);
+}
+
+.form-control:focus {
+    border-color: var(--primary-light);
+    outline: none;
+}
+
+/* --------------------------------------------------------------------------
+   Callout & Alert Boxes
+   -------------------------------------------------------------------------- */
+.callout {
+    padding: 0.85rem 1rem;
+    border-radius: var(--radius-md);
+    background-color: var(--bg-muted);
+    border-left: 3px solid var(--primary);
+}
+
+.callout-success {
+    border-left-color: var(--success);
+}
+
+.callout-warning {
+    border-left-color: var(--warning);
+}
+
+.callout-danger {
+    border-left-color: var(--danger);
+}
+
+.callout-primary {
+    border-left-color: var(--primary);
+}
+
+.callout-title {
+    font-weight: 700;
+    font-size: 0.88rem;
+    color: var(--text-main);
+}
+
+.callout-desc {
+    font-size: 0.78rem;
+    color: var(--text-muted);
+    margin-top: 0.2rem;
 }
 
 /* --------------------------------------------------------------------------
@@ -948,6 +1076,8 @@ h1, h2, h3, h4, h5, h6 {
     justify-content: space-between;
     transition: all var(--transition-fast);
     cursor: pointer;
+    text-decoration: none;
+    color: inherit;
 }
 
 .search-result-item:hover {
@@ -996,6 +1126,8 @@ h1, h2, h3, h4, h5, h6 {
     cursor: pointer;
     transition: all var(--transition-fast);
     border: 1.5px solid transparent;
+    padding: 0;
+    box-sizing: border-box;
 }
 
 .seat-box.occupied {
@@ -1025,6 +1157,129 @@ h1, h2, h3, h4, h5, h6 {
 
 .seat-aisle {
     width: 20px;
+}
+
+.stop-node-item {
+    background: none;
+    border: none;
+    text-align: left;
+    width: 100%;
+    font-family: inherit;
+    font-size: inherit;
+    color: inherit;
+}
+
+/* --------------------------------------------------------------------------
+   Accessibility & Keyboard Navigation Focus Styles
+   -------------------------------------------------------------------------- */
+:focus-visible,
+a:focus-visible,
+button:focus-visible,
+input:focus-visible,
+select:focus-visible,
+textarea:focus-visible,
+.btn:focus-visible,
+.nav-link:focus-visible,
+.brand-badge:focus-visible,
+.header-action-btn:focus-visible,
+.menu-toggle-btn:focus-visible,
+.sos-header-btn:focus-visible,
+.header-profile-btn:focus-visible,
+.bottom-nav-item:focus-visible,
+.search-result-item:focus-visible,
+.stop-node-item:focus-visible,
+.seat-box:focus-visible,
+.card:focus-visible,
+[tabindex]:focus-visible {
+    outline: 2px solid var(--accent) !important;
+    outline-offset: 2px !important;
+}
+
+.seat-box:focus-visible {
+    z-index: 3;
+}
+
+/* --------------------------------------------------------------------------
+   Reduced Motion & Animation Control
+   -------------------------------------------------------------------------- */
+@media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+        scroll-behavior: auto !important;
+    }
+
+    .pulse-dot,
+    .live-dot,
+    .sos-header-btn,
+    .nav-badge.live-pulse,
+    .stop-preview-item.current-target .stop-dot {
+        animation: none !important;
+        box-shadow: none !important;
+    }
+
+    .confidence-gauge-fill {
+        transition: none !important;
+    }
+
+    .modal-backdrop,
+    .search-modal-backdrop,
+    .modal-card,
+    .search-modal,
+    .toast {
+        transition: none !important;
+        transform: none !important;
+        animation: none !important;
+    }
+}
+
+:root[data-reduced-motion="reduce"] *,
+:root[data-reduced-motion="reduce"] *::before,
+:root[data-reduced-motion="reduce"] *::after,
+.reduced-motion *,
+.reduced-motion *::before,
+.reduced-motion *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+}
+
+:root[data-reduced-motion="reduce"] .pulse-dot,
+:root[data-reduced-motion="reduce"] .live-dot,
+:root[data-reduced-motion="reduce"] .sos-header-btn,
+:root[data-reduced-motion="reduce"] .nav-badge.live-pulse,
+:root[data-reduced-motion="reduce"] .stop-preview-item.current-target .stop-dot,
+.reduced-motion .pulse-dot,
+.reduced-motion .live-dot,
+.reduced-motion .sos-header-btn,
+.reduced-motion .nav-badge.live-pulse,
+.reduced-motion .stop-preview-item.current-target .stop-dot {
+    animation: none !important;
+    box-shadow: none !important;
+}
+
+:root[data-reduced-motion="reduce"] .confidence-gauge-fill,
+.reduced-motion .confidence-gauge-fill {
+    transition: none !important;
+}
+
+:root[data-reduced-motion="reduce"] .modal-backdrop,
+:root[data-reduced-motion="reduce"] .search-modal-backdrop,
+:root[data-reduced-motion="reduce"] .modal-card,
+:root[data-reduced-motion="reduce"] .search-modal,
+:root[data-reduced-motion="reduce"] .toast,
+.reduced-motion .modal-backdrop,
+.reduced-motion .search-modal-backdrop,
+.reduced-motion .modal-card,
+.reduced-motion .search-modal,
+.reduced-motion .toast {
+    transition: none !important;
+    transform: none !important;
+    animation: none !important;
 }
 
 /* --------------------------------------------------------------------------

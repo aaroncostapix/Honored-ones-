@@ -190,6 +190,30 @@ const AppStorage = {
         localStorage.setItem(STORAGE_KEYS.SIMULATION_STATE, JSON.stringify(state));
     },
 
+    getSettings() {
+        try {
+            const data = localStorage.getItem(STORAGE_KEYS.CUSTOM_SETTINGS);
+            return data ? JSON.parse(data) : {};
+        } catch (e) {
+            return {};
+        }
+    },
+
+    saveSettings(settings) {
+        localStorage.setItem(STORAGE_KEYS.CUSTOM_SETTINGS, JSON.stringify(settings));
+    },
+
+    getReducedMotion() {
+        const settings = this.getSettings();
+        return !!settings.reducedMotion;
+    },
+
+    setReducedMotion(enabled) {
+        const settings = this.getSettings();
+        settings.reducedMotion = !!enabled;
+        this.saveSettings(settings);
+    },
+
     // SAFESTOP Storage Facades
     getSafestopAccessibility() {
         try {

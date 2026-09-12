@@ -83,7 +83,7 @@
             <!-- Header -->
             <header class="top-header">
                 <div class="header-left">
-                    <button class="menu-toggle-btn" aria-label="Toggle Navigation Menu">
+                    <button type="button" class="menu-toggle-btn" aria-label="Toggle Navigation Menu">
                         <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="4" x2="20" y1="12" y2="12"></line><line x1="4" x2="20" y1="6" y2="6"></line><line x1="4" x2="20" y1="18" y2="18"></line></svg>
                     </button>
                     <div class="global-search-bar trigger-search-modal">
@@ -97,13 +97,13 @@
 
                 <div class="header-right">
                     <!-- SOS Safety Button -->
-                    <button class="sos-header-btn trigger-sos-modal" aria-label="Emergency SOS">
+                    <button type="button" class="sos-header-btn trigger-sos-modal" aria-label="Emergency SOS">
                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path><line x1="12" y1="9" x2="12" y2="13"></line><line x1="12" y1="17" x2="12.01" y2="17"></line></svg>
                         <span>SOS</span>
                     </button>
 
                     <!-- Audio Synth Mute Toggle -->
-                    <button id="headerAudioToggleBtn" class="header-action-btn" aria-label="Toggle Sound & Voice">
+                    <button type="button" id="headerAudioToggleBtn" class="header-action-btn" aria-label="Toggle Sound & Voice">
                         <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon><path d="M15.54 8.46a5 5 0 0 1 0 7.07"></path></svg>
                     </button>
 
@@ -111,7 +111,7 @@
                         <span class="pulse-dot"></span>
                         <span id="liveClockDisplay">07:40:00 AM</span>
                     </div>
-                    <button class="header-action-btn theme-toggle-btn" aria-label="Toggle Theme">
+                    <button type="button" class="header-action-btn theme-toggle-btn" aria-label="Toggle Theme">
                         <span class="theme-icon">
                             <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"></path></svg>
                         </span>
@@ -173,9 +173,14 @@
                         </div>
 
                         <!-- Time Filter -->
-                        <div style="display: flex; align-items: center; gap: 0.6rem;">
+                        <div style="display: flex; align-items: center; gap: 0.6rem; flex-wrap: wrap;">
                             <label for="timetableTimeFilter" style="font-size: 0.85rem; font-weight: 600; color: var(--text-muted);">Slot:</label>
-                            <select id="timetableTimeFilter" style="background: var(--bg-base); border: 1px solid var(--border-color); border-radius: var(--radius-md); padding: 0.6rem 0.85rem; font-size: 0.85rem; font-weight: 600;">
+                            <div class="filter-btn-group" id="timetableSlotFilterBtns" style="display: flex; gap: 0.4rem;" role="group" aria-label="Filter timetable by time slot">
+                                <button type="button" class="btn btn-sm btn-primary timetable-filter-btn" data-time="all" aria-pressed="true">All Timings</button>
+                                <button type="button" class="btn btn-sm btn-secondary timetable-filter-btn" data-time="morning-early" aria-pressed="false">Early Morning</button>
+                                <button type="button" class="btn btn-sm btn-secondary timetable-filter-btn" data-time="morning-late" aria-pressed="false">Late Morning</button>
+                            </div>
+                            <select id="timetableTimeFilter" style="display: none;">
                                 <option value="all">All Timings</option>
                                 <option value="morning-early">Early Morning (7:00 - 8:00 AM)</option>
                                 <option value="morning-late">Late Morning (8:00 - 9:30 AM)</option>
@@ -196,10 +201,10 @@
                             <tr style="background-color: var(--bg-muted); border-bottom: 2px solid var(--border-color);">
                                 <th style="padding: 1rem 1.25rem; font-weight: 700; font-size: 0.82rem; text-transform: uppercase; color: var(--text-muted); width: 60px;">Stop #</th>
                                 <th style="padding: 1rem 1.25rem; font-weight: 700; font-size: 0.82rem; text-transform: uppercase; color: var(--text-muted);">Bus Stop Name</th>
-                                <th style="padding: 1rem 1.25rem; font-weight: 700; font-size: 0.82rem; text-transform: uppercase; color: var(--text-muted);">Scheduled Arrival</th>
+                                <th style="padding: 1rem 1.25rem; font-weight: 700; font-size: 0.82rem; text-transform: uppercase; color: var(--text-muted);">Scheduled Arrival <span class="badge badge-source-official" style="font-size: 0.65rem; margin-left: 0.25rem;">Official GTFS</span></th>
                                 <th style="padding: 1rem 1.25rem; font-weight: 700; font-size: 0.82rem; text-transform: uppercase; color: var(--text-muted);">Prominent Landmark</th>
                                 <th style="padding: 1rem 1.25rem; font-weight: 700; font-size: 0.82rem; text-transform: uppercase; color: var(--text-muted);">Distance</th>
-                                <th style="padding: 1rem 1.25rem; font-weight: 700; font-size: 0.82rem; text-transform: uppercase; color: var(--text-muted);">SAFESTOP Confidence</th>
+                                <th style="padding: 1rem 1.25rem; font-weight: 700; font-size: 0.82rem; text-transform: uppercase; color: var(--text-muted);">SAFESTOP Confidence <span class="badge badge-source-prototype" style="font-size: 0.65rem; margin-left: 0.25rem;">Prototype</span></th>
                                 <th style="padding: 1rem 1.25rem; font-weight: 700; font-size: 0.82rem; text-transform: uppercase; color: var(--text-muted);">Route Status</th>
                             </tr>
                         </thead>

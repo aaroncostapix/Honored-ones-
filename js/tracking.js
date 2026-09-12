@@ -117,8 +117,18 @@ class BusTrackingSimulation {
 
         const setSpeed = (spd, btn) => {
             this.speedMultiplier = spd;
-            [speed1x, speed2x, speed5x].forEach(b => b && b.classList.remove('btn-primary'));
-            if (btn) btn.classList.add('btn-primary');
+            [speed1x, speed2x, speed5x].forEach(b => {
+                if (b) {
+                    b.classList.remove('btn-primary');
+                    b.classList.add('btn-secondary');
+                    b.setAttribute('aria-pressed', 'false');
+                }
+            });
+            if (btn) {
+                btn.classList.remove('btn-secondary');
+                btn.classList.add('btn-primary');
+                btn.setAttribute('aria-pressed', 'true');
+            }
             if (window.AppAudio) AppAudio.playTone(700, 0.05);
             showToast('Simulation Speed', `Speed set to ${spd}x`, 'info');
         };
@@ -212,6 +222,7 @@ class BusTrackingSimulation {
         this.etaSeconds = 600;
         this.isPlaying = true;
         this.updateDisplays();
+        this.updateControlButtons();
         this.renderTimeline();
         if (window.AppAudio) AppAudio.playTone(400, 0.1);
         showToast('Simulation Reset', `Restarted at ${this.route.stops[0].name}`, 'info');
@@ -233,10 +244,18 @@ class BusTrackingSimulation {
         if (playBtn && pauseBtn) {
             if (this.isPlaying) {
                 playBtn.classList.add('btn-primary');
+                playBtn.classList.remove('btn-secondary');
+                playBtn.setAttribute('aria-pressed', 'true');
                 pauseBtn.classList.remove('btn-primary');
+                pauseBtn.classList.add('btn-secondary');
+                pauseBtn.setAttribute('aria-pressed', 'false');
             } else {
                 pauseBtn.classList.add('btn-primary');
+                pauseBtn.classList.remove('btn-secondary');
+                pauseBtn.setAttribute('aria-pressed', 'true');
                 playBtn.classList.remove('btn-primary');
+                playBtn.classList.add('btn-secondary');
+                playBtn.setAttribute('aria-pressed', 'false');
             }
         }
     }
@@ -338,6 +357,7 @@ class BusTrackingSimulation {
                     <span class="confidence-badge-pill ${evalResult.levelMeta.class}" style="font-size:0.75rem; padding: 0.25rem 0.75rem;">
                         Boarding Confidence: ${evalResult.score}/100 (${evalResult.level})
                     </span>
+                    <span class="badge badge-source-prototype" style="font-size:0.68rem; padding: 0.2rem 0.5rem;">Prototype Assessment</span>
                     ${barrierBadgeHtml}
                 `;
             }
@@ -425,7 +445,7 @@ class BusTrackingSimulation {
                         }
 
                         return `
-                            <div class="stop-node-item" onclick="window.busSim && window.busSim.jumpToStop(${idx})" style="display: flex; align-items: center; gap: 1.25rem; cursor: pointer; padding: 0.5rem 0.75rem; border-radius: var(--radius-md); transition: background-color var(--transition-fast);">
+                            <button type="button" class="stop-node-item" onclick="window.busSim && window.busSim.jumpToStop(${idx})" style="display: flex; align-items: center; gap: 1.25rem; cursor: pointer; padding: 0.5rem 0.75rem; border-radius: var(--radius-md); transition: background-color var(--transition-fast); background: none; border: none; text-align: left; width: 100%; font: inherit; color: inherit;">
                                 <div class="node-circle" style="width: 42px; height: 42px; border-radius: 50%; background: ${nodeBg}; border: 2.5px solid ${nodeBorder}; color: ${nodeColor}; display: flex; align-items: center; justify-content: center; flex-shrink: 0; box-shadow: var(--shadow-sm); transition: all 0.3s ease;">
                                     ${nodeIcon}
                                 </div>
@@ -439,7 +459,7 @@ class BusTrackingSimulation {
                                         ${badgeHtml}
                                     </div>
                                 </div>
-                            </div>
+                            </button>
                         `;
                     }).join('')}
                 </div>
@@ -493,7 +513,13 @@ class BusTrackingSimulation {
             }
 
             // Radar Sweep
-            this.radarAngle += 0.02;
+            const isReduced = typeof window.isReducedMotion === 'function'
+                ? window.isReducedMotion()
+                : (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches);
+
+            if (!isReduced) {
+                this.radarAngle += 0.02;
+            }
             const centerX = w / 2;
             const centerY = h / 2;
             const maxRadius = Math.min(w, h) * 0.45;
@@ -510,7 +536,7 @@ class BusTrackingSimulation {
             const sweepX = centerX + Math.cos(this.radarAngle) * maxRadius;
             const sweepY = centerY + Math.sin(this.radarAngle) * maxRadius;
             const sweepGrad = ctx.createLinearGradient(centerX, centerY, sweepX, sweepY);
-            sweepGrad.addColorStop(0, 'rgba(13, 148, 136, 0.4)');
+            sweepGrad.addColorStop(0, isReduced ? 'rgba(13, 148, 136, 0.2)' : 'rgba(13, 148, 136, 0.4)');
             sweepGrad.addColorStop(1, 'rgba(13, 148, 136, 0)');
             ctx.strokeStyle = sweepGrad;
             ctx.lineWidth = 2;
@@ -580,7 +606,8 @@ class BusTrackingSimulation {
             // Glowing Pulse Ring
             ctx.fillStyle = 'rgba(37, 99, 235, 0.25)';
             ctx.beginPath();
-            ctx.arc(0, 0, 18 + Math.sin(Date.now() * 0.005) * 4, 0, Math.PI * 2);
+            const pulseRadius = isReduced ? 18 : (18 + Math.sin(Date.now() * 0.005) * 4);
+            ctx.arc(0, 0, pulseRadius, 0, Math.PI * 2);
             ctx.fill();
 
             // Bus Body Icon

@@ -83,7 +83,7 @@
             <!-- Header -->
             <header class="top-header">
                 <div class="header-left">
-                    <button class="menu-toggle-btn" aria-label="Toggle Navigation Menu">
+                    <button type="button" class="menu-toggle-btn" aria-label="Toggle Navigation Menu">
                         <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="4" x2="20" y1="12" y2="12"></line><line x1="4" x2="20" y1="6" y2="6"></line><line x1="4" x2="20" y1="18" y2="18"></line></svg>
                     </button>
                     <div class="global-search-bar trigger-search-modal">
@@ -97,13 +97,13 @@
 
                 <div class="header-right">
                     <!-- SOS Safety Button -->
-                    <button class="sos-header-btn trigger-sos-modal" aria-label="Emergency SOS">
+                    <button type="button" class="sos-header-btn trigger-sos-modal" aria-label="Emergency SOS">
                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path><line x1="12" y1="9" x2="12" y2="13"></line><line x1="12" y1="17" x2="12.01" y2="17"></line></svg>
                         <span>SOS</span>
                     </button>
 
                     <!-- Audio Synth Mute Toggle -->
-                    <button id="headerAudioToggleBtn" class="header-action-btn" aria-label="Toggle Sound & Voice">
+                    <button type="button" id="headerAudioToggleBtn" class="header-action-btn" aria-label="Toggle Sound & Voice">
                         <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon><path d="M15.54 8.46a5 5 0 0 1 0 7.07"></path></svg>
                     </button>
 
@@ -111,7 +111,7 @@
                         <span class="pulse-dot"></span>
                         <span id="liveClockDisplay">07:40:00 AM</span>
                     </div>
-                    <button class="header-action-btn theme-toggle-btn" aria-label="Toggle Theme">
+                    <button type="button" class="header-action-btn theme-toggle-btn" aria-label="Toggle Theme">
                         <span class="theme-icon">
                             <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"></path></svg>
                         </span>
@@ -146,16 +146,24 @@
                                 <span>Appearance & Theme</span>
                             </div>
                         </div>
-                        <div class="card-body" style="padding: 1.75rem;">
+                        <div class="card-body" style="padding: 1.75rem; display: flex; flex-direction: column; gap: 1.5rem;">
                             <div style="display: flex; align-items: center; justify-content: space-between; gap: 1rem;">
                                 <div>
                                     <div style="font-weight: 700; font-size: 1rem; color: var(--text-main);">Application Theme</div>
                                     <div style="font-size: 0.84rem; color: var(--text-muted); margin-top: 0.2rem;">Choose between clean light mode or high-contrast modern dark mode.</div>
                                 </div>
                                 <div style="display: flex; gap: 0.5rem;">
-                                    <button id="themeSelectLight" class="btn btn-sm btn-primary">Light Mode</button>
-                                    <button id="themeSelectDark" class="btn btn-sm btn-secondary">Dark Mode</button>
+                                    <button type="button" id="themeSelectLight" class="btn btn-sm btn-primary">Light Mode</button>
+                                    <button type="button" id="themeSelectDark" class="btn btn-sm btn-secondary">Dark Mode</button>
                                 </div>
+                            </div>
+
+                            <div style="display: flex; align-items: center; justify-content: space-between; gap: 1rem; border-top: 1px solid var(--border-light); padding-top: 1.25rem;">
+                                <div>
+                                    <label for="settingsReducedMotionToggle" style="font-weight: 700; font-size: 1rem; color: var(--text-main); display: block; cursor: pointer;">Reduce Motion</label>
+                                    <div style="font-size: 0.84rem; color: var(--text-muted); margin-top: 0.2rem;">Disable pulsing, glowing indicators, animated counters, and radar sweeps for reduced motion accessibility.</div>
+                                </div>
+                                <input type="checkbox" id="settingsReducedMotionToggle" style="width: 20px; height: 20px; accent-color: var(--primary); cursor: pointer;">
                             </div>
                         </div>
                     </div>
@@ -202,7 +210,7 @@
                                 <div style="font-weight: 700; font-size: 0.95rem; color: var(--text-main);">Restore Factory Demo Settings</div>
                                 <div style="font-size: 0.84rem; color: var(--text-muted); margin-top: 0.2rem;">Clears all browser localStorage state and reloads default Goa Mobility data.</div>
                             </div>
-                            <button id="resetDataBtn" class="btn btn-secondary" style="border-color: var(--danger); color: var(--danger);">
+                            <button type="button" id="resetDataBtn" class="btn btn-secondary" style="border-color: var(--danger); color: var(--danger);">
                                 Reset Data
                             </button>
                         </div>
@@ -265,6 +273,21 @@
                     if (window.AppAudio) AppAudio.playClick();
                     localStorage.setItem(STORAGE_KEYS.FAVORITE_ROUTE, e.target.value);
                     showToast('Preference Saved', `Default route set to ${e.target.options[e.target.selectedIndex].text}`, 'success');
+                });
+            }
+
+            // Reduced Motion Toggle
+            const motionToggle = document.getElementById('settingsReducedMotionToggle');
+            if (motionToggle) {
+                motionToggle.checked = AppStorage.getReducedMotion();
+                motionToggle.addEventListener('change', (e) => {
+                    if (window.AppAudio) AppAudio.playClick();
+                    const enabled = e.target.checked;
+                    AppStorage.setReducedMotion(enabled);
+                    if (typeof applyReducedMotion === 'function') {
+                        applyReducedMotion(enabled);
+                    }
+                    showToast('Settings Updated', enabled ? 'Reduced motion enabled' : 'Reduced motion disabled', 'info');
                 });
             }
 

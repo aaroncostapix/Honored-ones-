@@ -5,6 +5,7 @@
  */
 
 document.addEventListener('DOMContentLoaded', () => {
+    initReducedMotion();
     initTheme();
     initMobileNav();
     initLiveClock();
@@ -16,6 +17,50 @@ document.addEventListener('DOMContentLoaded', () => {
     initStatCounters();
     highlightActiveNavLink();
 });
+
+/* --------------------------------------------------------------------------
+   Reduced Motion & Animation Control
+   -------------------------------------------------------------------------- */
+function applyReducedMotion(isReduced) {
+    if (isReduced) {
+        document.documentElement.setAttribute('data-reduced-motion', 'reduce');
+        document.documentElement.classList.add('reduced-motion');
+        if (document.body) document.body.classList.add('reduced-motion');
+    } else {
+        document.documentElement.setAttribute('data-reduced-motion', 'no-preference');
+        document.documentElement.classList.remove('reduced-motion');
+        if (document.body) document.body.classList.remove('reduced-motion');
+    }
+}
+
+function isReducedMotion() {
+    const appPref = typeof AppStorage !== 'undefined' && AppStorage.getReducedMotion ? AppStorage.getReducedMotion() : false;
+    const osPref = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    return appPref || osPref;
+}
+
+window.applyReducedMotion = applyReducedMotion;
+window.isReducedMotion = isReducedMotion;
+
+function initReducedMotion() {
+    const isStored = typeof AppStorage !== 'undefined' && AppStorage.getReducedMotion ? AppStorage.getReducedMotion() : false;
+    applyReducedMotion(isStored);
+
+    if (window.matchMedia) {
+        const mediaQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
+        const handleOsChange = () => {
+            const manualSetting = typeof AppStorage !== 'undefined' && AppStorage.getReducedMotion ? AppStorage.getReducedMotion() : false;
+            if (!manualSetting) {
+                applyReducedMotion(mediaQuery.matches);
+            }
+        };
+        if (mediaQuery.addEventListener) {
+            mediaQuery.addEventListener('change', handleOsChange);
+        } else if (mediaQuery.addListener) {
+            mediaQuery.addListener(handleOsChange);
+        }
+    }
+}
 
 /* --------------------------------------------------------------------------
    Theme Management (Light / Dark Mode)
@@ -82,11 +127,36 @@ function initAudioControls() {
 /* --------------------------------------------------------------------------
    Emergency SOS System & Modal
    -------------------------------------------------------------------------- */
+let sosModalTriggerElement = null;
+
+function openSosModal(triggerEl) {
+    sosModalTriggerElement = triggerEl || document.activeElement;
+    const modal = document.getElementById('sosEmergencyModal');
+    if (!modal) return;
+    modal.classList.add('active');
+    const firstFocusable = modal.querySelector('button:not([disabled]), [href], input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])');
+    if (firstFocusable) {
+        firstFocusable.focus();
+    }
+}
+
+function closeSosModal() {
+    const modal = document.getElementById('sosEmergencyModal');
+    if (!modal || !modal.classList.contains('active')) return;
+    modal.classList.remove('active');
+    if (sosModalTriggerElement && typeof sosModalTriggerElement.focus === 'function') {
+        sosModalTriggerElement.focus();
+    }
+}
+
+window.openSosModal = openSosModal;
+window.closeSosModal = closeSosModal;
+
 function initSosEmergencySystem() {
     // Inject SOS Modal if not in DOM
     if (!document.getElementById('sosEmergencyModal')) {
         const sosModalHtml = `
-            <div id="sosEmergencyModal" class="modal-backdrop">
+            <div id="sosEmergencyModal" class="modal-backdrop" role="dialog" aria-modal="true" aria-labelledby="sosModalTitle" aria-describedby="sosModalDesc">
                 <div class="modal-card" style="max-width: 520px; border-top: 5px solid #ef4444;">
                     <div class="modal-header" style="background: rgba(239, 68, 68, 0.1);">
                         <div style="display: flex; align-items: center; gap: 0.75rem;">
@@ -94,14 +164,14 @@ function initSosEmergencySystem() {
                                 <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path><line x1="12" y1="9" x2="12" y2="13"></line><line x1="12" y1="17" x2="12.01" y2="17"></line></svg>
                             </div>
                             <div>
-                                <h3 style="color: #ef4444; font-size: 1.2rem; font-weight: 800;">Emergency Safety SOS</h3>
+                                <h3 id="sosModalTitle" style="color: #ef4444; font-size: 1.2rem; font-weight: 800;">Emergency Safety SOS</h3>
                                 <div style="font-size: 0.78rem; color: var(--text-muted);">24x7 Goa Mobility Transit Command Center</div>
                             </div>
                         </div>
-                        <button class="btn-sm btn-secondary" onclick="document.getElementById('sosEmergencyModal').classList.remove('active')">✕</button>
+                        <button type="button" class="btn-sm btn-secondary" aria-label="Close Emergency SOS modal" onclick="closeSosModal()">✕</button>
                     </div>
                     <div style="padding: 1.5rem;">
-                        <p style="font-size: 0.92rem; color: var(--text-muted); line-height: 1.5; margin-bottom: 1.25rem;">
+                        <p id="sosModalDesc" style="font-size: 0.92rem; color: var(--text-muted); line-height: 1.5; margin-bottom: 1.25rem;">
                             If you require immediate medical, breakdown, or safety assistance while traveling on a transit bus, trigger the dispatch protocol below:
                         </p>
 
@@ -114,7 +184,7 @@ function initSosEmergencySystem() {
                                 </div>
                             </a>
 
-                            <button onclick="simulateEmergencyDispatch()" class="btn btn-secondary" style="border-color: #f59e0b; color: #d97706; justify-content: flex-start; padding: 0.85rem 1.2rem;">
+                            <button type="button" onclick="simulateEmergencyDispatch()" class="btn btn-secondary" style="border-color: #f59e0b; color: #d97706; justify-content: flex-start; padding: 0.85rem 1.2rem;">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2a8 8 0 0 0-8 8c0 5.25 8 12 8 12s8-6.75 8-12a8 8 0 0 0-8-8z"></path><circle cx="12" cy="10" r="3"></circle></svg>
                                 <div>
                                     <div style="font-weight: 800;">Broadcast Live GPS to Emergency Contact</div>
@@ -131,6 +201,11 @@ function initSosEmergencySystem() {
             </div>
         `;
         document.body.insertAdjacentHTML('beforeend', sosModalHtml);
+
+        const sosModalEl = document.getElementById('sosEmergencyModal');
+        sosModalEl.addEventListener('click', (e) => {
+            if (e.target === sosModalEl) closeSosModal();
+        });
     }
 
     const sosBtns = document.querySelectorAll('.trigger-sos-modal');
@@ -138,14 +213,46 @@ function initSosEmergencySystem() {
         btn.addEventListener('click', (e) => {
             e.preventDefault();
             if (window.AppAudio) AppAudio.playSosAlarm();
-            document.getElementById('sosEmergencyModal').classList.add('active');
+            openSosModal(btn);
         });
     });
+
+    if (!document.body.dataset.sosKeydownBound) {
+        document.body.dataset.sosKeydownBound = 'true';
+        document.addEventListener('keydown', (e) => {
+            const modal = document.getElementById('sosEmergencyModal');
+            if (!modal || !modal.classList.contains('active')) return;
+
+            if (e.key === 'Escape') {
+                e.preventDefault();
+                closeSosModal();
+                return;
+            }
+
+            if (e.key === 'Tab') {
+                const focusables = modal.querySelectorAll('a[href], button:not([disabled]), textarea:not([disabled]), input:not([disabled]), select:not([disabled]), [tabindex]:not([tabindex="-1"])');
+                if (focusables.length === 0) return;
+                const first = focusables[0];
+                const last = focusables[focusables.length - 1];
+
+                if (e.shiftKey) {
+                    if (document.activeElement === first || !modal.contains(document.activeElement)) {
+                        e.preventDefault();
+                        last.focus();
+                    }
+                } else {
+                    if (document.activeElement === last || !modal.contains(document.activeElement)) {
+                        e.preventDefault();
+                        first.focus();
+                    }
+                }
+            }
+        });
+    }
 }
 
 function simulateEmergencyDispatch() {
-    const modal = document.getElementById('sosEmergencyModal');
-    if (modal) modal.classList.remove('active');
+    closeSosModal();
     if (window.AppAudio) AppAudio.playArrivalChime();
     showToast('Emergency SOS Sent', 'Live coordinates dispatched to Emergency Contact (+91 94280 12345) & Transit Control Room!', 'danger');
 }
@@ -163,7 +270,7 @@ function initSeatHeatmapModal() {
                             <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
                             <span>Live Bus Seat Availability Heatmap</span>
                         </div>
-                        <button class="btn-sm btn-secondary" onclick="document.getElementById('seatHeatmapModal').classList.remove('active')">✕</button>
+                        <button type="button" class="btn-sm btn-secondary" onclick="document.getElementById('seatHeatmapModal').classList.remove('active')">✕</button>
                     </div>
                     <div style="padding: 1.5rem;">
                         <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem; flex-wrap: wrap; gap: 0.5rem;">
@@ -184,7 +291,7 @@ function initSeatHeatmapModal() {
                         </div>
 
                         <div style="display: flex; justify-content: flex-end;">
-                            <button class="btn btn-secondary btn-sm" onclick="document.getElementById('seatHeatmapModal').classList.remove('active')">Close Heatmap</button>
+                            <button type="button" class="btn btn-secondary btn-sm" onclick="document.getElementById('seatHeatmapModal').classList.remove('active')">Close Heatmap</button>
                         </div>
                     </div>
                 </div>
@@ -203,7 +310,7 @@ function initSeatHeatmapModal() {
             let cls = isAvailable ? 'available' : (isReserved ? 'reserved' : 'occupied');
             let tooltip = isAvailable ? `Seat #${i} Available` : (isReserved ? `Seat #${i} Female Reserved` : `Seat #${i} Occupied`);
 
-            seatsHtml += `<div class="seat-box ${cls}" title="${tooltip}" onclick="showToast('Seat Selected', '${tooltip}', '${isAvailable ? 'success' : 'info'}')">${i}</div>`;
+            seatsHtml += `<button type="button" class="seat-box ${cls}" title="${tooltip}" onclick="showToast('Seat Selected', '${tooltip}', '${isAvailable ? 'success' : 'info'}')">${i}</button>`;
             if (i % 4 === 2) {
                 seatsHtml += `<div class="seat-aisle"></div>`;
             }
@@ -226,9 +333,14 @@ function initSeatHeatmapModal() {
    -------------------------------------------------------------------------- */
 function initStatCounters() {
     const statValues = document.querySelectorAll('.stat-value');
+    const reduced = isReducedMotion();
     statValues.forEach(el => {
         const target = parseInt(el.textContent.replace(/[^0-9]/g, '')) || 0;
         if (target <= 0) return;
+        if (reduced) {
+            el.textContent = target;
+            return;
+        }
         let count = 0;
         const step = Math.max(1, Math.floor(target / 25));
         const timer = setInterval(() => {
@@ -324,7 +436,7 @@ function initGlobalSearch() {
                     <div class="search-modal-header">
                         <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="search-icon"><circle cx="11" cy="11" r="8"></circle><path d="m21 21-4.3-4.3"></path></svg>
                         <input type="text" id="globalModalSearchInput" class="search-modal-input" placeholder="Search routes, bus stops, bus numbers, drivers..." autocomplete="off">
-                        <button id="closeSearchModalBtn" class="btn-sm btn-secondary">ESC</button>
+                        <button type="button" id="closeSearchModalBtn" class="btn-sm btn-secondary">ESC</button>
                     </div>
                     <div id="globalSearchResults" class="search-modal-results">
                         <div style="padding: 1.5rem; text-align: center; color: var(--text-muted);">Type to search all routes, stops, and transport information...</div>
@@ -450,13 +562,13 @@ function initGlobalSearch() {
                 resultsContainer.innerHTML = `<div style="padding: 2rem; text-align: center; color: var(--text-subtle);">No matching transport data found for "<strong>${escapeHtml(query)}</strong>"</div>`;
             } else {
                 resultsContainer.innerHTML = matches.slice(0, 10).map(m => `
-                    <div class="search-result-item" onclick="window.location.href='${m.link}'">
+                    <a class="search-result-item" href="${m.link}">
                         <div>
                             <div style="font-weight: 700; color: var(--text-main); font-size: 0.95rem;">${m.title}</div>
                             <div style="font-size: 0.78rem; color: var(--text-muted); margin-top: 0.2rem;">${m.sub}</div>
                         </div>
                         <span class="badge ${m.type === 'Route' ? 'badge-primary' : m.type === 'Bus Stop' ? 'badge-info' : 'badge-warning'}">${m.type}</span>
-                    </div>
+                    </a>
                 `).join('');
             }
         });

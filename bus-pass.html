@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Digital Transit Pass | GOA MOBILITY</title>
+    <title>SAFESTOP Digital Transit Pass | GOA MOBILITY</title>
     <meta name="description" content="Digital verified transit bus pass with QR authentication and printable download.">
     
     <!-- CSS Stylesheets -->
@@ -304,9 +304,9 @@
                 <div class="page-header no-print">
                     <div class="page-title-group">
                         <h1>
-                            <span>Digital Transit Pass</span>
+                            <span>SAFESTOP Accessible Transit Pass</span>
                         </h1>
-                        <p class="page-subtitle">Digital public transit pass with QR verification security and instant image export.</p>
+                        <p class="page-subtitle">Official verified public transit pass with QR security and instant offline verification.</p>
                     </div>
 
                     <div class="page-actions">
@@ -340,11 +340,11 @@
                         <div class="pass-header">
                             <div class="pass-institute-logo">
                                 <div class="pass-badge-icon">
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M22 10v6M2 10l10-5 10 5-10 5z"></path><path d="M6 12v5c3 3 9 3 12 0v-5"></path></svg>
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>
                                 </div>
                                 <div>
                                     <div style="font-weight: 800; font-size: 1.15rem; letter-spacing: -0.01em;">GOA MOBILITY TRANSIT SERVICE</div>
-                                    <div style="font-size: 0.74rem; font-weight: 600; color: #6ee7b7; letter-spacing: 0.08em; text-transform: uppercase;">Official Commuter Transit Pass</div>
+                                    <div style="font-size: 0.74rem; font-weight: 600; color: #6ee7b7; letter-spacing: 0.08em; text-transform: uppercase;">SAFESTOP Verified Transit Pass</div>
                                 </div>
                             </div>
                             <span class="badge badge-success" style="background: rgba(16, 185, 129, 0.3); border: 1px solid #34d399; color: #a7f3d0;">
@@ -378,7 +378,7 @@
                                     <span class="pass-detail-value" id="passStudentId">GOA-2026-PASS-089</span>
                                 </div>
                                 <div class="pass-detail-item">
-                                    <span class="pass-detail-label">Passenger Category</span>
+                                    <span class="pass-detail-label">Commuter Category</span>
                                     <span class="pass-detail-value" id="passStudentCourse">Goa Commuter</span>
                                 </div>
                                 <div class="pass-detail-item">
@@ -414,7 +414,7 @@
                         <div>
                             <h4 style="color: var(--text-main); font-size: 0.95rem; margin-bottom: 0.5rem; display: flex; align-items: center; gap: 0.4rem;">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="12"></line><line x1="12" y1="16" x2="12.01" y2="16"></line></svg>
-                                Bus Pass Guidelines & Actions
+                                SAFESTOP Transit Pass Guidelines &amp; Verification
                             </h4>
                             <ul style="padding-left: 1.25rem; line-height: 1.6;">
                                 <li>Show this verified digital pass or printed copy when boarding the bus.</li>
@@ -424,7 +424,7 @@
                         </div>
 
                         <div style="display:flex; justify-content:space-between; align-items:center; border-top:1px solid var(--border-light); padding-top:0.85rem;">
-                            <span>Annual Pass Status: <strong style="color:var(--success);">Active & Paid</strong></span>
+                            <span>Annual Pass Status: <strong style="color:var(--success);">Active &amp; Verified</strong></span>
                             <button onclick="if(window.AppAudio) AppAudio.playArrivalChime(); showToast('Renewal Requested', 'Pass renewal request submitted for 2027-28 term!', 'success');" class="btn btn-secondary btn-sm">
                                 Request Renewal
                             </button>
@@ -446,7 +446,7 @@
             
             document.getElementById('passStudentName').textContent = profile.name || 'Preyal Modi';
             document.getElementById('passStudentId').textContent = profile.id || 'GOA-2026-PASS-089';
-            document.getElementById('passStudentCourse').textContent = profile.course || 'Computer Engineering';
+            document.getElementById('passStudentCourse').textContent = (profile.course && profile.course !== 'Computer Engineering') ? profile.course : 'Goa Commuter';
             document.getElementById('passBoardingStop').textContent = profile.boardingStop || 'Patto Plaza';
             document.getElementById('passBusNumber').textContent = profile.busNumber || 'KTCL-EV-Demo-06';
             document.getElementById('passValidity').textContent = profile.passValidity || 'July 2026 – June 2027';
@@ -522,10 +522,10 @@
                     // Header
                     eCtx.fillStyle = '#ffffff';
                     eCtx.font = 'bold 20px "Outfit", sans-serif';
-                    eCtx.fillText('GOA MOBILITY TRANSIT SERVICE', 30, 45);
+                    eCtx.fillText('GOA MOBILITY • SAFESTOP TRANSIT', 30, 45);
                     eCtx.fillStyle = '#6ee7b7';
                     eCtx.font = 'bold 12px "Plus Jakarta Sans", sans-serif';
-                    eCtx.fillText('OFFICIAL COMMUTER TRANSIT PASS • VERIFIED ACTIVE', 30, 65);
+                    eCtx.fillText('OFFICIAL ACCESSIBLE TRANSIT PASS • VERIFIED ACTIVE', 30, 65);
 
                     // Divider
                     eCtx.strokeStyle = 'rgba(255,255,255,0.2)';

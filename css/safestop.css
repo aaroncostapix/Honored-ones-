@@ -241,7 +241,7 @@
 
 .barrier-feed-list {
     display: flex;
-    flex-direction: flex-col;
+    flex-direction: column;
     gap: 1rem;
 }
 
